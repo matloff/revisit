@@ -1,0 +1,12 @@
+Package: revisit
+Version: 0.0.1
+Author: Norm Matloff <normmatloff@gmail.com> [cre,aut]
+Maintainer: Norm Matloff <normmatloff@gmail.com>
+Title: Verify and Revisit Statistical Analysis
+Description: Tool to aid reproducibility and check validity of
+   statistical analysis in scientific research.
+Depends: stats,utils,methods
+Suggests: 
+ByteCompile: yes
+NeedsCompilation: no
+License: GPL (>= 2)
