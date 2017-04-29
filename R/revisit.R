@@ -52,6 +52,13 @@ runb <- function(
         rvenv$pc <- throughline + 1
 }
 
+# edit current code
+edt <- function() {
+   code <- rvenv$currcode
+   code <- as.vector(edit(matrix(code,ncol=1)))
+   rvenv$currcode <- code
+}
+
 # do one line of code from a branch
 docmd <- function(toexec) 
    eval(parse(text=toexec),envir=.GlobalEnv)
