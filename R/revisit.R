@@ -21,7 +21,7 @@ rvinit <- function() {
 makebranch0 <- function(origcodenm) {
    code <- readLines(con = origcodenm)
    attr(code,'desc') <- 'original'
-   save(code,file='branch0')
+   save(code,file=paste(origcodenm,'.0',sep='')))
 }
 
 # create new branch, with file name br; saves rvenv$currcode;
@@ -34,10 +34,10 @@ saveb <- function(br,desc=NULL) {
 
 # set current branch to br, a filename
 loadb <- function(br) {
-   rvenv$currb <- br
+   rvenv$currb <<- br
    load(br)  # variable 'code' will now exist
-   rvenv$currcode <- code
-   rvenv$pc <- 1  # see note above on loops etc.
+   rvenv$currcode <<- code
+   rvenv$pc <<- 1  # see note above on loops etc.
 }
 
 runb <- function(
@@ -56,12 +56,17 @@ runb <- function(
 edt <- function() {
    code <- rvenv$currcode
    code <- as.vector(edit(matrix(code,ncol=1)))
-   rvenv$currcode <- code
+   rvenv$currcode <<- code
 }
 
 # do one line of code from a branch
 docmd <- function(toexec) 
    eval(parse(text=toexec),envir=.GlobalEnv)
+
+# to be inserted after each app line that does a plot
+pause <- function() {
+   readline('hit Enter ')
+}
 
 # overload t.test() to check for misleadingly low p-value
 t.test.rv <- function(x,...) {
