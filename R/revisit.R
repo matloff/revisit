@@ -63,3 +63,14 @@ edt <- function() {
 docmd <- function(toexec) 
    eval(parse(text=toexec),envir=.GlobalEnv)
 
+# overload t.test() to check for misleadingly low p-value
+t.test.rv <- function(x,...) {
+   tout <- t.test(x,...)
+   muhat <- tout$estimate[1]  # covers 1-, 2-sample cases
+   ci <- tout$conf.int
+   cirad <- 0.5 * (ci[2] - ci[1])
+   if (cirad / abs(muhat) < 0.05) warning(
+      'small p-value but effect size may be of little practical interest')
+   tout
+}
+
