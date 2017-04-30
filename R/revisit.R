@@ -12,16 +12,16 @@
 # initialize rvisit
 rvinit <- function() {
    rvenv <<- new.env()
-   rvenv$currb <- NULL
-   rvenv$currcode <- NULL
-   rvenv$pc <- NULL
+   rvenv$currb <<- NULL
+   rvenv$currcode <<- NULL
+   rvenv$pc <<- NULL
 }
 
 # load original code and make the first branch from it
 makebranch0 <- function(origcodenm) {
    code <- readLines(con = origcodenm)
    attr(code,'desc') <- 'original'
-   save(code,file=paste(origcodenm,'.0',sep='')))
+   save(code,file=paste(origcodenm,'.0',sep=''))
 }
 
 # create new branch, with file name br; saves rvenv$currcode;
