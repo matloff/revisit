@@ -1,44 +1,60 @@
 
-# current code restrictions:
+# overview:
 
-#    loops, if(), if() else must be contained in a single line
-#    (semicolons allowed)
+# original code is in file named origcodenm; makebranch0() converts that
+# to the master branch, named origcodenm.0; further branches will be
+# origcodenm.1.R, origcodenm.2.R etc.
+ 
+# a branch is merely a .R code file, but with the first line being a
+# comment holding a brief description of this particular branch
+ 
+# see README.md for more
 
-#    a pause should be placed after each action that produces a display,
-#    e.g. hist(), by inserting a line like
-
-#       readline('hit Enter ')
-
-# initialize rvisit
+# initialize rvisit; the R environment rvenv will contain the relevant
+# information about the currently-in-use branch
 rvinit <- function() {
    rvenv <<- new.env()
    rvenv$currb <<- NULL
+   rvenv$currbasenm <<- NULL
+   rvenv$desc <<- NULL
    rvenv$currcode <<- NULL
    rvenv$pc <<- NULL
 }
 
-# load original code and make the first branch from it
+# load original code, a .R file, and make the first branch from it
 makebranch0 <- function(origcodenm) {
    code <- readLines(con = origcodenm)
-   attr(code,'desc') <- 'original'
-   save(code,file=paste(origcodenm,'.0',sep=''))
+   descline <- '# original code'
+   code <- c(descline,code)
+   rvenv$currbasenm <<- tools::file_path_sans_ext(origcodenm)
+   br0filenm <- paste(rvenv$currbasenm,'.0.R',sep='')
+   writeLines(code,br0filenm)
 }
 
-# create new branch, with file name br; saves rvenv$currcode;
-# optional note desc describes the branch;
-saveb <- function(br,desc=NULL) {
+# create new branch, with suffix the number in branchnum, prefix
+# rvenv$currbasenm; the note desc describes the branch
+saveb <- function(branchnum,desc) {
    code <- rvenv$currcode
-   attr(code,'desc') <- desc
-   save(code,file=br)
+   code[1] <- paste('#',desc)
+   branchname <- paste(rvenv$currbasenm,'.',branchnum,'.R',sep='')
+   # should add code asking user if OK to overwrite
+   writeLines(code,branchname)
 }
 
 # set current branch to br, a filename
 loadb <- function(br) {
    rvenv$currb <<- br
-   load(br)  # variable 'code' will now exist
-   rvenv$currcode <<- code
-   rvenv$pc <<- 1  # see note above on loops etc.
+   tmp <- tools::file_path_sans_ext(br)  # remove '.R'
+   tmp <- tools::file_path_sans_ext(tmp)  # remove branch number
+   rvenv$currbasenm <<- tmp
+   rvenv$currcode <<- readLines(br)
+   rvenv$pc <<- 1 
+   rvenv$desc <<- rvenv$currcode[1]
 }
+
+# run the code from lines startline through throughline; neither of
+# those can be inside a function call or function definition, including 
+# loops, if()
 
 runb <- function(
            startline = rvenv$pc,
@@ -52,7 +68,7 @@ runb <- function(
         rvenv$pc <- throughline + 1
 }
 
-# edit current code
+# edit current code; not pretty, definitely need a GUI
 edt <- function() {
    code <- rvenv$currcode
    code <- as.vector(edit(matrix(code,ncol=1)))

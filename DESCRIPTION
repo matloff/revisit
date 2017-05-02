@@ -1,6 +1,7 @@
 Package: revisit
 Version: 0.0.1
-Author: Norm Matloff <normmatloff@gmail.com> [cre,aut]
+Author: Norm Matloff <normmatloff@gmail.com> [cre,aut], R. Davis
+   <rdavis2468@gmail.com> [aut]
 Maintainer: Norm Matloff <normmatloff@gmail.com>
 Title: Verify and Revisit Statistical Analysis
 Description: Tool to aid reproducibility and check validity of
