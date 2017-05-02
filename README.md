@@ -31,46 +31,40 @@ follows:
 * The original researcher would, when submitting a manuscript for
   publication, be required to include both code and data. In the case of
   code, it would be *complete*, including not only statistical
-  operations for also data cleaning and "wrangling."
+  operations for also data cleaning and "wrangling."  It must be such
+  that running it "replays" the entire set of operations on the data.
 
 * Other researchers -- say a referee for the manuscript or other
   scientists seeking to learn from the published version of the paper --
-  would then use the **revisit** package as follows.
+  would then use to **revisit** package as follows.  
+  
+  The user thinks of questions involving alternate scenarios.  What, for
+  instance, would occur if one would more aggressively weed out
+  outliers?  How would the results change?  What if different predictor
+  variables were used, or squared and interaction terms added?  How
+  valid are the models and assumptions?  What about entirely different
+  statistical approaches?
 
-   - The package would be used to "replay" the entire analysis, to check
-     that the results match those in the manuscript/paper. 
+  In each case, the user calls a **revisit** function to run the code to
+  the line that she wishes to modify, makes the change, then resumes
+  running the code from that point.  If the results are useful, the user
+  then save the entire code, including modifications, to a new *branch*.
 
-   - The code would also be checked for coding errors. This would be 
-     done by hand, not by the software, but the package would
-     facilitate it, as it would allow executing the code one line at a
-     time, with pauses.
-
-   - **Most important, the package allows one to revisit the statistical
-     analysis itself, trying alternate scenarios**.  What, for instance,
-     would occur if one would more aggressively weed out outliers?  How
-     would the results change?  What if different predictor variables
-     were used, or squared and interaction terms added?  How valid are
-     the models and assumptions?  What about entirely different 
-     statistical approaches?
-
-As the package develops, advice and warnings will be added, especially
-in light of concerns that too many "false positives" are being reported
-in published research.  For example, the package may emit a message
-like, "Warning: small p-value does not seem to correspond to an effect
-of practical importance."  Procedures for multiple inference, ranging
-from simple Bonferroni to advanced methods, will be made available.
+* The package spots troublesome statistical situations, and issues
+  advice and warnings, in light of concerns that too many "false
+  positives" are being reported in published research.  For example, the
+  package may emit a message like, "Warning: small p-value does not seem
+  to correspond to an effect of practical importance."  Procedures for
+  multiple inference, are also available.
 
 *On the other hand, the package is not aimed to "automate" statistical
 analysis.*  The user decides which analyses to try, with the core
 package consisting of tools that facilitate exploring, recording and
 packaging alternative analyses.
 
-For instance, the user might use the package's **runb()** function to
-run the original author's code through, say, line 12.  The user might
-then change that line, and then call **runb()** again to resume
-execution through line 27, then make another change there, depending on
-the outcome of that first change.  If this produces interesting results,
-the user could then save the modified code in a *branch*.
+If the original data file is, say, **x.R**, then the branches will be
+named **x.1.R**, **x.2.R** and so on.  Each branch will have a brief,
+user-supplied description.
 
 Suppose the user here is a scientist who is revisiting the original work
 after publication, and she wishes to share the results of her
@@ -85,7 +79,7 @@ The software is written in R, and in its current prototype form, it runs
 from the R command line.  Future versions will use a GUI, either on the
 RStudio Shiny platform or RStudio *add-ons*.
 
-### Main Functions
+### Main functions
 
 **rvinit():**  Initializes the **revisit** system.
 
@@ -99,20 +93,24 @@ set of lines in the code, pausing at the end. (*Restriction:* The start
 and finish lines cannot be inside a function, including loops and
 if-then-else.)
 
-**saveb(br,desc):**  Save all the code changes to a new branch with the
+**saveb(branchnum,desc):**  Save all the code changes to a new branch with the
 given name and brief description.
 
-**edt():**  Make a change to the current code.
+**edt():**  Make a change to the current code.  Primitive for now.
 
 **pause():**  Insert of this call will pause execution at the given
 point, useful for instance immediately following a plotting function to
 give the user a chance to view the plot.
 
-**t.test.rv():**  Overloads R's **t.test()**.  Calls the latter but
+**t.test.rv(x,y):**  Overloads R's **t.test()**.  Calls the latter but
 warns the user if a small p-value arises merely from a large sample size
 rather than from a substantial effect.  Many more of these are planned.
 
+### GUI version
+
+The current text-based version is just a prototype. A GUI version, much
+more convenient to use, is planned.
 
 
-### First Example
+### First example
 

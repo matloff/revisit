@@ -84,16 +84,18 @@ pause <- function() {
    readline('hit Enter ')
 }
 
-# overload t.test() to check for misleadingly low p-value
-t.test.rv <- function(x,...) {
-   tout <- t.test(x,...)
-   if (tout$p.value < 0.05) {
-      muhat <- tout$estimate[1]  # covers 1-, 2-sample cases
-      ci <- tout$conf.int
-      cirad <- 0.5 * (ci[2] - ci[1])
-      if (cirad / abs(muhat) < 0.05) warning(
-         'small p-value but effect size may be of little practical interest')
-   }
+# overload t.test() to check for misleadingly low p-value; also, 'bonf'
+# argument adjusts for multiple comparisons, 'bonf' number of them; not
+# implemented yet
+t.test.rv <- function(x,y,bonf=1) {
+   tout <- t.test(x,y)
+      if (tout$p.value < 0.05) {
+         muhat <- tout$estimate[1]  # covers 1-, 2-sample cases
+            ci <- tout$conf.int
+            cirad <- 0.5 * (ci[2] - ci[1])
+            if (cirad / abs(muhat) < 0.05) warning(
+                  'small p-value but effect size may be of little practical interest')
+      }
    tout
 }
 
