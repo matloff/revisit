@@ -12,6 +12,7 @@
 
 # initialize rvisit; the R environment rvenv will contain the relevant
 # information about the currently-in-use branch
+
 rvinit <- function() {
    rvenv <<- new.env()
    rvenv$currb <<- NULL
@@ -54,11 +55,13 @@ loadb <- function(br) {
 
 # run the code from lines startline through throughline; neither of
 # those can be inside a function call or function definition, including 
-# loops, if()
+# loops, if(); startline is 1 by default, use 'c' to continue from
+# present line
 
 runb <- function(
-           startline = rvenv$pc,
+           startline = 1
            throughline=length(rvenv$currcode))  {
+        if (startline == 'c') startline <- rvenv$pc
         if (startline < 1 || throughline > length(rvenv$currcode))
            stop('line number out of range')
         execrange <- startline:throughline
@@ -84,18 +87,20 @@ pause <- function() {
    readline('hit Enter ')
 }
 
-# overload t.test() to check for misleadingly low p-value; also, 'bonf'
-# argument adjusts for multiple comparisons, 'bonf' number of them; not
-# implemented yet
-t.test.rv <- function(x,y,bonf=1) {
+# overload t.test() to check for misleadingly low p-value, and also
+# adjust for for multiple comparisons; 2-sample only; bonf
+# ("Bonferroni") is the number of anticipated comparisons
+
+t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    tout <- t.test(x,y)
-      if (tout$p.value < 0.05) {
-         muhat <- tout$estimate[1]  # covers 1-, 2-sample cases
-            ci <- tout$conf.int
-            cirad <- 0.5 * (ci[2] - ci[1])
-            if (cirad / abs(muhat) < 0.05) warning(
-                  'small p-value but effect size may be of little practical interest')
-      }
+   if (tout$p.value < alpha/bonf) {
+      muhat1 <- tout$estimate[1]  
+      muhat2 <- tout$estimate[2]  
+      if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05) 
+         warning(paste('small p-value but effect size',
+                       'may be of little practical interest'))
+   }
    tout
 }
+
 

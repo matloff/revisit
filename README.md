@@ -114,3 +114,63 @@ more convenient to use, is planned.
 
 ### First example
 
+Let's start with something very simple.  Here is code that the original
+author might submit:
+
+```
+pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)
+colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab')
+print(summary(glm(Diab ~ .,data=pima)))
+
+Suppose the author supplied that code in a file **pima.R**.  We could
+"replay" the code:
+
+
+```
+> rvinit()
+> makebranch0('pima.R') 
+> loadb('pima.0.R') 
+> runb()
+
+```
+
+The output is
+
+...
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.8538943  0.0854850  -9.989  < 2e-16 ***
+NPreg        0.0205919  0.0051300   4.014 6.56e-05 ***
+Gluc         0.0059203  0.0005151  11.493  < 2e-16 ***
+BP          -0.0023319  0.0008116  -2.873  0.00418 ** 
+Thick        0.0001545  0.0011122   0.139  0.88954    
+Insul       -0.0001805  0.0001498  -1.205  0.22857    
+BMI          0.0132440  0.0020878   6.344 3.85e-10 ***
+Genet        0.1472374  0.0450539   3.268  0.00113 ** 
+Age          0.0026214  0.0015486   1.693  0.09092 .  
+...
+```
+
+But we might think, "Hmm, the author doesn't seem to have done any data
+cleaning."  As a quick check, we might apply R's **range()** function to
+each of the predictor variables.
+
+```
+> for (i in 1:8) print(range(pima[,i]))
+[1]  0 17
+[1]   0 199
+[1]   0 122
+[1]  0 99
+[1]   0 846
+[1]  0.0 67.1
+[1] 0.078 2.420
+[1] 21 81
+```
+
+Those 0s are troubling. How can variables such as Glucose and BMI be 0?
+So, we could add code to remove cases like that.  We'd call **edit()**,
+then call **runb()** again:
+
+If we find this interesting, we call **saveb()** to save that branch.
+
+
