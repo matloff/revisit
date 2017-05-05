@@ -1,0 +1,332 @@
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 8.6193, df = 573.473, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 3.735811 5.940864
+sample estimates:
+mean of x mean of y 
+ 35.14254  30.30420 
+
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 5.907, df = 455.956, p-value = 6.822e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 1.046125 2.089219
+sample estimates:
+mean of x mean of y 
+ 4.865672  3.298000 
+
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 1.9706, df = 472.102, p-value = 0.04936
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.007076644 4.993281565
+sample estimates:
+mean of x mean of y 
+ 22.16418  19.66400 
+
+  NPreg Gluc BP Thick Insul  BMI Genet Age Diab
+1     6  148 72    35     0 33.6 0.627  50    1
+2     1   85 66    29     0 26.6 0.351  31    0
+3     8  183 64     0     0 23.3 0.672  32    1
+4     1   89 66    23    94 28.1 0.167  21    0
+5     0  137 40    35   168 43.1 2.288  33    1
+6     5  116 74     0     0 25.6 0.201  30    0
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 3.3009, df = 415.753, p-value = 0.001047
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 12.75944 50.32820
+sample estimates:
+mean of x mean of y 
+ 100.3358   68.7920 
+
+
+Call:
+glm(formula = Diab ~ ., data = pima)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.01348  -0.29513  -0.09541   0.32112   1.24160  
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.8538943  0.0854850  -9.989  < 2e-16 ***
+NPreg        0.0205919  0.0051300   4.014 6.56e-05 ***
+Gluc         0.0059203  0.0005151  11.493  < 2e-16 ***
+BP          -0.0023319  0.0008116  -2.873  0.00418 ** 
+Thick        0.0001545  0.0011122   0.139  0.88954    
+Insul       -0.0001805  0.0001498  -1.205  0.22857    
+BMI          0.0132440  0.0020878   6.344 3.85e-10 ***
+Genet        0.1472374  0.0450539   3.268  0.00113 ** 
+Age          0.0026214  0.0015486   1.693  0.09092 .  
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.1601684)
+
+    Null deviance: 174.48  on 767  degrees of freedom
+Residual deviance: 121.57  on 759  degrees of freedom
+AIC: 783.82
+
+Number of Fisher Scoring iterations: 2
+
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 6.9207, df = 575.777, p-value = 1.202e-11
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 4.209236 7.545092
+sample estimates:
+mean of x mean of y 
+ 37.06716  31.19000 
+
+function(
+           startline = rvenv$pc,
+           throughline=length(rvenv$currcode))  {
+        if (startline < 1 || throughline > length(rvenv$currcode))
+           stop('line number out of range')
+        execrange <- startline:throughline
+        for (codeline in execrange) {
+           docmd(rvenv$currcode[codeline])
+        }
+        rvenv$pc <- throughline + 1
+}
+[1] 11
+[1] "pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)"
+[2] "colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab')"                                                       
+[3] "summary(glm(Diab ~ .,data=pima))"                                                                                                          
+
+Call:
+glm(formula = Diab ~ ., data = pima)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.01348  -0.29513  -0.09541   0.32112   1.24160  
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.8538943  0.0854850  -9.989  < 2e-16 ***
+NPreg        0.0205919  0.0051300   4.014 6.56e-05 ***
+Gluc         0.0059203  0.0005151  11.493  < 2e-16 ***
+BP          -0.0023319  0.0008116  -2.873  0.00418 ** 
+Thick        0.0001545  0.0011122   0.139  0.88954    
+Insul       -0.0001805  0.0001498  -1.205  0.22857    
+BMI          0.0132440  0.0020878   6.344 3.85e-10 ***
+Genet        0.1472374  0.0450539   3.268  0.00113 ** 
+Age          0.0026214  0.0015486   1.693  0.09092 .  
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.1601684)
+
+    Null deviance: 174.48  on 767  degrees of freedom
+Residual deviance: 121.57  on 759  degrees of freedom
+AIC: 783.82
+
+Number of Fisher Scoring iterations: 2
+
+[1]   0 846
+[1]  0 17
+[1]   0 199
+[1]   0 122
+[1]  0 99
+[1]   0 846
+[1]  0.0 67.1
+[1] 0.078 2.420
+[1] 21 81
+1 srci('revisit.R') 
+2 srci('revisit.R') 
+3 pima <- read.csv('https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE) 
+4 ?read.csv 
+5 ?url 
+6 pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE) 
+7 head(pima) 
+8 colnames(pima) 
+9 colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab') 
+10 head(pima) 
+11 summary(glm(Diab ~ .,data=pima)) 
+12 summary(glm(Diab ~ .,data=pima)) 
+13 diab <- pima[pima$Diab == 1,] 
+14 nondiab <- pima[pima$Diab == 0,] 
+15 t.test.rv(diab$BMI,nondiab$BMI) 
+16 t.test.rv 
+17 srci('revisit.R') 
+18 t.test.rv(diab$BMI,nondiab$BMI) 
+19 srci('revisit.R') 
+20 srci('revisit.R') 
+21 t.test.rv(diab$BMI,nondiab$BMI) 
+22 t.test.rv(diab$NPreg,nondiab$NPreg) 
+23 t.test.rv(diab$Thick,nondiab$Thick) 
+24 head(pima) 
+25 t.test.rv(diab$Insul,nondiab$Insul) 
+26 summary(glm(Diab ~ .,data=pima)) 
+27 t.test.rv(diab$Age,nondiab$Age) 
+28 rvinit() 
+29 makebranch0('pima') 
+30 loadb('pima') 
+31 runb() 
+32 makebranch0('pima') 
+33 loadb('pima') 
+34 runb() 
+35 makebranch0('pima') 
+36 loadb('pima') 
+37 runb() 
+38 runb 
+39 rveng$currcode <- c('x <- 3','y <- 8','print(x+y)') 
+40 rvenv$currcode <- c('x <- 3','y <- 8','print(x+y)') 
+41 runb() 
+42 rvenv$pc <- 1 
+43 runb() 
+44 rvenv$pc <- 1 
+45 loadb('pima') 
+46 runb() 
+47 rvenv$currcode 
+48 makebranch0('pima') 
+49 loadb('pima') 
+50 runb() 
+51 ?range 
+52 range(pima[,-9]) 
+53 for (i in 1:8) range(pima[,i]) 
+54 for (i in 1:8) print(range(pima[,i])) 
+55 jjjjjjjjjj 
+56 cmde() 
+
+3 runb() 
+44 rvenv$pc <- 1 
+45 loadb('pima') 
+46 runb() 
+47 rvenv$currcode 
+48 makebranch0('pima') 
+49 loadb('pima') 
+50 runb() 
+51 ?range 
+52 range(pima[,-9]) 
+53 for (i in 1:8) range(pima[,i]) 
+54 for (i in 1:8) print(range(pima[,i])) 
+55 jjjjjjjjjj 
+56 cmde() 
+
+ startline:throughline
+        for (codeline in execrange) {
+           docmd(rvenv$currcode[codeline])
+        }
+        rvenv$pc <- throughline + 1
+}
+[1] 11
+[1] "pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)"
+[2] "colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab')"                                                       
+[3] "summary(glm(Diab ~ .,data=pima))"                                                                                                          
+
+Call:
+glm(formula = Diab ~ ., data = pima)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.01348  -0.29513  -0.09541   0.32112   1.24160  
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.8538943  0.0854850  -9.989  < 2e-16 ***
+NPreg        0.0205919  0.0051300   4.014 6.56e-05 ***
+Gluc         0.0059203  0.0005151  11.493  < 2e-16 ***
+BP          -0.0023319  0.0008116  -2.873  0.00418 ** 
+Thick        0.0001545  0.0011122   0.139  0.88954    
+Insul       -0.0001805  0.0001498  -1.205  0.22857    
+BMI          0.0132440  0.0020878   6.344 3.85e-10 ***
+Genet        0.1472374  0.0450539   3.268  0.00113 ** 
+Age          0.0026214  0.0015486   1.693  0.09092 .  
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.1601684)
+
+    Null deviance: 174.48  on 767  degrees of freedom
+Residual deviance: 121.57  on 759  degrees of freedom
+AIC: 783.82
+
+Number of Fisher Scoring iterations: 2
+
+[1]   0 846
+[1]  0 17
+[1]   0 199
+[1]   0 122
+[1]  0 99
+[1]   0 846
+[1]  0.0 67.1
+[1] 0.078 2.420
+[1] 21 81
+1 srci('revisit.R') 
+2 srci('revisit.R') 
+3 pima <- read.csv('https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE) 
+4 ?read.csv 
+5 ?url 
+6 pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE) 
+7 head(pima) 
+8 colnames(pima) 
+9 colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab') 
+10 head(pima) 
+11 summary(glm(Diab ~ .,data=pima)) 
+12 summary(glm(Diab ~ .,data=pima)) 
+13 diab <- pima[pima$Diab == 1,] 
+14 nondiab <- pima[pima$Diab == 0,] 
+15 t.test.rv(diab$BMI,nondiab$BMI) 
+16 t.test.rv 
+17 srci('revisit.R') 
+18 t.test.rv(diab$BMI,nondiab$BMI) 
+19 srci('revisit.R') 
+20 srci('revisit.R') 
+21 t.test.rv(diab$BMI,nondiab$BMI) 
+22 t.test.rv(diab$NPreg,nondiab$NPreg) 
+23 t.test.rv(diab$Thick,nondiab$Thick) 
+24 head(pima) 
+25 t.test.rv(diab$Insul,nondiab$Insul) 
+26 summary(glm(Diab ~ .,data=pima)) 
+27 t.test.rv(diab$Age,nondiab$Age) 
+28 rvinit() 
+29 makebranch0('pima') 
+30 loadb('pima') 
+31 runb() 
+32 makebranch0('pima') 
+33 loadb('pima') 
+34 runb() 
+35 makebranch0('pima') 
+36 loadb('pima') 
+37 runb() 
+38 runb 
+39 rveng$currcode <- c('x <- 3','y <- 8','print(x+y)') 
+40 rvenv$currcode <- c('x <- 3','y <- 8','print(x+y)') 
+41 runb() 
+42 rvenv$pc <- 1 
+43 runb() 
+44 rvenv$pc <- 1 
+45 loadb('pima') 
+46 runb() 
+47 rvenv$currcode 
+48 makebranch0('pima') 
+49 loadb('pima') 
+50 runb() 
+51 ?range 
+52 range(pima[,-9]) 
+53 for (i in 1:8) range(pima[,i]) 
+54 for (i in 1:8) print(range(pima[,i])) 
+55 jjjjjjjjjj 
+56 cmde() 
+

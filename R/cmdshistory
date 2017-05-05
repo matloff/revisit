@@ -1,0 +1,56 @@
+srci('revisit.R')
+srci('revisit.R')
+pima <- read.csv('https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)
+?read.csv
+?url
+pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)
+head(pima)
+colnames(pima)
+colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab')
+head(pima)
+summary(glm(Diab ~ .,data=pima))
+summary(glm(Diab ~ .,data=pima))
+diab <- pima[pima$Diab == 1,]
+nondiab <- pima[pima$Diab == 0,]
+t.test.rv(diab$BMI,nondiab$BMI)
+t.test.rv
+srci('revisit.R')
+t.test.rv(diab$BMI,nondiab$BMI)
+srci('revisit.R')
+srci('revisit.R')
+t.test.rv(diab$BMI,nondiab$BMI)
+t.test.rv(diab$NPreg,nondiab$NPreg)
+t.test.rv(diab$Thick,nondiab$Thick)
+head(pima)
+t.test.rv(diab$Insul,nondiab$Insul)
+summary(glm(Diab ~ .,data=pima))
+t.test.rv(diab$Age,nondiab$Age)
+rvinit()
+makebranch0('pima')
+loadb('pima')
+runb()
+makebranch0('pima')
+loadb('pima')
+runb()
+makebranch0('pima')
+loadb('pima')
+runb()
+runb
+rveng$currcode <- c('x <- 3','y <- 8','print(x+y)')
+rvenv$currcode <- c('x <- 3','y <- 8','print(x+y)')
+runb()
+rvenv$pc <- 1
+runb()
+rvenv$pc <- 1
+loadb('pima')
+runb()
+rvenv$currcode
+makebranch0('pima')
+loadb('pima')
+runb()
+?range
+range(pima[,-9])
+for (i in 1:8) range(pima[,i])
+for (i in 1:8) print(range(pima[,i]))
+jjjjjjjjjj
+cmde()
