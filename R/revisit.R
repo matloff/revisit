@@ -59,7 +59,7 @@ loadb <- function(br) {
 # present line
 
 runb <- function(
-           startline = 1
+           startline = 1,
            throughline=length(rvenv$currcode))  {
         if (startline == 'c') startline <- rvenv$pc
         if (startline < 1 || throughline > length(rvenv$currcode))
