@@ -4,5 +4,5 @@ importFrom("stats", "binomial", "coef", "cor", "cov", "glm", "lm",
              "loglin", "na.omit", "predict", "rbinom",
              "var")
 
-export(rvinit,makebranch0,loadb,saveb,runb)
+export(rvinit,makebranch0,loadb,saveb,runb,pause,t.test.rv,edt)
 
