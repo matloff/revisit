@@ -65,9 +65,12 @@ runb <- function(
         if (startline < 1 || throughline > length(rvenv$currcode))
            stop('line number out of range')
         execrange <- startline:throughline
-        for (codeline in execrange) {
-           docmd(rvenv$currcode[codeline])
-        }
+        # change to direct execution
+        ### for (codeline in execrange) {
+        ###     docmd(rvenv$currcode[codeline])
+        ### }
+        writeLines(rvenv$currcode[execrange],'tmprv.R')
+        source('tmprv.R')
         rvenv$pc <- throughline + 1
 }
 
