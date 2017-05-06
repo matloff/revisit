@@ -51,6 +51,7 @@ loadb <- function(br) {
    rvenv$currcode <<- readLines(br)
    rvenv$pc <<- 1 
    rvenv$desc <<- rvenv$currcode[1]
+   rvenv$firstrunafteredit <<- FALSE
 }
 
 # run the code from lines startline through throughline; neither of
@@ -61,24 +62,41 @@ loadb <- function(br) {
 runb <- function(
            startline = 1,
            throughline=length(rvenv$currcode))  {
-        if (startline == 'c') startline <- rvenv$pc
-        if (startline < 1 || throughline > length(rvenv$currcode))
-           stop('line number out of range')
+        if (startline == 'c') {
+           startline <- rvenv$pc
+           if (rvenv$firstrunafteredit) {
+              print('code has changed since last run, now at')
+              catn(rvenv$currcode[startline])
+              ans <- readline('start run? (Enter for yes)')
+              if (!ans == '') return()
+           }
+        }
+        lcode <- length(rvenv$currcode)
+        if (startline < 1 || startline > lcode ||
+            throughline > lcode)
+               stop('line number out of range')
         execrange <- startline:throughline
-        # change to direct execution
-        ### for (codeline in execrange) {
-        ###     docmd(rvenv$currcode[codeline])
-        ### }
         writeLines(rvenv$currcode[execrange],'tmprv.R')
         source('tmprv.R')
         rvenv$pc <- throughline + 1
+        rvenv$firstrunafteredit <<- FALSE
 }
 
-# edit current code; not pretty, definitely need a GUI
-edt <- function() {
+# list current code
+lcc <- function() {
    code <- rvenv$currcode
-   code <- as.vector(edit(matrix(code,ncol=1)))
+   for (i in 1:length(code)) catn(i,code[i])
+}
+
+# edit current code; not pretty, definitely need a GUI; if 'listresult',
+# then new code will be printed to the screen
+edt <- function(listresult=TRUE) {
+   rvenv$firstrunafteredit <<- TRUE
+   code <- rvenv$currcode
+   # code <- as.vector(edit(matrix(code,ncol=1)))
+   code <- edit(code)
    rvenv$currcode <<- code
+   if (listresult) lcc()
 }
 
 # do one line of code from a branch
