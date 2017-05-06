@@ -99,8 +99,6 @@ lines cannot be inside a function, including loops and if-then-else.)
 **saveb(branchnum,desc):**  Save all the code changes to a new branch
 with the given name and brief description.
 
-**edt():**  Make a change to the current code.  Primitive for now.
-
 **pause():**  Insert of this call will pause execution at the given
 point, useful for instance immediately following a plotting function to
 give the user a chance to view the plot.
@@ -111,6 +109,10 @@ sample size rather than from a substantial effect.  If **bonf** is
 larger than 1, **alpha** will be divided by **bonf** to implement
 Bonferroni Inequality-based multiple inference.
 Many more of these are planned.
+
+**edt():**  Make a change to the current code.  Primitive for now.
+
+**lcc():**  Display the current code.
 
 ### GUI version
 
@@ -162,30 +164,114 @@ Genet   0.06891135 0.1726207
 Age   4.209236 7.545092 
 ```
 
-But we might think, "Really, we should use muliple comparisons here."
-So, 
-
-
-"Hmm, the author doesn't seem to have done any data
+But we might think, "Hmm, the author doesn't seem to have done any data
 cleaning."  As a quick check, we might apply R's **range()** function to
 each of the predictor variables.
 
 ```
-> for (i in 1:8) print(range(pima[,i]))
-[1]  0 17
-[1]   0 199
-[1]   0 122
-[1]  0 99
-[1]   0 846
-[1]  0.0 67.1
-[1] 0.078 2.420
-[1] 21 81
+> for (i in 1:8) {
++   rng <- range(pima[,i])
++    cat(names(pima)[i],rng,'\n')
++ }
+NPreg 0 17 
+Gluc 0 199 
+BP 0 122 
+Thick 0 99 
+Insul 0 846 
+BMI 0 67.1 
+Genet 0.078 2.42 
+Age 21 81 
 ```
 
 Those 0s are troubling. How can variables such as Glucose and BMI be 0?
-So, we could add code to remove cases like that.  We'd call **edit()**,
-then call **runb()** again:
+So, we add code to remove cases like that.  We'd call **edt()** (not
+shown here), inserting
 
-If we find this interesting, we call **saveb()** to save that branch.
+```
+any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
+badrows <- apply(pima,1,any0) 
+pima <- pima[-badrows,] 
+```
+
+after
+
+```
+data(pima)
+```
+
+We could check that the new code looks right:
+
+```
+1 # original code 
+2 data(pima) 
+3 any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
+4 badrows <- apply(pima,1,any0) 
+5 pima <- pima[-badrows,] 
+6 # divide into diabetic, non-diabetics 
+7 d <- which(pima$Diab == 1) 
+8 diab <- pima[d,] 
+9 nondiab <- pima[-d,] 
+10 # form a confidence interval for each variable, difference between 
+11 # diabetics and non-diabetics 
+12 for (i in 1:8)  { 
+13 *    tmp <- t.test(diab[,i],nondiab[,i])$conf.int 
+14    cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n') 
+15 } 
+
+```
+
+We then call **runb()** again:
+
+```
+> runb()
+NPreg    1.040483 2.086364 
+Gluc    26.77046 35.73396 
+BP    -0.4010154 5.673465 
+Thick    -0.04601711 4.950227 
+Insul    13.0941 50.74512 
+BMI    3.739046 5.949183 
+Genet    0.06848236 0.1724766 
+Age    4.159615 7.497838 
+```
+
+Not much change from before, but those 0s may have had impacts on other
+analyses, say regression.
+
+If we find this worthwhile, we call **saveb()** to save the current
+code to a new branch:
+
+```
+> saveb(1,'adds removal of suspicious 0s')
+```
+
+This creates branch 1, in a file **pima.1.R**. The description, "adds
+removal...," is inserted as a comment in the first line of the file.
+
+Next, we might say, "Really, we should use muliple comparisons here."
+We are forming 8 confidence intervals, so it may be desirable to have at
+least some protection.  We then call **edt()** again, replacing R's
+**t.test()** function.  Since we are forming 8 confidence intervals, we
+set the argument **bonf** to 8.  After calling **edt()** to make the
+change, we check the code:
+
+```
+> lcc()
+1 # original code 
+2 data(pima) 
+3 any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
+4 badrows <- apply(pima,1,any0) 
+5 pima <- pima[-badrows,] 
+6 # divide into diabetic, non-diabetics 
+7 d <- which(pima$Diab == 1) 
+8 diab <- pima[d,] 
+9 nondiab <- pima[-d,] 
+10 # form a confidence interval for each variable, difference between 
+11 # diabetics and non-diabetics 
+12 for (i in 1:8)  { 
+13    tmp <- t.test.rv(diab[,i],nondiab[,i],bonf=8)$conf.int 
+14    cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n') 
+15 } 
+```
+
 
 
