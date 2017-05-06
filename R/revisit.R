@@ -65,9 +65,12 @@ runb <- function(
         if (startline < 1 || throughline > length(rvenv$currcode))
            stop('line number out of range')
         execrange <- startline:throughline
-        for (codeline in execrange) {
-           docmd(rvenv$currcode[codeline])
-        }
+        # change to direct execution
+        ### for (codeline in execrange) {
+        ###     docmd(rvenv$currcode[codeline])
+        ### }
+        writeLines(rvenv$currcode[execrange],'tmprv.R')
+        source('tmprv.R')
         rvenv$pc <- throughline + 1
 }
 
@@ -87,20 +90,29 @@ pause <- function() {
    readline('hit Enter ')
 }
 
+catn <- function(...) {
+   cat(...,'\n')
+}
+
 # overload t.test() to check for misleadingly low p-value, and also
 # adjust for for multiple comparisons; 2-sample only; bonf
 # ("Bonferroni") is the number of anticipated comparisons
 
 t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
-   tout <- t.test(x,y)
-   if (tout$p.value < alpha/bonf) {
-      muhat1 <- tout$estimate[1]  
-      muhat2 <- tout$estimate[2]  
+   alpha <- alpha / bonf
+   tout <- t.test(x,y,conf.level=1-alpha)
+   muhat1 <- tout$estimate[1]  
+   muhat2 <- tout$estimate[2]  
+   catn('sample means: ',muhat1, muhat2)
+   catn('confidence interval:')
+   catn(tout$conf.int)
+   pv <- tout$p.value
+   if (pv < alpha) {
+      catn('H0 rejected')
       if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05) 
          warning(paste('small p-value but effect size',
                        'may be of little practical interest'))
    }
-   tout
 }
 
 
