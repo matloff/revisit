@@ -124,8 +124,17 @@ Let's start with something very simple.  Here is code that the original
 author might submit:
 
 ```
-data(pima)
-print(summary(glm(Diab ~ .,data=pima)))
+data(pima)  # load data
+# divide into diabetic, non-diabetics
+d <- which(pima$Diab == 1)
+diab <- pima[d,]
+nondiab <- pima[-d,]
+# form a confidence interval for each variable, difference between
+# diabetics and non-diabetics
+for (i in 1:8)  {
+   tmp <- t.test(diab[,i],nondiab[,i])$conf.int
+   cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n')
+}
 ```
 
 Suppose the author supplied that code in a file **pima.R**.  We could
@@ -143,22 +152,21 @@ Suppose the author supplied that code in a file **pima.R**.  We could
 The output is
 
 ```
-...
-Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -0.8538943  0.0854850  -9.989  < 2e-16 ***
-NPreg        0.0205919  0.0051300   4.014 6.56e-05 ***
-Gluc         0.0059203  0.0005151  11.493  < 2e-16 ***
-BP          -0.0023319  0.0008116  -2.873  0.00418 ** 
-Thick        0.0001545  0.0011122   0.139  0.88954    
-Insul       -0.0001805  0.0001498  -1.205  0.22857    
-BMI          0.0132440  0.0020878   6.344 3.85e-10 ***
-Genet        0.1472374  0.0450539   3.268  0.00113 ** 
-Age          0.0026214  0.0015486   1.693  0.09092 .  
-...
+NPreg   1.046125 2.089219 
+Gluc   26.80786 35.74707 
+BP   -0.388326 5.66958 
+Thick   0.007076644 4.993282 
+Insul   12.75944 50.3282 
+BMI   3.735`811 5.940864 
+Genet   0.06891135 0.1726207 
+Age   4.209236 7.545092 
 ```
 
-But we might think, "Hmm, the author doesn't seem to have done any data
+But we might think, "Really, we should use muliple comparisons here."
+So, 
+
+
+"Hmm, the author doesn't seem to have done any data
 cleaning."  As a quick check, we might apply R's **range()** function to
 each of the predictor variables.
 
