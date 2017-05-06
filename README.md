@@ -1,6 +1,6 @@
 # revisit: an R Package for Statistical Reproducibility and Alternate Analysis
 
-### About
+### The reproducibility crisis
 
 In recent years, scientists, especially those who run academic journals
 or fund research projects, have been greatly concerned about lack of
@@ -25,37 +25,44 @@ Much of the concern is statistical in nature. As noted in the above
 > — more than 1,000 people — ticked "More robust experimental design"
 > "better statistics"...
 
-The **revisit** package is aimed to help remedy such problems, as
-follows:
+### The **revisit** package 
 
-* The original researcher would, when submitting a manuscript for
-  publication, be required to include both code and data. In the case of
-  code, it would be *complete*, including not only statistical
-  operations for also data cleaning and "wrangling."  It must be such
-  that running it "replays" the entire set of operations on the data.
+The package is aimed to help remedy such problems.  It has two main functions:
 
-* Other researchers -- say a referee for the manuscript or other
-  scientists seeking to learn from the published version of the paper --
-  would then use to **revisit** package as follows.  
-  
-  The user thinks of questions involving alternate scenarios.  What, for
-  instance, would occur if one would more aggressively weed out
-  outliers?  How would the results change?  What if different predictor
-  variables were used, or squared and interaction terms added?  How
-  valid are the models and assumptions?  What about entirely different
-  statistical approaches?
+*  It makes it easier and more convenient for the user to explore the
+   effects of various changes that might be made on the original
+   author's analyses.  The package facilitates changing, replaying and
+   recording various versions of the analyses.  
 
-  In each case, the user calls a **revisit** function to run the code to
-  the line that she wishes to modify, makes the change, then resumes
-  running the code from that point.  If the results are useful, the user
-  then save the entire code, including modifications, to a new *branch*.
+*  The package spots troublesome statistical situations, and issues
+   advice and warnings, in light of concerns that too many "false
+   positives" are being reported in published research.  For example, the
+   package may emit a message like, "Warning: small p-value does not seem
+   to correspond to an effect of practical importance."  Procedures for
+   multiple inference, are also available.
 
-* The package spots troublesome statistical situations, and issues
-  advice and warnings, in light of concerns that too many "false
-  positives" are being reported in published research.  For example, the
-  package may emit a message like, "Warning: small p-value does not seem
-  to correspond to an effect of practical importance."  Procedures for
-  multiple inference, are also available.
+More specifically, suppose the user here is a scientist who is
+revisiting the original work after publication:  
+
+*  The user thinks of questions involving alternate scenarios.  What,
+   for instance, would occur if one would more aggressively weed out
+   outliers?  How would the results change?  What if different predictor
+   variables were used, or squared and interaction terms added?  How
+   valid are the models and assumptions?  What about entirely different
+   statistical approaches?
+
+*  In exploring such questions, this user will modify the original
+   author's code, producing at least one new version of the code, and
+   likely several versions.  The **revisit** package facilitates this,
+   making easier for the user to make changes and record them into
+   different *branches* of the code.
+
+*  In addition, this user may wish to share the results of her 
+   exploration of alternate analyses of the data with other scientists.  
+   Since each of her branches is conveniently packaged into a separate
+   file, she then simply sends the files to the other researchers.  The
+   package allows the latter to easily "replay" the analyses, and they
+   in turn may use the package to produce further branches.
 
 *On the other hand, the package is not aimed to "automate" statistical
 analysis.*  The user decides which analyses to try, with the core
@@ -66,18 +73,12 @@ If the original data file is, say, **x.R**, then the branches will be
 named **x.1.R**, **x.2.R** and so on.  Each branch will have a brief,
 user-supplied description.
 
-Suppose the user here is a scientist who is revisiting the original work
-after publication, and she wishes to share the results of her
-modifications with a group of other scientists.  Since each of her
-branches is conveniently packaged into a separate file, she then simply
-sends the files to the other researchers.  They may produce further
-branches.
 
 ### Language and Interface
 
-The software is written in R, and in its current prototype form, it runs
-from the R command line.  Future versions will use a GUI, either on the
-RStudio Shiny platform or RStudio *add-ons*.
+The software is written in R, and *in its current prototype form*, it runs
+from the R command line.  Future versions will use a GUI, say using
+RStudio *add-ons*.
 
 ### Main functions
 
@@ -89,12 +90,14 @@ forms a branch copy of it.
 **loadb(br):**  Loads a branch.
 
 **runb(startline,throughline):**  Runs a branch through a user-specified
-set of lines in the code, pausing at the end. (*Restriction:* The start
-and finish lines cannot be inside a function, including loops and
-if-then-else.)
+set of lines in the code, pausing at the end.  By default, these are the
+numbers of the first and last lines of the code, but other numbers can
+be specified.  Use 'c' to continue from the current line, or 's' to
+execute just the current line.  (*Restriction:* The start and finish
+lines cannot be inside a function, including loops and if-then-else.)  
 
-**saveb(branchnum,desc):**  Save all the code changes to a new branch with the
-given name and brief description.
+**saveb(branchnum,desc):**  Save all the code changes to a new branch
+with the given name and brief description.
 
 **edt():**  Make a change to the current code.  Primitive for now.
 
@@ -102,9 +105,12 @@ given name and brief description.
 point, useful for instance immediately following a plotting function to
 give the user a chance to view the plot.
 
-**t.test.rv(x,y):**  Overloads R's **t.test()**.  Calls the latter but
-warns the user if a small p-value arises merely from a large sample size
-rather than from a substantial effect.  Many more of these are planned.
+**t.test.rv(x,y,alpha,bonf):**  Substitute for R's **t.test()**.  Calls the
+latter but warns the user if a small p-value arises merely from a large
+sample size rather than from a substantial effect.  If **bonf** is
+larger than 1, **alpha** will be divided by **bonf** to implement
+Bonferroni Inequality-based multiple inference.
+Many more of these are planned.
 
 ### GUI version
 
@@ -118,9 +124,9 @@ Let's start with something very simple.  Here is code that the original
 author might submit:
 
 ```
-pima <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/pima-indians-diabetes.data',header=FALSE)
-colnames(pima) <- c('NPreg','Gluc','BP','Thick','Insul','BMI','Genet','Age','Diab')
+data(pima)
 print(summary(glm(Diab ~ .,data=pima)))
+```
 
 Suppose the author supplied that code in a file **pima.R**.  We could
 "replay" the code:
@@ -136,6 +142,7 @@ Suppose the author supplied that code in a file **pima.R**.  We could
 
 The output is
 
+```
 ...
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    

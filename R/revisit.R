@@ -86,7 +86,10 @@ runb <- function(
 # list current code
 lcc <- function() {
    code <- rvenv$currcode
-   for (i in 1:length(code)) catn(i,code[i])
+   for (i in 1:length(code)) {
+      if (i == rvenv$pc) code[i] <- paste('*',code[i])
+      catn(i,code[i])
+   }
 }
 
 # edit current code; not pretty, definitely need a GUI; if 'listresult',
