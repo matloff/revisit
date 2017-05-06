@@ -57,13 +57,14 @@ loadb <- function(br) {
 # run the code from lines startline through throughline; neither of
 # those can be inside a function call or function definition, including 
 # loops, if(); startline is 1 by default, use 'c' to continue from
-# present line
+# present line, or use 's' to step just one line
 
 runb <- function(
            startline = 1,
            throughline=length(rvenv$currcode))  {
-        if (startline == 'c') {
+        if (startline == 'c' || startline == 's') {
            startline <- rvenv$pc
+           if (startline == 's') throughline <- startline 
            if (rvenv$firstrunafteredit) {
               print('code has changed since last run, now at')
               catn(rvenv$currcode[startline])
