@@ -139,7 +139,10 @@ for (i in 1:8)  {
 }
 ```
 
-Suppose the author supplied that code in a file **pima.R**.  We could
+Suppose the author supplied that code in a file **pima.R**, in the
+directory from which **revisit** is being run.  (This file is in the
+**examples** directory in the package.)
+We could
 "replay" the code:
 
 
