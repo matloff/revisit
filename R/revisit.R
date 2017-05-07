@@ -118,23 +118,24 @@ catn <- function(...) {
 
 # overload t.test() to check for misleadingly low p-value, and also
 # adjust for for multiple comparisons; 2-sample only; bonf
-# ("Bonferroni") is the number of anticipated comparisons
+# ("Bonferroni") is the number of anticipated comparisons; many other
+# possibilities, e.g. p.adjust() in base R
 
 t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    alpha <- alpha / bonf
    tout <- t.test(x,y,conf.level=1-alpha)
    muhat1 <- tout$estimate[1]  
    muhat2 <- tout$estimate[2]  
-   catn('sample means: ',muhat1, muhat2)
-   catn('confidence interval:')
-   catn(tout$conf.int)
-   pv <- tout$p.value
-   if (pv < alpha) {
-      catn('H0 rejected')
+   ## catn('sample means: ',muhat1, muhat2)
+   ## catn('confidence interval:')
+   ## catn(tout$conf.int)
+   if (tout$p.value < alpha) {
+      ## catn('H0 rejected')
       if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05) 
          warning(paste('small p-value but effect size',
-                       'may be of little practical interest'))
+                       'could be of little practical interest'))
    }
+   tout
 }
 
 
