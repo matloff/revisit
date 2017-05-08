@@ -125,7 +125,7 @@ more convenient to use, is planned.
 Let's start with something very simple.  Here is code that the original
 author might submit:
 
-```
+``` r
 data(pima)  # load data
 # divide into diabetic, non-diabetics
 d <- which(pima$Diab == 1)
@@ -141,16 +141,14 @@ for (i in 1:8)  {
 
 Suppose the author supplied that code in a file **pima.R**, in the
 directory from which **revisit** is being run.  (This file is in the
-**examples** directory in the package.)
-We could
-"replay" the code:
+**examples** directory in the package.) We could "replay" the code:
 
 
-```
-> rvinit()
-> makebranch0('pima.R') 
-> loadb('pima.0.R') 
-> runb()
+``` r
+> rvinit()  # initialize 'revisit'
+> makebranch0('pima.R')  # convert to 'revisit' form
+> loadb('pima.0.R')  # load branch 0
+> runb()  # run it
 
 ```
 
@@ -171,7 +169,7 @@ But we might think, "Hmm, the author doesn't seem to have done any data
 cleaning."  As a quick check, we might apply R's **range()** function to
 each of the predictor variables.
 
-```
+``` r
 > for (i in 1:8) {
 +   rng <- range(pima[,i])
 +    cat(names(pima)[i],rng,'\n')
@@ -190,7 +188,7 @@ Those 0s are troubling. How can variables such as Glucose and BMI be 0?
 So, we add code to remove cases like that.  We'd call **edt()** (not
 shown here), inserting
 
-```
+``` r
 any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
 badrows <- apply(pima,1,any0) 
 pima <- pima[-badrows,] 
@@ -248,16 +246,19 @@ code to a new branch:
 ```
 
 This creates branch 1, in a file **pima.1.R**. The description, "adds
-removal...," is inserted as a comment in the first line of the file.
+removal...," is inserted as a new comment first line at the top of the file, 
+in order to help us remember which branch is which if we have several of
+them.
 
-Next, we might say, "Really, we should use muliple comparisons here."
-We are forming 8 confidence intervals, so it may be desirable to have at
+Next, we might say, "Really, we should use muliple comparisons here." We
+are forming 8 confidence intervals, so it may be desirable to have at
 least some protection.  We then call **edt()** again, replacing R's
-**t.test()** function.  Since we are forming 8 confidence intervals, we
-set the argument **bonf** to 8.  After calling **edt()** to make the
-change, we check the code:
+**t.test()** function by the one in **revisit**, named **t.test.rv()**.
+Since we are forming 8 confidence intervals, we set the argument
+**bonf** to 8.  After calling **edt()** to make the change, we check the
+code:
 
-```
+``` r
 > lcc()
 1 # original code 
 2 data(pima) 
@@ -276,5 +277,21 @@ change, we check the code:
 15 } 
 ```
 
+And run again()
 
+``` r
+> runb()
+NPreg    0.8323935 2.294453 
+Gluc    24.98722 37.5172 
+BP    -1.609321 6.88177 
+Thick    -1.039828 5.944038 
+Insul    5.597938 58.24128 
+BMI    3.299954 6.388275 
+Genet    0.04779111 0.1931679 
+Age    3.496427 8.161026 
+```
+
+Of course, the confidence intervals are now somewhat wider than before.
+If we think it worthwhile, we can now call **saveb()** again, creating
+**pima.1.R**,
 

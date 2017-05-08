@@ -129,6 +129,7 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    ## catn('sample means: ',muhat1, muhat2)
    ## catn('confidence interval:')
    ## catn(tout$conf.int)
+   tout$p.value <- tout$p.value * bonf
    if (tout$p.value < alpha) {
       ## catn('H0 rejected')
       if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05) 
