@@ -1,10 +1,11 @@
-library(shiny)
-library(miniUI)
-library(shinyAce)
-
 revisitAddin <- function() {
 
-  ui <- miniPage(
+    library(shiny)
+    library(miniUI)
+    library(shinyAce)
+    rvinit()
+
+    ui <- miniPage(
 
     gadgetTitleBar("Revisit"),
     miniContentPanel(
@@ -50,6 +51,7 @@ revisitAddin <- function() {
 
     output$changes <- renderUI({
       spec <- reactiveRefactor()
+      return(div(""))
     })
 
     output$ace <- renderCode({
