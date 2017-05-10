@@ -70,8 +70,8 @@ package consisting of tools that facilitate exploring, recording and
 packaging alternative analyses.
 
 If the original data file is, say, **x.R**, then the branches will be
-named **x.1.R**, **x.2.R** and so on.  Each branch will have a brief,
-user-supplied description.
+given names by the users, say **x.1.R**, **x.2.R** and so on.  Each
+branch will have a brief, user-supplied description.
 
 
 ### Language and Interface
@@ -154,15 +154,15 @@ directory from which **revisit** is being run.  (This file is in the
 
 The output is
 
-```
-NPreg   1.046125 2.089219 
-Gluc   26.80786 35.74707 
-BP   -0.388326 5.66958 
-Thick   0.007076644 4.993282 
-Insul   12.75944 50.3282 
-BMI   3.735`811 5.940864 
-Genet   0.06891135 0.1726207 
-Age   4.209236 7.545092 
+``` r
+NPreg   1.046125 2.089219
+Gluc   26.80786 35.74707
+BP   -0.388326 5.66958
+Thick   0.007076644 4.993282
+Insul   12.75944 50.3282
+BMI   3.735`811 5.940864
+Genet   0.06891135 0.1726207
+Age   4.209236 7.545092
 ```
 
 But we might think, "Hmm, the author doesn't seem to have done any data
@@ -242,7 +242,7 @@ If we find this worthwhile, we call **saveb()** to save the current
 code to a new branch:
 
 ```
-> saveb(1,'adds removal of suspicious 0s')
+> saveb('rm 0s','adds removal of suspicious 0s')
 ```
 
 This creates branch 1, in a file **pima.1.R**. The description, "adds

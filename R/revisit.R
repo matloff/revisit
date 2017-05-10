@@ -32,12 +32,16 @@ makebranch0 <- function(origcodenm) {
    writeLines(code,br0filenm)
 }
 
-# create new branch, with suffix the number in branchnum, prefix
-# rvenv$currbasenm; the note desc describes the branch
-saveb <- function(branchnum,desc) {
+# create new branch, with "midfix" ("middle suffix") midfix, in a file
+# whose name is the concatenization of our original prefix
+# rvenv$currbasenm; the midfix; and '.R'; the note desc describes the
+# branch
+saveb <- function(midfix,desc) {
    code <- rvenv$currcode
+   # at a first line with the description of the branch
    code[1] <- paste('#',desc)
-   branchname <- paste(rvenv$currbasenm,'.',branchnum,'.R',sep='')
+
+   branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
    # should add code asking user if OK to overwrite
    writeLines(code,branchname)
 }
@@ -66,7 +70,8 @@ runb <- function(
            startline <- rvenv$pc
            if (startline == 's') throughline <- startline 
            if (rvenv$firstrunafteredit) {
-              print('code has changed since last run, now at')
+              print('code has changed since last run; ')
+              print('next line to execute is')
               catn(rvenv$currcode[startline])
               ans <- readline('start run? (Enter for yes)')
               if (!ans == '') return()
@@ -92,14 +97,18 @@ lcc <- function() {
    }
 }
 
-# edit current code; not pretty, definitely need a GUI; if 'listresult',
-# then new code will be printed to the screen
+# edit current code; edits the current code file, not an R object; if
+# 'listresult', then new code will be printed to the scree
+#
+# current implementation rather kludgy, repeatedly going back and forthe
+# to disk
+
 edt <- function(listresult=TRUE) {
    rvenv$firstrunafteredit <<- TRUE
    code <- rvenv$currcode
-   # code <- as.vector(edit(matrix(code,ncol=1)))
-   code <- edit(code)
-   rvenv$currcode <<- code
+   writeLines(code,'tmprv.R')
+   tmprv <- edit(file='tmprv.R')  # tmprv just a dummy to prevent execution
+   rvenv$currcode <<- readLines('tmprv.R')
    if (listresult) lcc()
 }
 
