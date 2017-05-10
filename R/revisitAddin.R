@@ -32,11 +32,10 @@ revisitAddin <- function() {
 
       file <- input$file
       loadBn <- input$loadBn
-      desc <- input$desc
-      #boundaries <- input$boundaries
 
       if (loadBn < 0){
           filename <- paste0(file, ".R")
+          makebranch0(filename)
       } else {
           filename <- paste0(file, ".", as.character(loadBn), ".R")
       }
