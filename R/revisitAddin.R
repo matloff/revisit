@@ -25,7 +25,7 @@ revisitAddin <- function() {
           actionButton("runb", "Run Code"),
           actionButton("saveb", "Save Code")
       ),
-      aceEditor("ace", value = rvenv$currcode)
+      aceEditor("ace", value = "...")
     )
   )
 
