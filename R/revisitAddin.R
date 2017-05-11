@@ -10,7 +10,10 @@ revisitAddin <- function() {
     gadgetTitleBar("Revisit"),
     miniContentPanel(
       stableColumnLayout(
-        uiOutput("changes")
+        uiOutput("message")
+      ),
+      stableColumnLayout(
+          h3("")
       ),
       stableColumnLayout(
         textInput("file", "Filename (w/o Branch# or .R):", value = "inst/examples/pima"),
@@ -32,6 +35,7 @@ revisitAddin <- function() {
 
       file <- input$file
       loadBn <- input$loadBn
+      status <- "OK"
 
       if (loadBn < 0){
           filename <- paste0(file, ".R")
@@ -41,16 +45,18 @@ revisitAddin <- function() {
       }
       if (file.exists(filename)){
           loadb(filename)
+          status <- paste(filename, "loaded")
           currcode <- paste(rvenv$currcode, collapse = '\n')
           updateAceEditor(session, "ace", value = currcode)
+      } else {
+          status <- paste(filename, "not found")
       }
-      #return(list(refactored = rvenv$currcode, changes = 0))
-      return(list(refactored = rvenv$currcode))
+      return(list(refactored = rvenv$currcode, status = status))
     })
 
-    output$changes <- renderUI({
+    output$message <- renderUI({
       spec <- reactiveRefactor()
-      return(div(""))
+      return(div(spec$status))
     })
 
     output$ace <- renderCode({
