@@ -31,7 +31,7 @@ revisitAddin <- function() {
 
    server <- function(input, output, session) {
 
-      reactiveRefactor <- reactive({
+      reactiveLoad <- reactive({
 
          file <- input$file
          loadBn <- input$loadBn
@@ -49,20 +49,20 @@ revisitAddin <- function() {
             currcode <- paste(rvenv$currcode, collapse = '\n')
             updateAceEditor(session, "ace", value = currcode)
          } else {
-            status <- paste(filename, "not found")
+            status <- paste("***** ERROR:", filename, "not found")
          }
-         return(list(refactored = rvenv$currcode, status = status))
+         return(list(loaded = rvenv$currcode, status = status))
       })
 
       output$message <- renderUI({
-         spec <- reactiveRefactor()
+         spec <- reactiveLoad()
          return(div(spec$status))
       })
 
       output$ace <- renderCode({
-         spec <- reactiveRefactor()
+         spec <- reactiveLoad()
          highlightCode(session, "ace")
-         paste(spec$refactored, collapse = "\n")
+         paste(spec$loaded, collapse = "\n")
       })
 
       observeEvent(input$runb, {
@@ -76,8 +76,8 @@ revisitAddin <- function() {
       })
 
       observeEvent(input$done, {
-         spec <- reactiveRefactor()
-         transformed <- paste(spec$refactored, collapse = "\n")
+         spec <- reactiveLoad()
+         transformed <- paste(spec$loaded, collapse = "\n")
          invisible(stopApp())
       })
 
