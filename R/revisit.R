@@ -45,7 +45,7 @@ saveb <- function(midfix,desc) {
    g <- grep('# RV history end',code)
    endline <- g[1]
    toplines <- code[1:(endline-1)]
-   toplines <- c(toplines,c('# ',desc))
+   toplines <- c(toplines,paste('#',desc))
    code <- c(toplines,code[endline:length(code)])
    code[1] <- paste('#',desc)
 
