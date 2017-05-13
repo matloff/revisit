@@ -16,12 +16,17 @@ revisitAddin <- function() {
             h3("")
          ),
          stableColumnLayout(
-            textInput("file", "Filename (w/o Branch# or .R):", value = "inst/examples/pima"),
+            textInput("file", "Filename (w/o Branch# or .R)", value = "inst/examples/pima"),
+            numericInput("runstart", "Run Start Line", value = 1),
+            numericInput("saveBn", "Save Branch#", value = 1)
+         ),
+         stableColumnLayout(
             numericInput("loadBn", "Load Branch#", value = 0),
-            numericInput("saveBn", "Save Branch#", value = 1),
-            textInput("desc", "Description:")
+            numericInput("runthru", "Run Through Line", value = -1),
+            textInput("desc", "Description")
          ),
          miniButtonBlock(
+            actionButton("loadb", "Load Code"),
             actionButton("runb", "Run Code"),
             actionButton("saveb", "Save Code")
          ),
@@ -31,13 +36,8 @@ revisitAddin <- function() {
 
    server <- function(input, output, session) {
 
-      reactiveLoad <- reactive({
-
-         file <- input$file
-         loadBn <- input$loadBn
-         status <- "OK"
-
-         if (loadBn < 0){
+      doLoad <- function(file, loadBn){
+          if (loadBn < 0){
             filename <- paste0(file, ".R")
             makebranch0(filename)
          } else {
@@ -51,6 +51,15 @@ revisitAddin <- function() {
          } else {
             status <- paste("***** ERROR:", filename, "not found")
          }
+         print(status)
+      }
+
+      reactiveLoad <- reactive({
+         file <- isolate(input$file)
+         loadBn <- input$loadBn
+         status <- "OK"
+
+         status <- doLoad(file, loadBn)
          return(list(loaded = rvenv$currcode, status = status))
       })
 
@@ -65,14 +74,36 @@ revisitAddin <- function() {
          paste(spec$loaded, collapse = "\n")
       })
 
+      observeEvent(input$loadb, {
+         file <- input$file
+         loadBn <- input$loadBn
+         doLoad(file, loadBn)
+      })
+
       observeEvent(input$runb, {
-         runb()
+         runstart <- input$runstart
+         runthru  <- input$runthru
+         if (runstart < 1){
+            runstart <- 1
+         }
+         if (runthru > length(rvenv$currcode)){
+            runthru <- length(rvenv$currcode)
+         }
+         if (runthru < 1){
+            print(paste("RUN FROM", runstart))
+            runb(startline = runstart)
+         }
+         else{
+            print(paste("RUN FROM", runstart, "THROUGH", runthru))
+            runb(startline = runstart, throughline = runthru)
+         }
       })
 
       observeEvent(input$saveb, {
          currcode <- unlist(strsplit(input$ace, "\n"))
          rvenv$currcode <- currcode
          saveb(input$saveBn, input$desc)
+         print(paste("SAVE", input$saveBn, "|", input$desc))
       })
 
       observeEvent(input$done, {
