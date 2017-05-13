@@ -25,8 +25,9 @@ rvinit <- function() {
 # load original code, a .R file, and make the first branch from it
 makebranch0 <- function(origcodenm) {
    code <- readLines(con = origcodenm)
-   descline <- '# original code'
-   code <- c(descline,code)
+   desclines <- 
+      c('# RV history start','# original code','# RV history end')
+   code <- c(desclines,code)
    rvenv$currbasenm <<- tools::file_path_sans_ext(origcodenm)
    br0filenm <- paste(rvenv$currbasenm,'.0.R',sep='')
    writeLines(code,br0filenm)
@@ -38,7 +39,14 @@ makebranch0 <- function(origcodenm) {
 # branch
 saveb <- function(midfix,desc) {
    code <- rvenv$currcode
-   # at a first line with the description of the branch
+
+   # add lines at top of file with the description of the branch
+   # find end of description
+   g <- grep('# RV history end',code)
+   endline <- g[1]
+   toplines <- code[1:(endline-1)]
+   toplines <- c(toplines,c('# ',desc))
+   code <- c(toplines,code[endline:length(code)])
    code[1] <- paste('#',desc)
 
    branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
