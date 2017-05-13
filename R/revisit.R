@@ -40,14 +40,15 @@ makebranch0 <- function(origcodenm) {
 saveb <- function(midfix,desc) {
    code <- rvenv$currcode
 
-   # add lines at top of file with the description of the branch
+   # add lines at top of file with the description of the branch,
+   # consisting of the change history
+   #
    # find end of description
    g <- grep('# RV history end',code)
    endline <- g[1]
    toplines <- code[1:(endline-1)]
    toplines <- c(toplines,paste('#',desc))
    code <- c(toplines,code[endline:length(code)])
-   code[1] <- paste('#',desc)
 
    branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
    # should add code asking user if OK to overwrite
