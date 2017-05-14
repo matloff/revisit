@@ -69,22 +69,15 @@ loadb <- function(br) {
 
 # run the code from lines startline through throughline; neither of
 # those can be inside a function call or function definition, including 
-# loops, if(); startline is 1 by default, use 'c' to continue from
-# present line, or use 's' to step just one line
+# loops, if(); startline is 1 by default, use 'f' to finish the run from
+# the present line, or use 'n' to step just one line
 
 runb <- function(
            startline = 1,
            throughline=length(rvenv$currcode))  {
-        if (startline == 'c' || startline == 's') {
+        if (startline == 'f' || startline == 'n') {
            startline <- rvenv$pc
-           if (startline == 's') throughline <- startline 
-           if (rvenv$firstrunafteredit) {
-              print('code has changed since last run; ')
-              print('next line to execute is')
-              catn(rvenv$currcode[startline])
-              ans <- readline('start run? (Enter for yes)')
-              if (!ans == '') return()
-           }
+           if (startline == 'n') throughline <- startline 
         }
         lcode <- length(rvenv$currcode)
         if (startline < 1 || startline > lcode ||
@@ -97,11 +90,17 @@ runb <- function(
         rvenv$firstrunafteredit <<- FALSE
 }
 
+# single-step, as with debuggers
+nxt <- function() runb('n')
+# run to end
+fin <- function() runb('f')
+
 # list current code
 lcc <- function() {
    code <- rvenv$currcode
+   print('next line to execute indicated by ***')
    for (i in 1:length(code)) {
-      if (i == rvenv$pc) code[i] <- paste('*',code[i])
+      if (i == rvenv$pc) code[i] <- paste('***',code[i])
       catn(i,code[i])
    }
 }
