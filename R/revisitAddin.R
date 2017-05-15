@@ -10,12 +10,6 @@ revisitAddin <- function() {
       gadgetTitleBar("Revisit"),
       miniContentPanel(
          stableColumnLayout(
-            uiOutput("message")
-         ),
-         stableColumnLayout(
-            h3("")
-         ),
-         stableColumnLayout(
             textInput("file", "Filename (w/o Branch# or .R)", value = "inst/examples/pima"),
             numericInput("runstart", "Run Start Line", value = 1),
             numericInput("saveBn", "Save Branch#", value = 1)
@@ -30,6 +24,7 @@ revisitAddin <- function() {
             actionButton("runb", "Run Code"),
             actionButton("saveb", "Save Code")
          ),
+         htmlOutput("message"),
          aceEditor("ace", value = "...")
       )
    )
@@ -37,7 +32,7 @@ revisitAddin <- function() {
    server <- function(input, output, session) {
 
       doLoad <- function(file, loadBn){
-          if (loadBn < 0){
+         if (loadBn < 0){
             filename <- paste0(file, ".R")
             makebranch0(filename)
          } else {
@@ -100,10 +95,51 @@ revisitAddin <- function() {
       })
 
       observeEvent(input$saveb, {
+         file <- input$file
+         saveBn <- input$saveBn
+         if (saveBn <= 0){
+            showModal(modalDialog(
+               title = "SAVE ERROR",
+               "Save Branch# must be greater than 0 in order to save."
+            ))
+            return()
+         }
+         desc <- gsub("^\\s+|\\s+$", "", input$desc)
+         if (desc == ""){
+            showModal(modalDialog(
+               title = "SAVE ERROR",
+               "Description must be set."
+            ))
+            return()
+         }
+         filename <- paste0(file, ".", as.character(saveBn), ".R")
+         if (file.exists(filename)){
+            question <- paste("WARNING: ", filename, "exists. Overwrite it?")
+            showModal(yesNoModal(msg = question, yesAction="ok", yesLabel="Yes", noLabel="No"))
+            return()
+         }
          currcode <- unlist(strsplit(input$ace, "\n"))
          rvenv$currcode <- currcode
          saveb(input$saveBn, input$desc)
          print(paste("SAVE", input$saveBn, "|", input$desc))
+      })
+
+      yesNoModal <- function(msg="Continue?", yesAction="yes", yesLabel="Yes", noLabel="No"){
+         modalDialog(
+            span(msg),
+            footer = tagList(
+               actionButton(yesAction, yesLabel),
+               modalButton(noLabel)
+            )
+         )
+      }
+
+      observeEvent(input$ok, {
+         currcode <- unlist(strsplit(input$ace, "\n"))
+         rvenv$currcode <- currcode
+         saveb(input$saveBn, input$desc)
+         print(paste("OVERWROTE", input$saveBn, "|", input$desc))
+         removeModal()
       })
 
       observeEvent(input$done, {
@@ -114,6 +150,6 @@ revisitAddin <- function() {
 
    }
 
-   viewer <- dialogViewer("Find and Replace", width = 1000, height = 800)
+   viewer <- dialogViewer("Revisit", width = 1000, height = 800)
    runGadget(ui, server, viewer = viewer)
 }
