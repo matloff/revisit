@@ -21,7 +21,8 @@ revisitAddin <- function() {
          ),
          miniButtonBlock(
             actionButton("loadb", "Load Code"),
-            actionButton("runb", "Run Code"),
+            actionButton("nxt",   "Next"),
+            actionButton("runb",  "Continue"),
             actionButton("saveb", "Save Code")
          ),
          htmlOutput("message"),
@@ -75,6 +76,17 @@ revisitAddin <- function() {
          file <- input$file
          loadBn <- input$loadBn
          doLoad(file, loadBn)
+      })
+
+      observeEvent(input$nxt, {
+         rvenv$pc <- input$runstart
+         nxt()
+         if (input$runstart < length(rvenv$currcode)){
+            updateNumericInput(session, "runstart", value = input$runstart + 1)
+         } else {
+            updateNumericInput(session, "runstart", value = 1)
+         }
+         updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
       })
 
       observeEvent(input$runb, {

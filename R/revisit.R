@@ -4,10 +4,10 @@
 # original code is in file named origcodenm; makebranch0() converts that
 # to the master branch, named origcodenm.0; further branches will be
 # origcodenm.1.R, origcodenm.2.R etc.
- 
+
 # a branch is merely a .R code file, but with the first line being a
 # comment holding a brief description of this particular branch
- 
+
 # see README.md for more
 
 # initialize rvisit; the R environment rvenv will contain the relevant
@@ -25,7 +25,7 @@ rvinit <- function() {
 # load original code, a .R file, and make the first branch from it
 makebranch0 <- function(origcodenm) {
    code <- readLines(con = origcodenm)
-   desclines <- 
+   desclines <-
       c('# RV history start','# original code','# RV history end')
    code <- c(desclines,code)
    rvenv$currbasenm <<- tools::file_path_sans_ext(origcodenm)
@@ -62,13 +62,13 @@ loadb <- function(br) {
    tmp <- tools::file_path_sans_ext(tmp)  # remove branch number
    rvenv$currbasenm <<- tmp
    rvenv$currcode <<- readLines(br)
-   rvenv$pc <<- 1 
+   rvenv$pc <<- 1
    rvenv$desc <<- rvenv$currcode[1]
    rvenv$firstrunafteredit <<- FALSE
 }
 
 # run the code from lines startline through throughline; neither of
-# those can be inside a function call or function definition, including 
+# those can be inside a function call or function definition, including
 # loops, if(); startline is 1 by default, use 'f' to finish the run from
 # the present line, or use 'n' to step just one line
 
@@ -76,8 +76,8 @@ runb <- function(
            startline = 1,
            throughline=length(rvenv$currcode))  {
         if (startline == 'f' || startline == 'n') {
+           if (startline == 'n') throughline <- rvenv$pc
            startline <- rvenv$pc
-           if (startline == 'n') throughline <- startline 
         }
         lcode <- length(rvenv$currcode)
         if (startline < 1 || startline > lcode ||
@@ -123,7 +123,7 @@ edt <- function(listresult=TRUE) {
 }
 
 # do one line of code from a branch
-docmd <- function(toexec) 
+docmd <- function(toexec)
    eval(parse(text=toexec),envir=.GlobalEnv)
 
 # to be inserted after each app line that does a plot
@@ -143,15 +143,15 @@ catn <- function(...) {
 t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    alpha <- alpha / bonf
    tout <- t.test(x,y,conf.level=1-alpha)
-   muhat1 <- tout$estimate[1]  
-   muhat2 <- tout$estimate[2]  
+   muhat1 <- tout$estimate[1]
+   muhat2 <- tout$estimate[2]
    ## catn('sample means: ',muhat1, muhat2)
    ## catn('confidence interval:')
    ## catn(tout$conf.int)
    tout$p.value <- tout$p.value * bonf
    if (tout$p.value < alpha) {
       ## catn('H0 rejected')
-      if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05) 
+      if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05)
          warning(paste('small p-value but effect size',
                        'could be of little practical interest'))
    }
