@@ -92,8 +92,10 @@ runb <- function(
 
 # single-step, as with debuggers
 nxt <- function() runb('n')
-# run to end
-fin <- function() runb('f')
+# resume execution from the current line
+go <- function(throughline=length(rvenv$currcode))
+         runb(startline=rvenv$pc,
+            throughline=length(rvenv$currcode))
 
 # list current code
 lcc <- function() {
