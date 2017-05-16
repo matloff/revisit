@@ -76,7 +76,7 @@ runb <- function(
            startline = 1,
            throughline=length(rvenv$currcode))  {
         if (startline == 'f' || startline == 'n') {
-           if (startline == 'n') throughline <- rvenv$pc
+           if (startline == 'n') throughline <- rvenv$pc + 1
            startline <- rvenv$pc
         }
         lcode <- length(rvenv$currcode)
@@ -92,10 +92,11 @@ runb <- function(
 
 # single-step, as with debuggers
 nxt <- function() runb('n')
-# resume execution from the current line
+
+# resume execution from the current line; execution will finish the
+# remaining lines, unless throughline is specified
 go <- function(throughline=length(rvenv$currcode))
-         runb(startline=rvenv$pc,
-            throughline=length(rvenv$currcode))
+         runb(startline=rvenv$pc,throughline)
 
 # list current code
 lcc <- function() {
@@ -156,6 +157,26 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
                        'could be of little practical interest'))
    }
    tout
+}
+
+# finds Bonferroni CIs and p-values; obj is any R object to which coef()
+# and vcov() can be applied
+coef.rv <- function(obj,alpha=0.05) {
+   cfs <- coef(obj)
+   lc <- length(cfs)
+   alpha <- alpha / lc
+   vc <- vcov(obj)
+   ses <- sqrt(diag(vc))
+   zcut <- qnorm(1-alpha/2)
+   for (i in 1:lc) {
+      rad <- zcut*ses[i]
+      cfi <- cfs[i]
+      ci1 <- cfi - rad 
+      ci2 <- cfi + rad 
+      tmp <- pnorm(abs(cfi) / ses[i])
+      pval <- (2 * (1 - tmp)) * lc 
+      catn(names(cfs[i]),ci1,ci2,pval)
+   }
 }
 
 
