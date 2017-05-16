@@ -43,6 +43,8 @@ revisitAddin <- function() {
             status <- paste(filename, "loaded")
             currcode <- paste(rvenv$currcode, collapse = '\n')
             updateAceEditor(session, "ace", value = currcode)
+            updateNumericInput(session, "runstart", value = 1)
+            updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
          } else {
             status <- paste("***** ERROR:", filename, "not found")
          }
@@ -91,6 +93,13 @@ revisitAddin <- function() {
          else{
             print(paste("RUN FROM", runstart, "THROUGH", runthru))
             runb(startline = runstart, throughline = runthru)
+            if (runthru < length(rvenv$currcode)){
+               updateNumericInput(session, "runstart", value = runthru + 1)
+               updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+            } else {
+               updateNumericInput(session, "runstart", value = 1)
+               updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+            }
          }
       })
 
