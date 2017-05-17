@@ -13,7 +13,7 @@
 # initialize rvisit; the R environment rvenv will contain the relevant
 # information about the currently-in-use branch
 
-rvinit <- function() {
+rvinit <- function(smalleffect=0.05) {
    rvenv <<- new.env()
    rvenv$currb <<- NULL
    rvenv$currbasenm <<- NULL
@@ -152,7 +152,7 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    tout$p.value <- tout$p.value * bonf
    if (tout$p.value < alpha) {
       ## catn('H0 rejected')
-      if (abs(muhat1 - muhat2)/ abs(muhat1) < 0.05)
+      if (abs(muhat1 - muhat2)/ abs(muhat1) < $rvenv$smalleffect)
          warning(paste('small p-value but effect size',
                        'could be of little practical interest'))
    }
