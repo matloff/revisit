@@ -152,7 +152,7 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    tout$p.value <- tout$p.value * bonf
    if (tout$p.value < alpha) {
       ## catn('H0 rejected')
-      if (abs(muhat1 - muhat2)/ abs(muhat1) < $rvenv$smalleffect)
+      if (abs(muhat1 - muhat2)/ abs(muhat1) < rvenv$smalleffect)
          warning(paste('small p-value but effect size',
                        'could be of little practical interest'))
    }
@@ -171,10 +171,10 @@ coef.rv <- function(obj,alpha=0.05) {
    for (i in 1:lc) {
       rad <- zcut*ses[i]
       cfi <- cfs[i]
-      ci1 <- cfi - rad 
-      ci2 <- cfi + rad 
+      ci1 <- cfi - rad
+      ci2 <- cfi + rad
       tmp <- pnorm(abs(cfi) / ses[i])
-      pval <- (2 * (1 - tmp)) * lc 
+      pval <- (2 * (1 - tmp)) * lc
       catn(names(cfs[i]),ci1,ci2,pval)
    }
 }
