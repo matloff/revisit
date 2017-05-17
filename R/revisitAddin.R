@@ -3,10 +3,15 @@ revisitAddin <- function() {
    library(shiny)
    library(miniUI)
    library(shinyAce)
+   library(shinythemes)
    rvinit()
+   rv <- reactiveValues()
+   rv$statusmsg <- ""
 
    ui <- miniPage(
 
+      #shinythemes::themeSelector(),
+      theme = shinytheme("united"),
       gadgetTitleBar("Revisit"),
       miniContentPanel(
          stableColumnLayout(
@@ -22,7 +27,7 @@ revisitAddin <- function() {
          miniButtonBlock(
             actionButton("loadb", "Load Code"),
             actionButton("nxt",   "Next"),
-            actionButton("runb",  "Continue"),
+            actionButton("runb",  "Run/Continue"),
             actionButton("saveb", "Save Code")
          ),
          htmlOutput("message"),
@@ -49,21 +54,25 @@ revisitAddin <- function() {
          } else {
             status <- paste("***** ERROR:", filename, "not found")
          }
+         rv$statusmsg <<- status
          print(status)
+         return(status)
       }
 
       reactiveLoad <- reactive({
          file <- isolate(input$file)
          loadBn <- input$loadBn
-         status <- "OK"
-
-         status <- doLoad(file, loadBn)
-         return(list(loaded = rvenv$currcode, status = status))
+         doLoad(file, loadBn)
+         return(list(loaded = rvenv$currcode))
       })
 
-      output$message <- renderUI({
+      output$message <- renderText({
          spec <- reactiveLoad()
-         return(div(spec$status))
+         if (substring(rv$statusmsg, 1, 1) == "*"){
+            paste0("<b><font color=\"red\">", rv$statusmsg, "</font></b>")
+         } else {
+            paste0("<b>", rv$statusmsg, "</b>")
+         }
       })
 
       output$ace <- renderCode({
@@ -75,7 +84,7 @@ revisitAddin <- function() {
       observeEvent(input$loadb, {
          file <- input$file
          loadBn <- input$loadBn
-         doLoad(file, loadBn)
+         status <- doLoad(file, loadBn)
       })
 
       observeEvent(input$nxt, {
