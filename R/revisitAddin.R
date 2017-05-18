@@ -60,6 +60,13 @@ revisitAddin <- function() {
             updateAceEditor(session, "ace", value = currcode)
             updateNumericInput(session, "runstart", value = 1)
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+            nextBn <- loadBn + 1
+            filename <- paste0(file, ".", as.character(nextBn), ".R")
+            while (file.exists(filename)){
+               nextBn <- nextBn + 1
+               filename <- paste0(file, ".", as.character(nextBn), ".R")
+            }
+            updateNumericInput(session, "saveBn",  value = nextBn)
          } else {
             if (!startOfSession){
                if (loadBn == 0){
