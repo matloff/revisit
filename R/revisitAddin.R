@@ -37,6 +37,8 @@ revisitAddin <- function() {
 
    server <- function(input, output, session) {
 
+      startOfSession <- TRUE
+
       doLoad <- function(file, loadBn){
          if (loadBn < 0){
             filename <- paste0(file, ".R")
@@ -52,11 +54,15 @@ revisitAddin <- function() {
             updateNumericInput(session, "runstart", value = 1)
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
          } else {
-            status <- paste("***** ERROR:", filename, "not found")
+            if (!startOfSession){
+               status <- paste("***** ERROR:", filename, "not found")
+            } else {
+               startOfSession <<- FALSE
+               status <- ""
+            }
          }
          rv$statusmsg <<- status
          print(status)
-         return(status)
       }
 
       reactiveLoad <- reactive({
@@ -84,7 +90,7 @@ revisitAddin <- function() {
       observeEvent(input$loadb, {
          file <- input$file
          loadBn <- input$loadBn
-         status <- doLoad(file, loadBn)
+         doLoad(file, loadBn)
       })
 
       observeEvent(input$nxt, {
