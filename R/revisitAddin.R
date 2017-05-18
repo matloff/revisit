@@ -197,13 +197,14 @@ revisitAddin <- function() {
       })
 
       observeEvent(input$done, {
-         spec <- reactiveLoad()
-         transformed <- paste(spec$loaded, collapse = "\n")
          invisible(stopApp())
       })
 
-   }
+      observeEvent(input$cancel, {
+         stopApp(NULL)
+      })
+    }
 
    viewer <- dialogViewer("Revisit", width = 1000, height = 800)
-   runGadget(ui, server, viewer = viewer)
+   runGadget(ui, server, viewer = viewer, stopOnCancel = FALSE)
 }
