@@ -42,7 +42,14 @@ revisitAddin <- function() {
       doLoad <- function(file, loadBn){
          if (loadBn < 0){
             filename <- paste0(file, ".R")
-            makebranch0(filename)
+         } else if (loadBn == 0){
+            filename <- paste0(file, ".0.R")
+            if (!file.exists(filename)){
+               filename0 <- paste0(file, ".R")
+               if (file.exists(filename0)){
+                  makebranch0(filename0)
+               }
+            }
          } else {
             filename <- paste0(file, ".", as.character(loadBn), ".R")
          }
@@ -55,7 +62,11 @@ revisitAddin <- function() {
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
          } else {
             if (!startOfSession){
-               status <- paste("***** ERROR:", filename, "not found")
+               if (loadBn == 0){
+                  status <- paste("***** ERROR:", filename, "and", filename0, "not found")
+               } else {
+                  status <- paste("***** ERROR:", filename, "not found")
+               }
             } else {
                startOfSession <<- FALSE
                status <- ""
