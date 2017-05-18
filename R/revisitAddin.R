@@ -31,7 +31,7 @@ revisitAddin <- function() {
             actionButton("saveb", "Save Code")
          ),
          htmlOutput("message"),
-         aceEditor("ace", value = "...")
+         aceEditor("ace", value = "...",mode='r')
       )
    )
 

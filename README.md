@@ -6,7 +6,13 @@ In recent years, scientists, especially those who run academic journals
 or fund research projects, have been greatly concerned about lack of
 *reproducibility* of research.  A study performed by one research group,
 with certain findings, is then attempted by another group, with
-different findings.  [As reported for
+different findings.  
+
+In addition, there is a related problem, lack of *transparency*. In
+reading a paper reporting on certain research, it is often not clear
+exactly what procedures the authors used.
+
+[As reported for
 instance](http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970)
 in the top journal *Nature*, the problem is considered by many to have
 reached crisis stage.
@@ -27,7 +33,8 @@ Much of the concern is statistical in nature. As noted in the above
 
 ### The **revisit** package 
 
-The package is aimed to help remedy such problems.  It has two main functions:
+The package is aimed to help remedy such problems with data/statistics.
+It has two main aspects:
 
 *  It makes it easier and more convenient for the user to explore the
    effects of various changes that might be made on the original
@@ -38,29 +45,34 @@ The package is aimed to help remedy such problems.  It has two main functions:
    advice and warnings, in light of concerns that too many "false
    positives" are being reported in published research.  For example, the
    package may emit a message like, "Warning: small p-value does not seem
-   to correspond to an effect of practical importance."  Procedures for
-   multiple inference, are also available.
+   to correspond to an effect of practical importance," and/or suggest
+   that the user employ m multiple inference procedures.
 
 More specifically, suppose the user here is a scientist who is
 revisiting the original work after publication:  
 
 *  The user thinks of questions involving alternate scenarios.  What,
-   for instance, would occur if one would more aggressively weed out
-   outliers?  How would the results change?  What if different predictor
-   variables were used, or squared and interaction terms added?  How
-   valid are the models and assumptions?  What about entirely different
-   statistical approaches?
+   for instance, would occur if one were to more aggressively weed out
+   outliers, or use outlier-resistant methods?  How would the results 
+   change?  What if different predictor variables were used, or 
+   squared and interaction terms added?  How valid are the models and 
+   assumptions?  What about entirely different statistical approaches?
 
 *  In exploring such questions, this user will modify the original
    author's code, producing at least one new version of the code, and
-   likely several versions.  The **revisit** package facilitates this,
-   making easier for the user to make changes and record them into
-   different *branches* of the code.
+   likely several versions.  If for instance the user is considering
+   making two changes to the original authors' analysis, one to possibly
+   use outlier-resistant methods and another to use multiple-inference
+   procedures, that potentially sets up four different versions.
+   The **revisit** package facilitates this, making easier for the 
+   user to make changes, try them out and record them into different 
+   *branches* of the code.  In other words, the package facilitates
+   exploration of alternative analyses.
 
-*  In addition, this user may wish to share the results of her 
-   exploration of alternate analyses of the data with other scientists.  
-   Since each of her branches is conveniently packaged into a separate
-   file, she then simply sends the files to the other researchers.  The
+*  In addition, this user may wish to share the results of her exploration 
+   of alternate analyses of the data with other scientists.  Since 
+   each of her branches is conveniently packaged into a separate file, 
+   she then simply sends the files to the other researchers.  The
    package allows the latter to easily "replay" the analyses, and they
    in turn may use the package to produce further branches.
 
@@ -76,9 +88,10 @@ branch will have a brief, user-supplied description.
 
 ### Language and Interface
 
-The software is written in R, and *in its current prototype form*, it runs
-from the R command line.  Future versions will use a GUI, say using
-RStudio *add-ons*.
+The software is written in R, and is currently *in prototype form*. 
+
+Both text-based and graphical (GUI) interfaces are available.
+The GUI uses RStudio *add-ins*.
 
 ### Main functions
 
