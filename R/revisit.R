@@ -45,10 +45,15 @@ saveb <- function(midfix,desc) {
    #
    # find end of description
    g <- grep('# RV history end',code)
-   endline <- g[1]
-   toplines <- code[1:(endline-1)]
-   toplines <- c(toplines,paste('#',desc))
-   code <- c(toplines,code[endline:length(code)])
+   if (length(g) > 0){
+      endline <- g[1]
+      toplines <- code[1:(endline-1)]
+      toplines <- c(toplines,paste('#',desc))
+      code <- c(toplines,code[endline:length(code)])
+   } else {
+      toplines <- c('# RV history start','# WARNING: RV history missing and recreated',paste('#',desc),'# RV history end')
+      code <- c(toplines,code)
+   }
 
    branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
    # should add code asking user if OK to overwrite
