@@ -38,6 +38,7 @@ revisitAddin <- function() {
    server <- function(input, output, session) {
 
       startOfSession <- TRUE
+      loadBn_succ <- NULL
 
       doLoad <- function(file, loadBn){
          if (loadBn < 0){
@@ -55,6 +56,7 @@ revisitAddin <- function() {
          }
          if (file.exists(filename)){
             loadb(filename)
+            loadBn_succ <<- loadBn
             status <- paste(filename, "loaded")
             currcode <- paste(rvenv$currcode, collapse = '\n')
             updateAceEditor(session, "ace", value = currcode)
@@ -151,6 +153,13 @@ revisitAddin <- function() {
       observeEvent(input$saveb, {
          file <- input$file
          saveBn <- input$saveBn
+         if (is.null(loadBn_succ)){
+            showModal(modalDialog(
+               title = "SAVE ERROR",
+               "Cannot save because no branch has yet been loaded."
+            ))
+            return()
+         }
          if (saveBn <= 0){
             showModal(modalDialog(
                title = "SAVE ERROR",
