@@ -127,7 +127,8 @@ edt <- function(listresult=FALSE) {
       writeLines(code,'tmprv.R')
       tmprv <- edit(file='tmprv.R')  # tmprv just a dummy to prevent execution
       rvenv$currcode <<- readLines('tmprv.R')
-      if (listresult) lcc()
+      # make sure not to return the edited code itself, as it would be executed
+      if (listresult) lcc() else return(0)
 }
 
 # do one line of code from a branch
@@ -155,7 +156,7 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
       muhat1 <- tout$estimate[1]
       muhat2 <- tout$estimate[2]
       tout$p.value <- tout$p.value * bonf
-      if (tout$p.value < alpha) {
+      if (tout$p.value < alpha && muhat1 != 0) {
          if (abs(muhat1 - muhat2)/ abs(muhat1) < rvenv$smalleffect)
          warning(paste('small p-value but effect size',
                        'could be of little practical interest'))
