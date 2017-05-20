@@ -115,13 +115,20 @@ revisitAddin <- function() {
 
       observeEvent(input$nxt, {
          rvenv$pc <- input$runstart
-         nxt()
-         if (input$runstart < length(rvenv$currcode)){
-            updateNumericInput(session, "runstart", value = input$runstart + 1)
+         rc <- try(
+            nxt()
+         )
+         if (class(rc) == 'try-error'){
+            rv$statusmsg <- "***** RUN ERROR: see error message in console"
          } else {
-            updateNumericInput(session, "runstart", value = 1)
+            rv$statusmsg <- paste("RUN", input$runstart)
+            if (input$runstart < length(rvenv$currcode)){
+               updateNumericInput(session, "runstart", value = input$runstart + 1)
+            } else {
+               updateNumericInput(session, "runstart", value = 1)
+            }
+            updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
          }
-         updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
       })
 
       observeEvent(input$runb, {
@@ -135,17 +142,32 @@ revisitAddin <- function() {
          }
          if (runthru < 1){
             print(paste("RUN FROM", runstart))
-            runb(startline = runstart)
+            rc <- try(
+               runb(startline = runstart)
+            )
+            if (class(rc) == 'try-error'){
+               rv$statusmsg <- "***** RUN ERROR: see error message in console"
+            } else {
+               rv$statusmsg <- paste("RUN FROM", runstart)
+            }
+
          }
          else{
             print(paste("RUN FROM", runstart, "THROUGH", runthru))
-            runb(startline = runstart, throughline = runthru)
-            if (runthru < length(rvenv$currcode)){
-               updateNumericInput(session, "runstart", value = runthru + 1)
-               updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+            rc <- try(
+               runb(startline = runstart, throughline = runthru)
+            )
+            if (class(rc) == 'try-error'){
+               rv$statusmsg <- "***** RUN ERROR: see error message in console"
             } else {
-               updateNumericInput(session, "runstart", value = 1)
-               updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+               rv$statusmsg <- paste("RUN FROM", runstart, "THROUGH", runthru)
+               if (runthru < length(rvenv$currcode)){
+                  updateNumericInput(session, "runstart", value = runthru + 1)
+                  updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+               } else {
+                  updateNumericInput(session, "runstart", value = 1)
+                  updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
+               }
             }
          }
       })
