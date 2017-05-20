@@ -208,6 +208,7 @@ revisitAddin <- function() {
          rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          saveb(input$saveBn, input$desc)
          print(paste("SAVE", input$saveBn, "|", input$desc))
+         updateNumericInput(session, "loadBn",  value = input$saveBn)
       })
 
       yesNoModal <- function(msg="Continue?", yesAction="yes", yesLabel="Yes", noLabel="No"){
@@ -224,6 +225,7 @@ revisitAddin <- function() {
          rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          saveb(input$saveBn, input$desc)
          print(paste("OVERWROTE", input$saveBn, "|", input$desc))
+         updateNumericInput(session, "loadBn",  value = input$saveBn)
          removeModal()
       })
 
