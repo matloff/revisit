@@ -114,6 +114,7 @@ revisitAddin <- function() {
       })
 
       observeEvent(input$nxt, {
+         rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          rvenv$pc <- input$runstart
          rc <- try(
             nxt()
@@ -132,6 +133,7 @@ revisitAddin <- function() {
       })
 
       observeEvent(input$runb, {
+         rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          runstart <- input$runstart
          runthru  <- input$runthru
          if (runstart < 1){
@@ -203,8 +205,7 @@ revisitAddin <- function() {
             showModal(yesNoModal(msg = question, yesAction="ok", yesLabel="Yes", noLabel="No"))
             return()
          }
-         currcode <- unlist(strsplit(input$ace, "\n"))
-         rvenv$currcode <- currcode
+         rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          saveb(input$saveBn, input$desc)
          print(paste("SAVE", input$saveBn, "|", input$desc))
       })
@@ -220,8 +221,7 @@ revisitAddin <- function() {
       }
 
       observeEvent(input$ok, {
-         currcode <- unlist(strsplit(input$ace, "\n"))
-         rvenv$currcode <- currcode
+         rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
          saveb(input$saveBn, input$desc)
          print(paste("OVERWROTE", input$saveBn, "|", input$desc))
          removeModal()
