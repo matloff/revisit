@@ -38,8 +38,8 @@ It has two main aspects:
 
 *  It makes it easier and more convenient for the user to explore the
    effects of various changes that might be made on the original
-   author's analyses.  The package facilitates changing, replaying and
-   recording various versions of the analyses.  
+   author's analyses.  The package facilitates replaying, changing and
+   recording various new versions of the analyses.  
 
 *  The package spots troublesome statistical situations, and issues
    advice and warnings, in light of concerns that too many "false
@@ -86,12 +86,32 @@ given names by the users, say **x.1.R**, **x.2.R** and so on.  Each
 branch will have a brief, user-supplied description.
 
 
-### Language and Interface
+### Language and interface
 
-The software is written in R, and is currently *in prototype form*. 
+The software is written in R, and is currently *in prototype form*. The
+author of the original research is assumed to do all data/statistical
+analysis in R.
 
 Both text-based and graphical (GUI) interfaces are available.
 The GUI uses RStudio *add-ins*.
+
+### Overview of the package
+
+Here is a typically screenshot of GUI use of the package:
+
+![alt text](Screenshot.png)
+
+RStudio is running in the background, and the foreground window shows
+the **revisit** add-in running.  The original author's code is shown in
+the editor portion in the bottom half of the window.  One could then,
+for instance, running that code through line 8, then explore running R
+functions other than the author's. If that produces interesting results,
+the user can save the changed version of the code in a new branch.  
+All output will be displayed in the R console portion of the background
+window.
+
+In the remainder of this README, we switch to the text-based version of
+the package.
 
 ### Main functions
 
@@ -126,11 +146,6 @@ Many more of these are planned.
 **edt():**  Make a change to the current code.  Primitive for now.
 
 **lcc():**  Display the current code.
-
-### GUI version
-
-The current text-based version is just a prototype. A GUI version, much
-more convenient to use, is planned.
 
 
 ### First example
