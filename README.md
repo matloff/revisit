@@ -44,9 +44,22 @@ It has two main aspects:
 *  The package spots troublesome statistical situations, and issues
    advice and warnings, in light of concerns that too many "false
    positives" are being reported in published research.  For example, the
-   package may emit a message like, "Warning: small p-value does not seem
-   to correspond to an effect of practical importance," and/or suggest
-   that the user employ m multiple inference procedures.
+   package may:
+
+       - Point out that a p-value is small and may not to correspond to an
+       effect of practical importance." 
+
+       - Point out that a "nonsignificant" value corresponds to a
+       confidence interval containing both large positive and large
+       negative values, so n is too small for a "no significant
+       difference finding.
+       
+       - Suggest that the user employ a multiple inference procedure.
+
+       - Detect the presence of highly influential outliers, and suggest
+         that a robust method, e.g. quantile regression be used.
+
+       - Etc.
 
 More specifically, suppose the user here is a scientist who is
 revisiting the original work after publication:  
