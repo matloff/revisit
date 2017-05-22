@@ -17,10 +17,10 @@ revisitAddin <- function() {
          stableColumnLayout(
             textInput("file", "Filename (w/o Branch# or .R)", value = "inst/examples/pima"),
             numericInput("runstart", "Run Start Line", value = 1),
-            numericInput("saveBn", "Save Branch#", value = 1)
+            numericInput("saveBn", "Save Branch #", value = 1)
          ),
          stableColumnLayout(
-            numericInput("loadBn", "Load Branch#", value = 0),
+            numericInput("loadBn", "Load Branch #", value = 0),
             numericInput("runthru", "Run Through Line", value = -1),
             textInput("desc", "Description")
          ),
@@ -126,7 +126,7 @@ revisitAddin <- function() {
             if (input$runstart < length(rvenv$currcode)){
                updateNumericInput(session, "runstart", value = input$runstart + 1)
             } else {
-               updateNumericInput(session, "runstart", value = 1)
+               updateNumericInput(session, "runstart", value = length(rvenv$currcode)) # stay on last line
             }
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
          }
@@ -167,7 +167,7 @@ revisitAddin <- function() {
                   updateNumericInput(session, "runstart", value = runthru + 1)
                   updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
                } else {
-                  updateNumericInput(session, "runstart", value = 1)
+                  updateNumericInput(session, "runstart", value = length(rvenv$currcode)) # stay on last line
                   updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
                }
             }
