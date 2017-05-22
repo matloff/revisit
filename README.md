@@ -14,7 +14,7 @@ exactly what procedures the authors used.
 
 [As reported for
 instance](http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970)
-in the top journal *Nature*, the problem is considered by many to have
+in the journal *Nature*, the problem is considered by many to have
 reached crisis stage.
 
 Much of the concern is statistical in nature. As noted in the above
@@ -110,21 +110,79 @@ The GUI uses RStudio *add-ins*.
 
 ### Overview of the package
 
-Here is a typically screenshot of GUI use of the package:
+Let's get started, using the GUI.  (See installation instructions
+below.)
 
-![alt text](Screenshot.png)
+We start up RStudio (either by icon or by typing 'rstudio' into a
+command window), then load the 'revisit' library by typing
+'library(revisit)' into the RStudio R console, then (near the top of the
+screen) select Addins | Revisit.
+
+In this example, we have copied the package file **examples/pima.R** to
+the file **pima.R** in the directory/folder from which we started
+RStudio.  We write 'pima' into the Filename box, and click Load Code.
+
+As an illustration, suppose this code was written by the
+author of the study.  The dataset is that of the famous Pima diabetes
+study at the UCI data repository.
+
+The screen now looks like this:
+
+![alt text](Screen0.png)
 
 RStudio is running in the background, and the foreground window shows
 the **revisit** add-in running.  The original author's code is shown in
-the editor portion in the bottom half of the window.  One could then,
-for instance, running that code through line 8, then explore running R
-functions other than the author's. If that produces interesting results,
-the user can save the changed version of the code in a new branch.  
-All output will be displayed in the R console portion of the background
-window.
+the editor portion in the bottom half of the window.  One can edit the
+code, re-run in full or in part, save/load branches and so on.  All output
+will be displayed in the R console portion of the background window.
 
-In the remainder of this README, we switch to the text-based version of
-the package.
+By the way, **revisit** has automatically created branch 0, identical to
+the original author code, but with an identifying comment line.
+
+To replay the author's code, we click Run/Continue .  The new screen is:
+
+![alt text](Screen1.png)
+
+The results of the 8 confidence interval computations is shown in the R
+console.  (There are 8 variables other than Diab, so the intervals
+concern diabetics versus nondiabetics.)
+
+We as the user may now think, "Hmm, one really should use a multiple
+inference procedure here."  So we change line 12 to use **revisit** own
+function, employing the Bonferroni method with number of comparisons
+equal to 8.W
+
+We then re-run.  *There is no need to start from the beginning*, so we
+change the Run Start Line box to 11 and click Run/Continue, yielding:
+
+![alt text](Screen2.png)
+
+Ah, the confidence intervals did indeed get wider, as expected, now in
+line with statistical fairness.  (Note that the Run Start Line box then
+reverted to 1.)
+
+Say we believe this branch is worth saving.  The Save Branch# box tells
+us the next branch will be named branch 1 (we could change that), which
+we now create by clicking Save Code.
+
+We should also check whether the author did a good job of data cleaning.
+As a crude measure, we can find the range of each of the variables, say
+by running the code
+
+``` r
+print(apply(pima[,1:8],2,range))
+```
+
+We could simply run this code directly if we were in the text-based
+version of **revisit**, since there we would have direct control of the
+R console, which is not the case in the GUI version. So instead, we add
+it temporarily at the end of code editor, as line 15. We change the Run
+Start Line box to 15, and hit Run/Continue:
+
+![alt text](Screen3.png)
+
+Those 0s are troubling. How can variables such as Glucose and BMI be 0?
+So we add code to remove cases with 0s.
 
 ### Main functions
 
