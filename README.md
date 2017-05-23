@@ -33,7 +33,8 @@ Much of the concern is statistical in nature. As noted in the above
 
 ### The **revisit** package 
 
-The package is aimed to help remedy such problems with data/statistics.
+The package is, made available as open source, is
+aimed to help remedy such problems with data/statistics.
 In one sense, it might be termed a *statistical audit*, allowing users
 to check the statistical analyses of the original authors of a study,
 but it really is much more.  In our referring to "users" below, keep in
@@ -53,37 +54,51 @@ mind that this could mean various kinds of people, such as:
   package will facilitate these scientists also trying various
   alternative analyses.
 
+The package has two main aspects:
 
+<UL>
 
-It has two main aspects:
+<li> It makes it easier and more convenient for the user to explore the
+effects of various changes that might be made to the analyses.
+The package facilitates replaying, changing and recording various new
+versions of the analyses. 
+</li> </p> 
 
-*  It makes it easier and more convenient for the user to explore the
-   effects of various changes that might be made on the original
-   author's analyses.  The package facilitates replaying, changing and
-   recording various new versions of the analyses.  
+<li>  The package spots troublesome statistical situations, and issues
+advice and warnings, in light of concerns that too many "false
+positives" are being reported in published research.  For example, the
+package may:
+</p>
 
-*  The package spots troublesome statistical situations, and issues
-   advice and warnings, in light of concerns that too many "false
-   positives" are being reported in published research.  For example, the
-   package may:
+   <UL>
 
-       - Point out that a p-value is small and may not to correspond to an
+      <li>  Point out that a p-value is small and may not to correspond to an
        effect of practical importance." 
+      </li> </p> 
 
-       - Point out that a "nonsignificant" value corresponds to a
+       <li> Point out that a "nonsignificant" value corresponds to a
        confidence interval containing both large positive and large
        negative values, so n is too small for a "no significant
        difference finding.
+      </li> </p> 
        
-       - Suggest that the user employ a multiple inference procedure.
+      <li> Suggest that the user employ a multiple inference procedure
+      (provided in the package).
+      </li> </p> 
 
-       - Detect the presence of highly influential outliers, and suggest
-         that a robust method, e.g. quantile regression be used.
+      <li>  Detect the presence of highly influential outliers, and suggest
+        that a robust method, e.g. quantile regression be used.
+       </li> </p> 
 
-       - Etc.
+      <li> Etc.
+      </li> </p> 
 
-More specifically, suppose the user here is a scientist who is
-revisiting the original work after publication:  
+</UL>
+
+</UL>
+
+More specifically, the user might go through the following thought
+processes, and take action using the facilities in the package:
 
 *  The user thinks of questions involving alternate scenarios.  What,
    for instance, would occur if one were to more aggressively weed out
@@ -92,28 +107,28 @@ revisiting the original work after publication:
    squared and interaction terms added?  How valid are the models and 
    assumptions?  What about entirely different statistical approaches?
 
-*  In exploring such questions, this user will modify the original
-   author's code, producing at least one new version of the code, and
-   likely several versions.  If for instance the user is considering
-   making two changes to the original authors' analysis, one to possibly
+*  In exploring such questions, the user will modify the original
+   code, producing at least one new version of the code, and
+   likely several versions.  Say for instance the user is considering
+   making two changes to the original analysis, one to possibly
    use outlier-resistant methods and another to use multiple-inference
-   procedures, that potentially sets up four different versions.
+   procedures. That potentially sets up four different versions.
    The **revisit** package facilitates this, making easier for the 
    user to make changes, try them out and record them into different 
    *branches* of the code.  In other words, the package facilitates
    exploration of alternative analyses.
 
-*  In addition, this user may wish to share the results of her exploration 
-   of alternate analyses of the data with other scientists.  Since 
+*  In addition, the user may wish to share the results of her exploration 
+   of alternate analyses of the data with others.  Since 
    each of her branches is conveniently packaged into a separate file, 
    she then simply sends the files to the other researchers.  The
    package allows the latter to easily "replay" the analyses, and they
    in turn may use the package to produce further branches.
 
-*On the other hand, the package is not aimed to "automate" statistical
-analysis.*  The user decides which analyses to try, with the core
-package consisting of tools that facilitate exploring, recording and
-packaging alternative analyses.
+* *Note, though, that the package is not aimed to "automate" statistical
+analysis.*  The user decides which analyses to try, with the 
+package consisting of tools to help by making it easy to explore, record and
+package alternative analyses.
 
 If the original data file is, say, **x.R**, then the branches will be
 given names by the users, say **x.1.R**, **x.2.R** and so on.  Each
@@ -127,7 +142,8 @@ author of the original research is assumed to do all data/statistical
 analysis in R.
 
 Both text-based and graphical (GUI) interfaces are available.
-The GUI uses RStudio *add-ins*.
+The GUI uses RStudio *add-ins*.  The text-based version provides more
+flexiblity, while the GUI provides convenience.
 
 ### Overview of the package
 
