@@ -159,8 +159,11 @@ command window), then load the 'revisit' library by typing
 screen) select Addins | Revisit.
 
 In this example, we have copied the package file **examples/pima.R** to
-the file **pima.R** in the directory/folder from which we started
-RStudio.  We write 'pima' into the Filename box, and click Load Code.
+the file **pima.R** in the subdirectory **code** of the R working directory.
+We have also copied the package file **data/pima.txt** to the file
+**pima.txt** in the subdirectory **data** of the R working directory.
+The R working directory can be determined by typing 'getwd()' into the
+console.  We then type 'code/pima' into the Filename box, and click Load Code.
 
 As an illustration, suppose this code was written by the
 author of the study.  The dataset is that of the famous Pima diabetes
@@ -176,8 +179,10 @@ the editor portion in the bottom half of the window.  One can edit the
 code, re-run in full or in part, save/load branches and so on.  All output
 will be displayed in the R console portion of the background window.
 
-By the way, **revisit** has automatically created branch 0, identical to
-the original author code, but with an identifying comment line.
+By the way, if Load Branch # is 0 and the branch 0 file cannot be found,
+revisit will attempt to load the original author code.  If that file is
+found, revisit will automatically create the branch 0 file, identical
+to the original author code, but with an identifying comment line.
 
 To replay the author's code, we click Run/Continue .  The new screen is:
 
@@ -190,20 +195,29 @@ concern diabetics versus nondiabetics.)
 We as the user may now think, "Hmm, one really should use a multiple
 inference procedure here."  So we change line 12 to use **revisit** own
 function, employing the Bonferroni method with number of comparisons
-equal to 8.W
+equal to 8.
 
-We then re-run.  *There is no need to start from the beginning*, so we
-change the Run Start Line box to 11 and click Run/Continue, yielding:
+We then re-run.  If we fail to reset the Run Start Line and Run Through Line
+first, however, we will get the error shown in red in the console below.
+This is because revisit had already run through the end of the code.
+*There is no need to start from the beginning*, so we change the Run Start
+Line box to 11, reset the Run Through Line box to the last line (if necessary)
+and click Run/Continue, yielding:
 
 ![alt text](Screen2.png)
 
 Ah, the confidence intervals did indeed get wider, as expected, now in
-line with statistical fairness.  (Note that the Run Start Line box then
-reverted to 1.)
+line with statistical fairness.  (Note that the Run Start Line box has
+again moved one past the last line of code.)
 
-Say we believe this branch is worth saving.  The Save Branch# box tells
-us the next branch will be named branch 1 (we could change that), which
-we now create by clicking Save Code.
+Say we believe this branch is worth saving.  The Save Branch # box tells
+us the next branch will be named branch 1 (we could change that).  Before
+saving, we are required to type in a Description of the change.  If we now
+click Save Code, the new branch will be reloaded with the description now
+visible in the last line of the revisit history at the top of the file
+as shown below:
+
+![alt text](Screen3.png)
 
 We should also check whether the author did a good job of data cleaning.
 As a crude measure, we can find the range of each of the variables, say
@@ -217,9 +231,9 @@ We could simply run this code directly if we were in the text-based
 version of **revisit**, since there we would have direct control of the
 R console, which is not the case in the GUI version. So instead, we add
 it temporarily at the end of code editor, as line 15. We change the Run
-Start Line box to 15, and hit Run/Continue:
+Start Line box to 16, and hit Run/Continue:
 
-![alt text](Screen3.png)
+![alt text](Screen4.png)
 
 Those 0s are troubling. How can variables such as Glucose and BMI be 0?
 So we add code to remove cases with 0s.
