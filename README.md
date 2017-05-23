@@ -199,7 +199,7 @@ equal to 8.
 
 We then re-run.  If we fail to reset the Run Start Line and Run Through Line
 first, however, we will get the error shown in red in the console below.
-This is because revisit had already run through the end of the code.
+This is because **revisit** had already run through the end of the code.
 *There is no need to start from the beginning*, so we change the Run Start
 Line box to 11, reset the Run Through Line box to the last line (if necessary)
 and click Run/Continue, yielding:
@@ -277,4 +277,105 @@ thus invoking a text editor of the user's choice (or default).
 Here we analyze the data set **ols262**.  (Data and code courtesy of M.
 Zavodny, Stata translated to R by R. Davis.)
 
-The data involve a study of the H-1B work visa
+The data involve a study of the impact of H-1B, [a controversial work
+visa
+program](http://www.cbsnews.com/news/are-u-s-jobs-vulnerable-to-workers-with-h-1b-visas/).
+The author found that for every 100 visa workers, about 262 new jobs are
+created.  Our concern here will not be on the economic model used, but
+on other issues.  
+
+The data consist of employment figures for each of the 50 states, in
+each of the years 2000-2010.
+
+We'll use the text version of **revisit** here.  Assume that we've
+copied **examples/ols262.R** to the current directory.
+
+``` r
+> library(revisit)
+> rvinit()  # required initialization
+> loadb('ols262.0.R')  # load the branch
+> lcc()  # list the code
+1 # RV history start 
+2 # original code 
+3 # RV history end 
+4 # the file public.dta and the Stata code on which this R code is based 
+5 # is courtesy of M. Zavodny 
+6  
+7 data(zav) # zav.txt is .txt version of Zav. file public.dta 
+8 zav = zav[zav$year < 2008,] # 2000-2007 (first year in zav.txt is 2000) 
+9  
+10 ##### traditional employment rate and immigrant share model ##### 
+11  
+12 # employment rate for natives = employed natives divided by total native 
+13 # population 
+14 zav$emprate_native   <- zav$emp_native / zav$pop_native * 100 
+15  
+16 # immigrant stem workers with advanced degrees from U.S. universities,  
+17 # share of total workers employed 
+18  
+19 zav$immshare_emp_stem_e_grad   <- zav$emp_edus_stem_grad / zav$emp_total * 100 
+28 zav$lnimmshare_emp_stem_n_grad <- log(zav$immshare_emp_stem_n_grad) 
+29  
+30 # year in sample (in this case, 2000-2007), converted to factors for 
+31 # use as an instrumental variable 
+32 zav$fyear  <- as.factor(zav$year) 
+33  
+34 # 50 states plus Washington D.C., converted to factors for use as an 
+35 # instrumental variable 
+36 zav$fstate <- as.factor(zav$statefip) 
+37  
+38 # need to normalize population weights so that each year has same weight; 
+39 # otherwise, too much weight assigned to later years 
+40 # do for total native population (age 16-64) 
+41 zav$sum_pop_native <- with(zav, ave(pop_native, year, FUN=sum)) 
+42 zav$weight_native <- zav$pop_native / zav$sum_pop_native 
+43  
+44 # remove non-positive values so that their logs are valid values (not 
+45 # NaN or infinite, plus or minus) 
+46 kk <- zav[zav$emp_edus_stem_grad > 0 & zav$emp_nedus_stem_grad > 0,] 
+47  
+48 # do regression with two independent variables, two instrumental 
+49 # variables, and weights to treat years equally 
+\50  
+51 mm <- (with(kk,  
+52    lm(lnemprate_native ~  
+53       lnimmshare_emp_stem_e_grad +  
+54       lnimmshare_emp_stem_n_grad +  
+55       fyear +  
+56       fstate,  
+57       weights=weight_native))) 
+58  
+59 # extract slope and p-value from summary 
+60 slope <- mm$coefficients[2] 
+61 pvalue <- summary(mm)$coefficients[2,4] 
+62  
+63 # calculate number of native jobs associated with change in immigrant share 
+64 ols <- round(slope, 3) 
+65 jobs <- sum(zav$emp_native)/sum(zav$emp_edus_stem_grad) * ols * 100 
+66 print(paste("Slope   =", slope)) 
+67 print(paste("P-value =", pvalue)) 
+68 print(paste("Jobs    =", jobs)) 
+```
+
+So, let's run the author's original code:
+
+``` r
+> runb()
+[1] "Slope   = 0.00446438147988468"
+[1] "P-value = 0.0140870195483076"
+[1] "Jobs    = 262.985782017836"
+```
+
+The author removed the years 2008-2010.  We might wonder how things
+would change if the full data were used.  So, we call **edt()** (not
+shown) to comment out line 8, and re-run:
+
+``` r
+> runb()
+[1] "Slope   = 0.00180848722715659"
+[1] "P-value = 0.33637275201986"
+[1] "Jobs    = 124.352299406043"
+```
+
+Now, the result is no longer significant, and the point estimate has
+been cut in half.
