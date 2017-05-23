@@ -88,12 +88,15 @@ package may:
 
       <li>  Detect the presence of highly influential outliers, and suggest
         that a robust method, e.g. quantile regression be used.
-       </li> </p> 
+      </li> </p> 
+
+      <li>  Detect evidence of possible overfitting.
+      </li> </p> 
 
       <li> Etc.
       </li> </p> 
 
-</UL>
+   </UL>
 
 </UL>
 
@@ -255,4 +258,9 @@ Many more of these are planned.
 thus invoking a text editor of the user's choice (or default).
 **lcc():**  Display the current code.
 
+### Second example
 
+Here we analyze the data set **ols262**.  (Data and code courtesy of M.
+Zavodny, Stata translated to R by R. Davis.)
+
+The data involve a study of the H-1B work visa
