@@ -34,6 +34,27 @@ Much of the concern is statistical in nature. As noted in the above
 ### The **revisit** package 
 
 The package is aimed to help remedy such problems with data/statistics.
+In one sense, it might be termed a *statistical audit*, allowing users
+to check the statistical analyses of the original authors of a study,
+but it really is much more.  In our referring to "users" below, keep in
+mind that this could mean various kinds of people, such as:
+
+* The various authors of the study, during the period when the study is
+  being conducted.  The package will facilitate collaboration among the
+  authors at that time.
+
+* Reviewers of a manuscript on the study, presented for possible
+  publication.  The package will facilitate the reviewers' checking of
+  the statistical analyses in the paper, not only verifying the steps
+  but, even more importantly, allowing the reviewer to explore
+  alternative analyses.
+
+* Other scientists, who are reading a published paper on the study.  The
+  package will facilitate these scientists also trying various
+  alternative analyses.
+
+
+
 It has two main aspects:
 
 *  It makes it easier and more convenient for the user to explore the
