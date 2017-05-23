@@ -145,7 +145,7 @@ Both text-based and graphical (GUI) interfaces are available.
 The GUI uses RStudio *add-ins*.  The text-based version provides more
 flexiblity, while the GUI provides convenience.
 
-### Overview of the package
+### First example
 
 Let's get started, using the GUI.  (See installation instructions
 below.)
@@ -235,12 +235,12 @@ set of lines in the code, pausing at the end.  By default, these are the
 numbers of the first and last lines of the code, but other numbers can
 be specified.  Use 'c' to continue from the current line, or 's' to
 execute just the current line.  (*Restriction:* The start and finish
-lines cannot be inside a function, including loops and if-then-else.)  
+lines cannot be inside a loops or if-then-else constructs.)  
 
 **saveb(branchnum,desc):**  Save all the code changes to a new branch
 with the given name and brief description.
 
-**pause():**  Insert of this call will pause execution at the given
+**pause():**  Insert this call to pause execution at the given
 point, useful for instance immediately following a plotting function to
 give the user a chance to view the plot.
 
@@ -251,183 +251,8 @@ larger than 1, **alpha** will be divided by **bonf** to implement
 Bonferroni Inequality-based multiple inference.
 Many more of these are planned.
 
-**edt():**  Make a change to the current code.  Primitive for now.
-
+**edt():**  Make a change to the current code.  Calls R's **edit()**,
+thus invoking a text editor of the user's choice (or default).
 **lcc():**  Display the current code.
 
-
-### First example
-
-Let's start with something very simple.  Here is code that the original
-author might submit:
-
-``` r
-data(pima)  # load data
-# divide into diabetic, non-diabetics
-d <- which(pima$Diab == 1)
-diab <- pima[d,]
-nondiab <- pima[-d,]
-# form a confidence interval for each variable, difference between
-# diabetics and non-diabetics
-for (i in 1:8)  {
-   tmp <- t.test(diab[,i],nondiab[,i])$conf.int
-   cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n')
-}
-```
-
-Suppose the author supplied that code in a file **pima.R**, in the
-directory from which **revisit** is being run.  (This file is in the
-**examples** directory in the package.) We could "replay" the code:
-
-
-``` r
-> rvinit()  # initialize 'revisit'
-> makebranch0('pima.R')  # convert to 'revisit' form
-> loadb('pima.0.R')  # load branch 0
-> runb()  # run it
-
-```
-
-The output is
-
-``` r
-NPreg   1.046125 2.089219
-Gluc   26.80786 35.74707
-BP   -0.388326 5.66958
-Thick   0.007076644 4.993282
-Insul   12.75944 50.3282
-BMI   3.735`811 5.940864
-Genet   0.06891135 0.1726207
-Age   4.209236 7.545092
-```
-
-But we might think, "Hmm, the author doesn't seem to have done any data
-cleaning."  As a quick check, we might apply R's **range()** function to
-each of the predictor variables.
-
-``` r
-> for (i in 1:8) {
-+   rng <- range(pima[,i])
-+    cat(names(pima)[i],rng,'\n')
-+ }
-NPreg 0 17 
-Gluc 0 199 
-BP 0 122 
-Thick 0 99 
-Insul 0 846 
-BMI 0 67.1 
-Genet 0.078 2.42 
-Age 21 81 
-```
-
-Those 0s are troubling. How can variables such as Glucose and BMI be 0?
-So, we add code to remove cases like that.  We'd call **edt()** (not
-shown here), inserting
-
-``` r
-any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
-badrows <- apply(pima,1,any0) 
-pima <- pima[-badrows,] 
-```
-
-after
-
-```
-data(pima)
-```
-
-We could check that the new code looks right:
-
-```
-1 # original code 
-2 data(pima) 
-3 any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
-4 badrows <- apply(pima,1,any0) 
-5 pima <- pima[-badrows,] 
-6 # divide into diabetic, non-diabetics 
-7 d <- which(pima$Diab == 1) 
-8 diab <- pima[d,] 
-9 nondiab <- pima[-d,] 
-10 # form a confidence interval for each variable, difference between 
-11 # diabetics and non-diabetics 
-12 for (i in 1:8)  { 
-13 *    tmp <- t.test(diab[,i],nondiab[,i])$conf.int 
-14    cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n') 
-15 } 
-
-```
-
-We then call **runb()** again:
-
-```
-> runb()
-NPreg    1.040483 2.086364 
-Gluc    26.77046 35.73396 
-BP    -0.4010154 5.673465 
-Thick    -0.04601711 4.950227 
-Insul    13.0941 50.74512 
-BMI    3.739046 5.949183 
-Genet    0.06848236 0.1724766 
-Age    4.159615 7.497838 
-```
-
-Not much change from before, but those 0s may have had impacts on other
-analyses, say regression.
-
-If we find this worthwhile, we call **saveb()** to save the current
-code to a new branch:
-
-```
-> saveb('rm 0s','adds removal of suspicious 0s')
-```
-
-This creates branch 1, in a file **pima.1.R**. The description, "adds
-removal...," is inserted as a new comment first line at the top of the file, 
-in order to help us remember which branch is which if we have several of
-them.
-
-Next, we might say, "Really, we should use muliple comparisons here." We
-are forming 8 confidence intervals, so it may be desirable to have at
-least some protection.  We then call **edt()** again, replacing R's
-**t.test()** function by the one in **revisit**, named **t.test.rv()**.
-Since we are forming 8 confidence intervals, we set the argument
-**bonf** to 8.  After calling **edt()** to make the change, we check the
-code:
-
-``` r
-> lcc()
-1 # original code 
-2 data(pima) 
-3 any0 <- function(pimarow) any(pimarow[c(2,3,4,6)] == 0) 
-4 badrows <- apply(pima,1,any0) 
-5 pima <- pima[-badrows,] 
-6 # divide into diabetic, non-diabetics 
-7 d <- which(pima$Diab == 1) 
-8 diab <- pima[d,] 
-9 nondiab <- pima[-d,] 
-10 # form a confidence interval for each variable, difference between 
-11 # diabetics and non-diabetics 
-12 for (i in 1:8)  { 
-13    tmp <- t.test.rv(diab[,i],nondiab[,i],bonf=8)$conf.int 
-14    cat(names(pima)[i],'  ',tmp[1],tmp[2],'\n') 
-15 } 
-```
-
-And run again()
-
-``` r
-> runb()
-NPreg    0.8323935 2.294453 
-Gluc    24.98722 37.5172 
-BP    -1.609321 6.88177 
-Thick    -1.039828 5.944038 
-Insul    5.597938 58.24128 
-BMI    3.299954 6.388275 
-Genet    0.04779111 0.1931679 
-Age    3.496427 8.161026 
-```
-
-Of course, the confidence intervals are now somewhat wider than before.
-If we think it worthwhile, we can now call **saveb()** again, creating
-**pima.1.R**,
 
