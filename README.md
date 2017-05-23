@@ -199,7 +199,7 @@ equal to 8.
 
 We then re-run.  If we fail to reset the Run Start Line and Run Through Line
 first, however, we will get the error shown in red in the console below.
-This is because revisit had already run through the end of the code.
+This is because **revisit** had already run through the end of the code.
 *There is no need to start from the beginning*, so we change the Run Start
 Line box to 11, reset the Run Through Line box to the last line (if necessary)
 and click Run/Continue, yielding:
@@ -277,4 +277,7 @@ thus invoking a text editor of the user's choice (or default).
 Here we analyze the data set **ols262**.  (Data and code courtesy of M.
 Zavodny, Stata translated to R by R. Davis.)
 
-The data involve a study of the H-1B work visa
+The data involve a study of the impact of H-1B, 
+[a controversial work visa program](http://www.cbsnews.com/news/are-u-s-jobs-vulnerable-to-workers-with-h-1b-visas/).  The author found that for every visa workers, about 2.62 new jobs are created.  Our concern here will not be on the economic model used, but on other issues.
+
+
