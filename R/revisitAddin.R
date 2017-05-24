@@ -31,7 +31,8 @@ revisitAddin <- function() {
             actionButton("saveb", "Save Code")
          ),
          htmlOutput("message"),
-         aceEditor("ace", value = "...",mode='r')
+         aceEditor("ace", value = "...",mode='r', fontSize = 20),
+         numericInput("aceFontSize", "Editor Font Size", value = 20)
       )
    )
 
@@ -59,7 +60,7 @@ revisitAddin <- function() {
             loadBn_succ <<- loadBn
             status <- paste(filename, "loaded")
             currcode <- paste(rvenv$currcode, collapse = '\n')
-            updateAceEditor(session, "ace", value = currcode)
+            updateAceEditor(session, "ace", value = currcode, fontSize = input$aceFontSize)
             updateNumericInput(session, "runstart", value = 1)
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
             nextBn <- loadBn + 1
@@ -167,7 +168,7 @@ revisitAddin <- function() {
                   updateNumericInput(session, "runstart", value = runthru + 1)
                   updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
                } else {
-                  updateNumericInput(session, "runstart", value = length(rvenv$currcode + 1)) # set to last line + 1
+                  updateNumericInput(session, "runstart", value = length(rvenv$currcode) + 1) # set to last line + 1
                   updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
                }
             }
@@ -238,6 +239,6 @@ revisitAddin <- function() {
       })
     }
 
-   viewer <- dialogViewer("Revisit", width = 1000, height = 800)
+   viewer <- dialogViewer("Revisit", width = 1200, height = 1200)
    runGadget(ui, server, viewer = viewer, stopOnCancel = FALSE)
 }
