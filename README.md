@@ -268,7 +268,7 @@ Suppose we add these five statements to the code immediately after
 pima is loaded, reset Run Start Line and Run Through Line to run all
 of the code, and click Run/Continue.  Following is the result:
 
-![alt text](Screen4.png)
+![alt text](Screen5.png)
 
 ### Main functions
 
