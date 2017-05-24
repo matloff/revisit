@@ -165,6 +165,22 @@ We have also copied the package file **data/pima.txt** to the file
 The R working directory can be determined by typing 'getwd()' into the
 console.  We then type 'code/pima' into the Filename box, and click Load Code.
 
+This example uses the famous Pima diabetes study at the UCI data repository.
+The following table shows the 9 variables in pima.txt, followed by their
+descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes):
+
+| Variable | Description                                                              |
+| -------- | ------------------------------------------------------------------------ |
+| NPreg    | Number of times pregnant                                                 |
+| Gluc     | Plasma glucose concentration a 2 hours in an oral glucose tolerance test |
+| BP       | Diastolic blood pressure (mm Hg)                                         |
+| Thick    | Triceps skin fold thickness (mm)                                         |
+| Insul    | 2-Hour serum insulin (mu U/ml)                                           |
+| BMI      | Body mass index (weight in kg/(height in m)^2)                           |
+| Genet    | Diabetes pedigree function                                               |
+| Age      | Age (years)                                                              |
+| Diab     | Class variable (0 or 1)                                                  |
+
 As an illustration, suppose this code was written by the
 author of the study.  The dataset is that of the famous Pima diabetes
 study at the UCI data repository.
@@ -236,7 +252,23 @@ Start Line box to 16, and hit Run/Continue:
 ![alt text](Screen4.png)
 
 Those 0s are troubling. How can variables such as Glucose and BMI be 0?
-So we add code to remove cases with 0s.
+The descriptions of the variables above suggest that the 0s for the
+variables Gluc, BP, Thick, Insul, and BMI actually represent missing
+values.  Those 0s can be set to missing with the following statements:
+
+``` r
+pima$Gluc[pima$Gluc == 0] <- NA
+pima$BP[pima$BP == 0] <- NA
+pima$Thick[pima$Thick == 0] <- NA
+pima$Insul[pima$Insul == 0] <- NA
+pima$BMI[pima$BMI == 0] <- NA
+```
+
+Suppose we add these five statements to the code immediately after
+pima is loaded, reset Run Start Line and Run Through Line to run all
+of the code, and click Run/Continue.  Following is the result:
+
+![alt text](Screen4.png)
 
 ### Main functions
 
