@@ -182,10 +182,7 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 | Diab     | Class variable (0 or 1)                                                  |
 
 As an illustration, suppose this code was written by the
-author of the study.  The dataset is that of the famous Pima diabetes
-study at the UCI data repository.
-
-The screen now looks like this:
+author of the study.  The screen now looks like this:
 
 ![alt text](Screen0.png)
 
