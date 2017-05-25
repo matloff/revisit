@@ -154,16 +154,9 @@ Let's get started, using the GUI.  (See installation instructions
 below.)
 
 We start up RStudio (either by icon or by typing 'rstudio' into a
-command window), then load the 'revisit' library by typing
+command window), then load the **revisit** library by typing
 'library(revisit)' into the RStudio R console, then (near the top of the
 screen) select Addins | Revisit.
-
-In this example, we have copied the package file **examples/pima.R** to
-the file **pima.R** in the subdirectory **code** of the R working directory.
-We have also copied the package file **data/pima.txt** to the file
-**pima.txt** in the subdirectory **data** of the R working directory.
-The R working directory can be determined by typing 'getwd()' into the
-console.  We then type 'code/pima' into the Filename box, and click Load Code.
 
 This example uses the famous Pima diabetes study at the UCI data repository.
 The following table shows the 9 variables in pima.txt, followed by their
@@ -181,8 +174,16 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 | Age      | Age (years)                                                              |
 | Diab     | Class variable (0 or 1)                                                  |
 
-As an illustration, suppose this code was written by the
-author of the study.  The screen now looks like this:
+As an illustration, suppose this code was written by the author of the
+study, in our  package file **examples/pima.R**.  We copy that to the
+file **pima.R** in the subdirectory **code** of the R working directory.
+We have also copied the package file **data/pima.txt** to the file
+**pima.txt** in the subdirectory **data** of the R working directory.
+The R working directory can be determined by typing 'getwd()' into the
+console.  We then type 'code/pima' into the Filename box, and click Load
+Code.
+
+The screen now looks like this:
 
 ![alt text](Screen0.png)
 
