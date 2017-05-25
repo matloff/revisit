@@ -274,7 +274,13 @@ result:
 
 As can be seen from the output of the ranges, NPreg is now the only
 variable that contains 0s, the one variable for which they make sense.
-Say we believe this branch is also worth saving.  The Save Branch #
+We can also see that the confidence intervals have changed.  They
+should be more accurate now that cases that contain 0s which are
+actually missing values have been removed.  We can then delete the
+last line which prints the ranges (print(apply(pima[,1:8],2,range)))
+as this was intended just for debugging.
+
+Say we then believe this branch is worth saving.  The Save Branch #
 box tells us the next branch will be named branch 2 (as before, we
 could change that).  Before saving, we are again required to type
 in a Description of the change.  If we do that and then click Save
