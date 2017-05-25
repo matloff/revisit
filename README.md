@@ -251,7 +251,8 @@ Start Line box to 16, and hit Run/Continue:
 Those 0s are troubling. How can variables such as Glucose and BMI be 0?
 The descriptions of the variables above suggest that the 0s for the
 variables Gluc, BP, Thick, Insul, and BMI actually represent missing
-values.  Those 0s can be set to missing with the following statements:
+values.  Those 0s can be set to missing with the first five of the
+following statements:
 
 ``` r
 pima$Gluc[pima$Gluc == 0] <- NA
@@ -259,13 +260,29 @@ pima$BP[pima$BP == 0] <- NA
 pima$Thick[pima$Thick == 0] <- NA
 pima$Insul[pima$Insul == 0] <- NA
 pima$BMI[pima$BMI == 0] <- NA
+ccs <- complete.cases(pima[,2:7])
+pima <- pima[ccs,]
 ```
 
-Suppose we add these five statements to the code immediately after
-pima is loaded, reset Run Start Line and Run Through Line to run all
-of the code, and click Run/Continue.  Following is the result:
+The last two statements will drop all cases that contain one or more
+suspicious 0s.  Suppose we add all seven statements to the code
+immediately after pima is loaded, reset Run Start Line and Run Through
+Line to run all of the code, and click Run/Continue.  Following is the
+result:
 
 ![alt text](Screen5.png)
+
+As can be seen from the output of the ranges, NPreg is now the only
+variable that contains 0s, the one variable for which they make sense.
+Say we believe this branch is also worth saving.  The Save Branch #
+box tells us the next branch will be named branch 2 (as before, we
+could change that).  Before saving, we are again required to type
+in a Description of the change.  If we do that and then click Save
+Code, the new branch will be reloaded with the description now
+visible in the last line of the revisit history at the top of the
+file as shown below:
+
+![alt text](Screen6.png)
 
 ### Main functions
 
