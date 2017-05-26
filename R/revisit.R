@@ -175,8 +175,10 @@ coef.rv <- function(lmobj,alpha=0.05) {
    vc <- vcov(lmobj)
    ses <- sqrt(diag(vc))
    zcut <- qnorm(1-alpha/2)
-   catn('variable','estimate','left endpt','right endpt','p-value','warning')
+   ### catn('variable','estimate','left endpt','right endpt','p-value','warning')
    sdyhat <- sd(lmobj$fitted.values)
+   output <- matrix(nrow=lc,ncol=5)
+   output <- data.frame(output)
    for (i in 1:lc) {
       rad <- zcut*ses[i]
       cfi <- cfs[i]
@@ -188,9 +190,12 @@ coef.rv <- function(lmobj,alpha=0.05) {
       if (i > 1 && pval < alpha &&
           cfi * sd(lmobj$model[[i]]) < sdyhat)
              warn <- 'X'
-
-      catn(names(cfs[i]),cfi,ci1,ci2,pval,warn)
+      output[i,1:4] <- c(cfi,ci1,ci2,pval)
+      output[i,5] <- warn
+      ### catn(names(cfs[i]),cfi,ci1,ci2,pval,warn)
    }
+   names(output) <- c('est.','left','right','p-val','warning')
+   output
 }
 
 
