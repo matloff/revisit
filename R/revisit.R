@@ -199,4 +199,10 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
    output
 }
 
-
+# copies the given file from the examples/ directory to the current
+# directory
+getexample <- function(exname) {
+   fullexname <- paste('examples/',exname,sep='')
+   loc <- system.file(fullexname,package='revisit')
+   file.copy(loc,'.')
+}

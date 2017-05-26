@@ -174,8 +174,10 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 
 As an illustration, suppose this code was written by the author of the
 study, in our  package file **examples/pima.R**.  We copy that to the
-file **pima.R** in the directory from which we launched RStudio.
-We then type 'pima' into the Filename box, and click Load Code.
+file **pima.R** in the directory from which we launched RStudio.  (We
+could do this by hand before launch, or via the function
+**getexample()** included in the package.) We then type 'pima' into the
+Filename box, and click Load Code.
 
 The screen now looks like this:
 
@@ -226,6 +228,18 @@ visible in the last line of the revisit history at the top of the file
 as shown below:
 
 ![alt text](Screen3.png)
+
+By the way, look at the comments at the top of the code,
+
+``` r
+# RV history start
+original code
+Use t.test.rv with bonf = 8
+# RV history end
+```
+
+Each time we save a new branch, the description comments of the source
+branch are accumulated, thus providing a change hsitory.
 
 We should also check whether the author did a good job of data cleaning.
 As a crude measure, we can find the range of each of the variables, say
@@ -321,21 +335,34 @@ thus invoking a text editor of the user's choice (or default).
 
 ### Second example
 
-Here we look at the [MovieLens
-data](https://grouplens.org/datasets/movielens/100k/).  This consists of
-100,000 movie ratings.  There are about 1000 users and 1700 films.
-There is some covariate information, including age and gender for the
-users, as well as for the movies, e.g. year of release and genre.
-
+Here we look at the MovieLens data. The owners of this data forbid
+redistribution, so it is not included here, but it can be downloaded
+from the [MovieLens data site](https://grouplens.org/datasets/
+movielens/100k/).  This version of the data consists of 100,000 movie 
+ratings.  There are about 1000 users and 1700 films.  There is some 
+covariate information, including age and gender for the users, as well as for the movies, e.g. year of release and genre.  
 Suppose someone had done a study of this data, focusing on the effects
-of age and gender.  We'll use the text version of **revisit** here.  
+of age and gender.  
+
+We'll use the text version of **revisit** here, both to make our
+presentation less cluttered and to illustrate an advantage to using this
+version.  
 
 Suppose the author of a study of this data had analyzed with the code
-**examples/movielens.R** in this package.  Say that file has been co&pi;
-ed to the directory from which we launched R.  (If we plan to make
-branches, it would be nice to have them in the same directory; say we
-launch R from there, or use R's **setwd()** to change focus to that
-directory.)
+**examples/movielens.R** in this package.  We'll assume that that file
+is in our current directory, which we can conveniently arrange by
+running
+
+``` r
+> getexample('movielens.R')
+```
+ 
+So, let's see the code:
+
+``` r
+
+
+```
 
 ### Third example
 
