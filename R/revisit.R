@@ -175,6 +175,7 @@ coef.rv <- function(obj,alpha=0.05) {
    vc <- vcov(obj)
    ses <- sqrt(diag(vc))
    zcut <- qnorm(1-alpha/2)
+   catn('left endpt','right endpt','p-value')
    for (i in 1:lc) {
       rad <- zcut*ses[i]
       cfi <- cfs[i]

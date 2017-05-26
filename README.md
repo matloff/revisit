@@ -1,4 +1,4 @@
-# revisit: an R Package for Statistical Reproducibility and Alternate Analysis
+# revisit: a "Statistical Audit" for Statistical Reproducibility and Alternate Analysis
 
 ### The reproducibility crisis
 
@@ -322,6 +322,17 @@ thus invoking a text editor of the user's choice (or default).
 **lcc():**  Display the current code.
 
 ### Second example
+
+Here we look at the [MovieLens
+data](https://grouplens.org/datasets/movielens/100k/).  This consists of
+100,000 movie ratings.  There are about 1000 users and 1700 films.
+There is some covariate information, including age and gender for the
+users, as well as for the movies, e.g. year of release and genre.
+
+Suppose someone had done a study of this data, focusing on the effects
+of age and gender.
+
+### Third example
 
 Here we analyze the data set **ols262**.  (Data and code courtesy of M.
 Zavodny, Stata translated to R by R. Davis. There are some differences
