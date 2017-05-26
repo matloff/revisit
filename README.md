@@ -176,12 +176,8 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 
 As an illustration, suppose this code was written by the author of the
 study, in our  package file **examples/pima.R**.  We copy that to the
-file **pima.R** in the subdirectory **code** of the R working directory.
-We have also copied the package file **data/pima.txt** to the file
-**pima.txt** in the subdirectory **data** of the R working directory.
-The R working directory can be determined by typing 'getwd()' into the
-console.  We then type 'code/pima' into the Filename box, and click Load
-Code.
+file **pima.R** in the directory from which we launched RStudio.
+We then type 'pima' into the Filename box, and click Load Code.
 
 The screen now looks like this:
 
@@ -328,20 +324,25 @@ thus invoking a text editor of the user's choice (or default).
 ### Second example
 
 Here we analyze the data set **ols262**.  (Data and code courtesy of M.
-Zavodny, Stata translated to R by R. Davis.)
+Zavodny, Stata translated to R by R. Davis. There are some differences
+in the analysis here, e.g. the author used clustered standard errors.)
 
-The data involve a study of the impact of H-1B, [a controversial work
-visa
+The data involve a study of the impact of H-1B, [a controversial work visa
 program](http://www.cbsnews.com/news/are-u-s-jobs-vulnerable-to-workers-with-h-1b-visas/).
-The author found that for every 100 visa workers, about 262 new jobs are
-created.  Our concern here will not be on the economic model used, but
-on other issues.  
+The author [found](http://www.aei.org/wp-content/uploads/2011/12/-immigration-and-american-jobs_144002688962.pdf)
+that for every 100 visa workers, about 262 new jobs are
+created.  This kind of finding 
+[has been
+debated](https://gspp.berkeley.edu/assets/uploads/research/pdf/w20668.pdf)
+Our concern here will not be on the economic issues, but on how
+**revisit** might be used on this analysis.
 
 The data consist of employment figures for each of the 50 states, in
 each of the years 2000-2010.
 
 We'll use the text version of **revisit** here.  Assume that we've
-copied **examples/ols262.R** to the current directory.
+copied **examples/ols262.R** to the current directory, from which we
+will load it.
 
 ``` r
 > library(revisit)
@@ -389,7 +390,7 @@ copied **examples/ols262.R** to the current directory.
 47  
 48 # do regression with two independent variables, two instrumental 
 49 # variables, and weights to treat years equally 
-\50  
+50  
 51 mm <- (with(kk,  
 52    lm(lnemprate_native ~  
 53       lnimmshare_emp_stem_e_grad +  
@@ -419,9 +420,10 @@ So, let's run the author's original code:
 [1] "Jobs    = 262.985782017836"
 ```
 
-The author removed the years 2008-2010.  We might wonder how things
-would change if the full data were used.  So, we call **edt()** (not
-shown) to comment out line 8, and re-run:
+In this code, the author removed the years 2008-2010. (She later ran a
+full analysis.)  We might wonder how things would change if the full
+data were used.  So, we call **edt()** (not shown) to remove or comment
+out line 5, and re-run:
 
 ``` r
 > runb()
@@ -432,3 +434,72 @@ shown) to comment out line 8, and re-run:
 
 Now, the result is no longer significant, and the point estimate has
 been cut in half.
+
+We might wonder what the adjusted R-squared value was.  We can determine
+this by adding R's **summary()** function to the code and then called
+**runb()** again, but it is more convenient to simply run that command
+directly, since (unlike the GUI case) we do have control of the R
+console:
+
+``` r
+> summary(mm)
+...
+Coefficients:
+                             Estimate Std. Error t value
+(Intercept)                 4.1640851  0.0121807 341.859
+lnimmshare_emp_stem_e_grad  0.0018085  0.0018784   0.963
+lnimmshare_emp_stem_n_grad  0.0006618  0.0020183   0.328
+fyear2001                  -0.0108863  0.0039629  -2.747
+fyear2002                  -0.0323695  0.0040825  -7.929
+fyear2003                  -0.0469532  0.0040340 -11.639
+fyear2004                  -0.0502315  0.0039222 -12.807
+fyear2005                  -0.0437600  0.0040080 -10.918
+fyear2006                  -0.0408921  0.0039598 -10.327
+fyear2007                  -0.0420868  0.0039926 -10.541
+fyear2008                  -0.0526175  0.0039486 -13.325
+fyear2009                  -0.0985554  0.0039663 -24.848
+fyear2010                  -0.1140401  0.0039186 -29.102
+fstate2                     0.0192225  0.0211427   0.909
+fstate4                     0.0253171  0.0106471   2.378
+...
+Residual standard error: 0.002534 on 324 degrees of freedom
+Multiple R-squared:  0.9226,	Adjusted R-squared:  0.9082 
+F-statistic: 64.35 on 60 and 324 DF,  p-value: < 2.2e-16
+```
+
+This is a high value.  However, what are the main drivers here?  We
+might guess that the effects of the individual states are substantial,
+so we try re-running the regression without them:
+
+``` r
+> summary((with(kk,
++    lm(lnemprate_native ~  
++       lnimmshare_emp_stem_e_grad +  
++       lnimmshare_emp_stem_n_grad +  
++       fyear,
++       weights=weight_native))))
+
+Call:
+lm(formula = lnemprate_native ~ lnimmshare_emp_stem_e_grad + 
+    lnimmshare_emp_stem_n_grad + fyear, weights = weight_native)
+
+Weighted Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.024409 -0.003716  0.001683  0.005383  0.019232 
+
+Coefficients:
+                             Estimate Std. Error t value
+(Intercept)                 4.1780416  0.0106922 390.756
+lnimmshare_emp_stem_e_grad -0.0130295  0.0036493  -3.570
+lnimmshare_emp_stem_n_grad  0.0005722  0.0040274   0.142
+fyear2001                  -0.0098670  0.0104854  -0.941
+...
+Residual standard error: 0.006736 on 372 degrees of freedom
+Multiple R-squared:  0.372,	Adjusted R-squared:  0.3517 
+F-statistic: 18.36 on 12 and 372 DF,  p-value: < 2.2e-16
+```
+
+Now adjusted R-squared is only 0.3517, quite a drop. So, state-to-state
+difference was the main driver of the high R-squared.
+
+
