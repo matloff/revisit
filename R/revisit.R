@@ -146,7 +146,7 @@ catn <- function(...) {
    cat(...,'\n')
 }
 
-# overload t.test() to check for misleadingly low p-value, and also
+# replace t.test() to check for misleadingly low p-value, and also
 # adjust for for multiple comparisons; 2-sample only; bonf
 # ("Bonferroni") is the number of anticipated comparisons multiple
 # inference is desired (many other possibilities for that, e.g.
@@ -166,16 +166,16 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    tout
 }
 
-# finds Bonferroni CIs and p-values, and warns of misleadingly small
-# p-values; lmobj is an object of class 'lm' (including 'glm')
-coef.rv <- function(lmobj,alpha=0.05) {
+# finds CIs and p-values, and warns of misleadingly small p-values;
+# optionally applies a Bonferroni adjustment; lmobj is an object of
+# class 'lm' (including 'glm')
+coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
    cfs <- coef(lmobj)
    lc <- length(cfs)
-   alpha <- alpha / lc
+   if (usebonf) alpha <- alpha / lc
    vc <- vcov(lmobj)
    ses <- sqrt(diag(vc))
    zcut <- qnorm(1-alpha/2)
-   ### catn('variable','estimate','left endpt','right endpt','p-value','warning')
    sdyhat <- sd(lmobj$fitted.values)
    output <- matrix(nrow=lc,ncol=5)
    output <- data.frame(output)
@@ -192,7 +192,6 @@ coef.rv <- function(lmobj,alpha=0.05) {
              warn <- 'X'
       output[i,1:4] <- c(cfi,ci1,ci2,pval)
       output[i,5] <- warn
-      ### catn(names(cfs[i]),cfi,ci1,ci2,pval,warn)
    }
    names(output) <- c('est.','left','right','p-val','warning')
    output
