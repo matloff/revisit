@@ -166,16 +166,17 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
    tout
 }
 
-# finds Bonferroni CIs and p-values; obj is any R object to which coef()
-# and vcov() can be applied
-coef.rv <- function(obj,alpha=0.05) {
-   cfs <- coef(obj)
+# finds Bonferroni CIs and p-values, and warns of misleadingly small
+# p-values; lmobj is an object of class 'lm' (including 'glm')
+coef.rv <- function(lmobj,alpha=0.05) {
+   cfs <- coef(lmobj)
    lc <- length(cfs)
    alpha <- alpha / lc
-   vc <- vcov(obj)
+   vc <- vcov(lmobj)
    ses <- sqrt(diag(vc))
    zcut <- qnorm(1-alpha/2)
-   catn('left endpt','right endpt','p-value')
+   catn('variable','estimate','left endpt','right endpt','p-value','warning')
+   sdyhat <- sd(lmobj$fitted.values)
    for (i in 1:lc) {
       rad <- zcut*ses[i]
       cfi <- cfs[i]
@@ -183,7 +184,12 @@ coef.rv <- function(obj,alpha=0.05) {
       ci2 <- cfi + rad
       tmp <- pnorm(abs(cfi) / ses[i])
       pval <- (2 * (1 - tmp)) * lc
-      catn(names(cfs[i]),ci1,ci2,pval)
+      warn <- ''
+      if (i > 1 && pval < alpha &&
+          cfi * sd(lmobj$model[[i]]) < sdyhat)
+             warn <- 'X'
+
+      catn(names(cfs[i]),cfi,ci1,ci2,pval,warn)
    }
 }
 
