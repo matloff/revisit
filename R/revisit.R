@@ -185,7 +185,9 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
       ci1 <- cfi - rad
       ci2 <- cfi + rad
       tmp <- pnorm(abs(cfi) / ses[i])
-      pval <- (2 * (1 - tmp)) * lc
+      pval <- (2 * (1 - tmp)) 
+      if (usebonf) pval <- lc * pval
+      pval <- min(1.0,pval)
       warn <- ''
       if (i > 1 && pval < alpha &&
           cfi * sd(lmobj$model[[i]]) < sdyhat)

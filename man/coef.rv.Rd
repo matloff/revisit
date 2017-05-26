@@ -28,6 +28,12 @@ coef.rv(lmobj,alpha=0.05,usebonf=TRUE)
 such as small p-values that are associated with very small, possibly 
 practically insignificant, effects, and issues with multiple inference.
 
+The package aims to move users more toward using confidence intervals
+than p-values.  A narrow confidence interval near 0 but not containing
+it may indicate lack of practically significance, while an interval
+containing 0 but mostly in "interesting" territory may be of some
+relevance.
+
 The function \code{t.test.rv} is essentially a replacement for
 \code{t.test}, the standard R function for significance tests and
 confidence intervals for means. (Only the two-sample case is handled
@@ -36,17 +42,28 @@ should set \code{bonf} to m.
 
 The function \code{coef.rv} is like the R function \code{coef}, which
 extracts coefficients from objects such as the value returned by
-\code{lm}.  If a Bonferroni adjustment is specified, then the Bonferroni
-factor is the length of the coefficient vector.
+\code{lm} and \code{glm}.  This function again checks for misleadingly
+small p-values.  If a Bonferroni adjustment is specified, then the
+Bonferroni factor is the length of the coefficient vector.  
+
+Computation of Bonferroni p-values is rudimentary; see the entry for R's
+\code{p.adjust} for other methods.
+
+Methods for multiple inference other than Bonferroni are planned.
+
 }
 
 % \value{
 % }
 
 \examples{
+lmout <- lm(mpg ~ .,data=mtcars) 
+summary(lmout)  # the usual output
+coef.rv(lmout,usebonf=FALSE)  # add confidence intervals
+coef.rv(lmout,usebonf=TRUE)  # add Bonferroni
 }
 
 \author{
-Norm Matloff
+norm Matloff
 }
 

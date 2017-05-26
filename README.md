@@ -56,15 +56,13 @@ mind that this could mean various kinds of people, such as:
 
 The package has two main aspects:
 
-<UL>
-
-<li> It makes it easier and more convenient for the user to explore the
+* It makes it easier and more convenient for the user to explore the
 effects of various changes that might be made to the analyses.
 The package facilitates replaying, changing and recording various new
 versions of the analyses. 
 </li> </p> 
 
-<li>  The package spots troublesome statistical situations, and issues
+* The package spots troublesome statistical situations, and issues
 advice and warnings, in light of concerns that too many "false
 positives" are being reported in published research.  For example, the
 package may:
@@ -73,13 +71,13 @@ package may:
    <UL>
 
       <li>  Point out that a p-value is small and may not to correspond to an
-       effect of practical importance." 
+       effect of practical importance.
       </li> </p> 
 
        <li> Point out that a "nonsignificant" value corresponds to a
        confidence interval containing both large positive and large
        negative values, so n is too small for a "no significant
-       difference finding.
+       difference" finding.
       </li> </p> 
        
       <li> Suggest that the user employ a multiple inference procedure
@@ -330,7 +328,14 @@ There is some covariate information, including age and gender for the
 users, as well as for the movies, e.g. year of release and genre.
 
 Suppose someone had done a study of this data, focusing on the effects
-of age and gender.
+of age and gender.  We'll use the text version of **revisit** here.  
+
+Suppose the author of a study of this data had analyzed with the code
+**examples/movielens.R** in this package.  Say that file has been co&pi;
+ed to the directory from which we launched R.  (If we plan to make
+branches, it would be nice to have them in the same directory; say we
+launch R from there, or use R's **setwd()** to change focus to that
+directory.)
 
 ### Third example
 
@@ -351,7 +356,7 @@ Our concern here will not be on the economic issues, but on how
 The data consist of employment figures for each of the 50 states, in
 each of the years 2000-2010.
 
-We'll use the text version of **revisit** here.  Assume that we've
+Again, we'll use the text version of **revisit**.  Assume that we've
 copied **examples/ols262.R** to the current directory, from which we
 will load it.
 
