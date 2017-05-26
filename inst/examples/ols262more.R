@@ -1,7 +1,7 @@
 # the file public.dta and the Stata code on which this R code is based
 # is courtesy of M. Zavodny
 
-doreg <- function(df, startyear, endyear, id){
+doreg <- function(zav, startyear, endyear, id){
 
    zav <- zav[zav$year >= startyear & zav$year <= endyear,]
 
@@ -106,16 +106,17 @@ yearTable <- function(func, df, minyear, maxyear, ind=1, minspan=1, dp=3, wid=7)
 }
 
 data(zav) # zav.txt is .txt version of Zav. file public.dta
+zav0 <- zav
 
 print("")
 print("                                      SLOPE                                         ")
-yearTable (doreg, zav, 2000, 2010, 1, 1, 3, 7)
+yearTable (doreg, zav0, 2000, 2010, 1, 1, 3, 7)
 print("")
 print("                                      STDERR                                        ")
-yearTable (doreg, zav, 2000, 2010, 2, 1, 4, 7)
+yearTable (doreg, zav0, 2000, 2010, 2, 1, 4, 7)
 print("")
 print("                                     P-VALUE                                        ")
-yearTable (doreg, zav, 2000, 2010, 3, 1, 3, 7)
+yearTable (doreg, zav0, 2000, 2010, 3, 1, 3, 7)
 print("")
 print("    NEW NATIVE JOBS PER 100 FOREIGN-BORN STEM WORKERS WITH ADVANCED U.S. DEGREES    ")
-yearTable (doreg, zav, 2000, 2010, 4, 1, 2, 7)
+yearTable (doreg, zav0, 2000, 2010, 4, 1, 2, 7)
