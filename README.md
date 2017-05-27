@@ -1,3 +1,4 @@
+
 # revisit: a "Statistical Audit" for Statistical Reproducibility and Alternate Analysis
 
 ### The reproducibility crisis
@@ -56,47 +57,45 @@ mind that this could mean various kinds of people, such as:
 
 The package has two main aspects:
 
-* It makes it easier and more convenient for the user to explore the
-effects of various changes that might be made to the analyses.
-The package facilitates replaying, changing and recording various new
-versions of the analyses. 
-</li> </p> 
+**(a)**
 
-* The package spots troublesome statistical situations, and issues
+It makes it easier and more convenient for the user to explore the
+effects of various changes that might be made to the analyses.
+The package facilitates 
+
+* replaying
+
+* changing
+
+* recording
+
+various new versions of the analyses. 
+
+**(b)**
+
+The package spots troublesome statistical situations, and issues
 advice and warnings, in light of concerns that too many "false
 positives" are being reported in published research.  For example, the
 package may:
-</p>
 
-   <UL>
+* Point out that a p-value is small and may not to correspond to an
+  effect of practical importance.
 
-      <li>  Point out that a p-value is small and may not to correspond to an
-       effect of practical importance.
-      </li> </p> 
+* Point out that a "nonsignificant" value corresponds to a
+  confidence interval containing both large positive and large
+  negative values, so n is too small for a "no significant
+  difference" finding.
 
-       <li> Point out that a "nonsignificant" value corresponds to a
-       confidence interval containing both large positive and large
-       negative values, so n is too small for a "no significant
-       difference" finding.
-      </li> </p> 
-       
-      <li> Suggest that the user employ a multiple inference procedure
-      (provided in the package).
-      </li> </p> 
+* Suggest that the user employ a multiple inference procedure
+  (provided in the package).
 
-      <li>  Detect the presence of highly influential outliers, and suggest
-        that a robust method, e.g. quantile regression be used.
-      </li> </p> 
+* Detect the presence of highly influential outliers, and suggest
+  that a robust method, e.g. quantile regression be used.
 
-      <li>  Detect evidence of possible overfitting.
-      </li> </p> 
+* Detect evidence of possible overfitting.
 
-      <li> Etc.
-      </li> </p> 
+* Etc.
 
-   </UL>
-
-</UL>
 
 More specifically, the user might go through the following thought
 processes, and take action using the facilities in the package:
