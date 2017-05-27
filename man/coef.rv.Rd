@@ -46,6 +46,10 @@ extracts coefficients from objects such as the value returned by
 small p-values.  If a Bonferroni adjustment is specified, then the
 Bonferroni factor is the length of the coefficient vector.  
 
+The output of \code{coef.rv} includes a warning column, which indicates
+that a small p-value may be of little or no practical significance in
+this particular case.
+
 Computation of Bonferroni p-values is rudimentary; see the entry for R's
 \code{p.adjust} for other methods.
 

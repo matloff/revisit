@@ -176,7 +176,8 @@ As an illustration, suppose this code was written by the author of the
 study, in our  package file **examples/pima.R**.  We copy that to the
 file **pima.R** in the directory from which we launched RStudio.  (We
 could do this by hand before launch, or via the function
-**getexample()** included in the package.) We then type 'pima' into the
+**getexample()** included in the package. In the GUI version, we'd run
+this command before starting the add-in.) We then type 'pima' into the
 Filename box, and click Load Code.
 
 The screen now looks like this:
@@ -360,9 +361,80 @@ running
 So, let's see the code:
 
 ``` r
-
-
+> lcc()
+[1] "next line to execute indicated by ***"
+1 *** # RV history start 
+2 # original code 
+3 # RV history end 
+4  
+5 # analysis of MovieLens data,  
+6 # https://grouplens.org/datasets/movielens/100k/ 
+7  
+8 # read ratings data (userID, movieID, rating, timestamp) 
+9 ud <- read.table('u.data',header=F,sep='\t') 
+10 # read user covariate data (user, age, gender, ...( 
+11 uu <- read.table('u.user',header=F,sep='|') 
+12  
+13 ud <- ud[,-4]   # remove timestamp, leaving user, item, rating 
+14 uu <- uu[,1:3]   
+15 names(ud) <- c('user','item','rating') 
+16 names(uu) <- c('user','age','gender') 
+17 uu$gender <- as.integer(uu$gender == 'M') 
+18 uall <- merge(ud,uu) 
+19  
+20 # investigate effect of age, gender on user mean ratings 
+21 usermeans <- tapply(uall$rating,uall$user,mean) 
+22 lmout <- lm(usermeans ~ uu[,2] + uu[,3]) 
+23 print(summary(lmout))  # get estimates, p-values etc. 
 ```
+
+And now run it:
+
+``` r
+> runb()
+
+Call:
+lm(formula = usermeans ~ uu[, 2] + uu[, 3])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.06903 -0.25972  0.03078  0.27967  1.34615 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 3.4725821  0.0482655  71.947  < 2e-16 ***
+uu[, 2]     0.0033891  0.0011860   2.858  0.00436 ** 
+uu[, 3]     0.0002862  0.0318670   0.009  0.99284    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4438 on 940 degrees of freedom
+Multiple R-squared:  0.008615,  Adjusted R-squared:  0.006505 
+F-statistic: 4.084 on 2 and 940 DF,  p-value: 0.01714
+```
+
+This indicates a highly-significant and positive effect of age on
+ratings.  But let's look closer, by running the **revisit** function
+**coef.rv()**.  We could do this by calling **edt()**, 
+adding a call to **coef.rv()** to the code, and then calling
+**runb()** again. But it is more convenient to simply run that command
+directly, since (unlike the GUI case) we do have control of the R
+console:
+
+``` r
+> coef.rv(lmout)
+          est.         left       right      p-val warning
+1 3.4725821093  3.357035467 3.588128752 0.00000000        
+2 0.0033891042  0.000549889 0.006228319 0.01280424       X
+3 0.0002862087 -0.076002838 0.076575255 1.00000000        
+```
+
+The default in **coef.rv()** is to use multiple inference, but the
+resulting p-value still indicates a "significant" result.  And there is
+an X in the warning column.  The estimated age coefficient here, about
+0.0034 is tiny; a 10-year difference in age corresponds to a difference
+in mean rating of only abou 0.034, minuscule for ratings in the range of
+1 to 5.
 
 ### Third example
 
@@ -479,10 +551,7 @@ Now, the result is no longer significant, and the point estimate has
 been cut in half.
 
 We might wonder what the adjusted R-squared value was.  We can determine
-this by adding R's **summary()** function to the code and then called
-**runb()** again, but it is more convenient to simply run that command
-directly, since (unlike the GUI case) we do have control of the R
-console:
+this by calling R's **summary()** function:
 
 ``` r
 > summary(mm)
