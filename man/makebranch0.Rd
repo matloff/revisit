@@ -50,4 +50,3 @@ makdbranch0("inst/examples/pima.R")
 \author{
 Norm Matloff
 }
-

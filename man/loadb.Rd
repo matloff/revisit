@@ -54,4 +54,3 @@ loadb("inst/examples/pima.1.R")
 \author{
 Norm Matloff
 }
-
