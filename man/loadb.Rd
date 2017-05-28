@@ -17,7 +17,7 @@ loadb(br)
   \item{br}{Filename, including path, of branch to be loaded.}
 }
 
-\details{This functions loads the specified branch into memory so that
+\details{This function loads the specified branch into memory so that
 it can be edited, run, and/or saved.  In the process, the following
 variables are set in rvenv, the environment initialized by \code{rvinit}.
 
