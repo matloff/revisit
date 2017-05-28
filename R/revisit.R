@@ -36,7 +36,7 @@ makebranch0 <- function(origcodenm) {
 
 # create new branch, with "midfix" ("middle suffix") midfix, in a file
 # whose name is the concatenization of our original prefix
-# rvenv$currbasenm; the midfix; and '.R'; the note desc describes 
+# rvenv$currbasenm; the midfix; and '.R'; the note desc describes
 # the branch
 saveb <- function(midfix,desc) {
       code <- rvenv$currcode
@@ -51,7 +51,7 @@ saveb <- function(midfix,desc) {
          toplines <- c(toplines,paste('#',desc))
          code <- c(toplines,code[endline:length(code)])
       } else {
-         toplines <- 
+         toplines <-
             c('# RV history start',
               '# WARNING: RV history missing and recreated',
               paste('#',desc),'# RV history end')
@@ -70,7 +70,11 @@ loadb <- function(br) {
       rvenv$currbasenm <<- tmp
       rvenv$currcode <<- readLines(br)
       rvenv$pc <<- 1
-      rvenv$desc <<- rvenv$currcode[1]
+      rvenv$desc <<- ""
+      g <- grep('# RV history end',rvenv$currcode)
+      if (length(g) > 0 & g[1] > 1){
+         rvenv$desc <<- rvenv$currcode[g[1]-1]
+      }
       # rvenv$firstrunafteredit <<- FALSE
 }
 
@@ -83,8 +87,8 @@ runb <- function(
       startline = 1,
       throughline=length(rvenv$currcode))  {
       if (startline == 'f' || startline == 'n') {
-         if (startline == 'n') throughline <- rvenv$pc + 1
-            startline <- rvenv$pc
+         if (startline == 'n') throughline <- rvenv$pc
+         startline <- rvenv$pc
       }
       lcode <- length(rvenv$currcode)
       if (startline < 1 || startline > lcode ||
@@ -185,7 +189,7 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
       ci1 <- cfi - rad
       ci2 <- cfi + rad
       tmp <- pnorm(abs(cfi) / ses[i])
-      pval <- (2 * (1 - tmp)) 
+      pval <- (2 * (1 - tmp))
       if (usebonf) pval <- lc * pval
       pval <- min(1.0,pval)
       warn <- ''
