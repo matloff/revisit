@@ -58,7 +58,7 @@ The new file can then be loaded with the \code{loadb} command.  For example, sup
 \code{\link{edt}}\cr
 \code{\link{loadb}}\cr
 \code{\link{makebranch0}}\cr
-\code{\link{next}}\cr
+\code{\link{nxt}}\cr
 \code{\link{runb}}\cr
 \code{\link{rvinit}}
 }

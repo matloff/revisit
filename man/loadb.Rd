@@ -40,7 +40,7 @@ variables are set in rvenv, the environment initialized by \code{rvinit}.
 \seealso{
 \code{\link{edt}}\cr
 \code{\link{makebranch0}}\cr
-\code{\link{next}}\cr
+\code{\link{nxt}}\cr
 \code{\link{runb}}\cr
 \code{\link{rvinit}}\cr
 \code{\link{saveb}}

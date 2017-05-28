@@ -36,7 +36,7 @@ The new file can then be loaded with the \code{loadb} command.  For example, \co
 \seealso{
 \code{\link{edt}}\cr
 \code{\link{loadb}}\cr
-\code{\link{next}}\cr
+\code{\link{nxt}}\cr
 \code{\link{runb}}\cr
 \code{\link{rvinit}}\cr
 \code{\link{saveb}}
