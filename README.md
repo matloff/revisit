@@ -186,27 +186,30 @@ The screen now looks like this:
 
 ![alt text](Screen0.png)
 
-RStudio is running in the background, and the foreground window shows
-the **revisit** add-in running.  The original author's code is shown in
-the editor portion in the bottom half of the window.  One can edit the
-code, re-run in full or in part, save/load branches and so on.  All output
-will be displayed in the R console portion of the background window.
+RStudio is running in the background window, and the foreground window
+shows the **revisit** add-in.  The original author's code is shown in
+the editor portion in the bottom half of that window.  One can edit the
+code, re-run in full or in part (Run/Continue and Next buttons),
+save/load branches (Save Code and Load Code buttons) and so on.  All
+output will be displayed in the R console portion of the background
+window.
 
 By the way, if Load Branch # is 0 and the branch 0 file cannot be found,
-revisit will attempt to load the original author code.  If that file is
-found, revisit will automatically create the branch 0 file, identical
+**revisit** will attempt to load the original author code.  If that file is
+found, **revisit** will automatically create the branch 0 file, identical
 to the original author code, but with an identifying comment line.
 
-To replay the author's code, we click Run/Continue .  The new screen is:
+To replay the author's code without modfication, we click Run/Continue .
+The new screen is:
 
 ![alt text](Screen1.png)
 
-The results of the 8 confidence interval computations is shown in the R
+The results of the 8 confidence interval computations are shown in the R
 console.  (There are 8 variables other than Diab, so the intervals
-concern diabetics versus nondiabetics.)
+concern differences between diabetics and nondiabetics.)
 
 We as the user may now think, "Hmm, one really should use a multiple
-inference procedure here."  So we change line 12 to use **revisit** own
+inference procedure here."  So we change line 12 to use **revisit**'s own
 function, employing the Bonferroni method with number of comparisons
 equal to 8.
 
@@ -219,7 +222,7 @@ and click Run/Continue, yielding:
 
 ![alt text](Screen2.png)
 
-Ah, the confidence intervals did indeed get wider, as expected, now in
+Ah, the confidence intervals did indeed get wider, as expected, in
 line with statistical fairness.  (Note that the Run Start Line box has
 again moved one past the last line of code.)
 
@@ -254,9 +257,9 @@ print(apply(pima[,1:8],2,range))
 
 We could simply run this code directly if we were in the text-based
 version of **revisit**, since there we would have direct control of the
-R console, which is not the case in the GUI version. So instead, we add
-it temporarily at the end of code editor, as line 15. We change the Run
-Start Line box to 16, and hit Run/Continue:
+R console. This is not the case in the GUI version. So instead, we add
+the code temporarily at the end of code editor, as line 16. We change
+the Run Start Line box to 16, and hit Run/Continue:
 
 ![alt text](Screen4.png)
 
@@ -290,7 +293,7 @@ We can also see that the confidence intervals have changed.  They
 should be more accurate now that cases that contain 0s which are
 actually missing values have been removed.  We can then delete the
 last line which prints the ranges (print(apply(pima[,1:8],2,range)))
-as this was intended just for debugging.
+as this was intended just for temporary use.
 
 Say we then believe this branch is worth saving.  The Save Branch #
 box tells us the next branch will be named branch 2 (as before, we
@@ -302,7 +305,7 @@ file as shown below:
 
 ![alt text](Screen6.png)
 
-### Main functions
+### Main text-based functions
 
 **rvinit():**  Initializes the **revisit** system.
 
