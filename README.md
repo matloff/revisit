@@ -32,27 +32,29 @@ Much of the concern is statistical in nature. As noted in the above
 > — more than 1,000 people — ticked "More robust experimental design"
 > "better statistics"...
 
+The package is, made available as open source, is **aimed to help remedy
+such problems with data handling and statistics.**
+
 ### The **revisit** package 
 
-The package is, made available as open source, is
-aimed to help remedy such problems with data/statistics.
-In one sense, it might be termed a *statistical audit*, allowing users
-to check the statistical analyses of the original authors of a study,
-but it really is much more.  In our referring to "users" below, keep in
-mind that this could mean various kinds of people, such as:
+In one sense, the package might be said to enable a *statistical audit*,
+allowing users to check the statistical analyses of the original authors
+of a study, but it really is much more.  In our referring to "users"
+below, keep in mind that this could mean various kinds of people, such
+as:
 
-* The various authors of the study, during the period when the study is
+* **The various authors of the study,** during the period when the study is
   being conducted.  The package will facilitate collaboration among the
   authors at that time.
 
-* Reviewers of a manuscript on the study, presented for possible
+* **Reviewers of a manuscript on the study**, presented for possible
   publication.  The package will facilitate the reviewers' checking of
   the statistical analyses in the paper, not only verifying the steps
   but, even more importantly, allowing the reviewer to explore
   alternative analyses.
 
-* Other scientists, who are reading a published paper on the study.  The
-  package will facilitate these scientists also trying various
+* **Other scientists,** who are reading a published paper on the study.  The
+  package will facilitate these scientists also in exploring various
   alternative analyses.
 
 The package has two main aspects:
@@ -63,9 +65,9 @@ It makes it easier and more convenient for the user to explore the
 effects of various changes that might be made to the analyses.
 The package facilitates 
 
-* replaying
+* replaying,
 
-* changing
+* changing, and
 
 * recording
 
@@ -96,6 +98,7 @@ package may:
 
 * Etc.
 
+(Only some of these are implemented yet.)
 
 More specifically, the user might go through the following thought
 processes, and take action using the facilities in the package:
@@ -151,12 +154,12 @@ Let's get started, using the GUI.  (See installation instructions
 below.)
 
 We start up RStudio (either by icon or by typing 'rstudio' into a
-command window), then load the **revisit** library by typing
+terminal window), then load the **revisit** library by typing
 'library(revisit)' into the RStudio R console, then (near the top of the
 screen) select Addins | Revisit.
 
 This example uses the famous Pima diabetes study at the UCI data repository.
-The following table shows the 9 variables in pima.txt, followed by their
+The following table shows the 9 variables in **pima.txt**, followed by their
 descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes):
 
 | Variable | Description                                                              |
@@ -171,13 +174,13 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 | Age      | Age (years)                                                              |
 | Diab     | Class variable (0 or 1)                                                  |
 
-As an illustration, suppose this code was written by the author of the
+As an illustration, suppose code were written by the author of the
 study, in our  package file **examples/pima.R**.  We copy that to the
 file **pima.R** in the directory from which we launched RStudio.  (We
 could do this by hand before launch, or via the function
 **getexample()** included in the package. In the GUI version, we'd run
-this command before starting the add-in.) We then type 'pima' into the
-Filename box, and click Load Code.
+the latter command before starting the add-in.) We then type 'pima' into
+the Filename box, and click Load Code.
 
 The screen now looks like this:
 
