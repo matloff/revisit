@@ -15,7 +15,7 @@ revisitAddin <- function() {
    rv$statusmsg <- ""
 
    ui <- miniPage(
-
+      includeCSS("R/revisit.css"),
       #shinythemes::themeSelector(),
       theme = shinytheme("united"),
       gadgetTitleBar("Revisit"),
