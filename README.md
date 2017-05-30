@@ -307,6 +307,9 @@ file as shown below:
 
 ### Main text-based functions
 
+Here are the functions available in the text-based prototype. Many more
+coming!
+
 **rvinit():**  Initializes the **revisit** system.
 
 **makebranch0(origcodenm):**  Inputs the original author's code and
@@ -332,11 +335,20 @@ give the user a chance to view the plot.
 latter but warns the user if a small p-value arises merely from a large
 sample size rather than from a substantial effect.  If **bonf** is
 larger than 1, **alpha** will be divided by **bonf** to implement
-Bonferroni Inequality-based multiple inference.
-Many more of these are planned.
+Bonferroni Inequality-based multiple inference.  (Holm option coming
+soon.)
+
+**coef.rv(lmobj,alpha=0.05,usebonf=TRUE):**  Substitute for R's
+**coef()**, which extracts estimated coefficients from the output of
+**lm()** and **glm()**.  If **usebonf** is true, then Bonferroni
+adjustments will be made to the p-values in testing H<sub>0</sub>:
+&beta;<sub>i</sub> = 0, with the Bonferroni factor equal to the number
+of coefficients.  Again, statistically significant effects that may not
+be of practical significance will be flagged.
 
 **edt():**  Make a change to the current code.  Calls R's **edit()**,
 thus invoking a text editor of the user's choice (or default).
+
 **lcc():**  Display the current code.
 
 ### Second example
@@ -344,11 +356,11 @@ thus invoking a text editor of the user's choice (or default).
 Here we look at the MovieLens data. The owners of this data forbid
 redistribution, so it is not included here, but it can be downloaded
 from the [MovieLens data site](https://grouplens.org/datasets/
-movielens/100k/).  This version of the data consists of 100,000 movie 
-ratings.  There are about 1000 users and 1700 films.  There is some 
-covariate information, including age and gender for the users, as well as for the movies, e.g. year of release and genre.  
-Suppose someone had done a study of this data, focusing on the effects
-of age and gender.  
+movielens/100k/).  This version of the data consists of 100,000 movie
+ratings.  There are about 1000 users and 1700 films.  There is some
+covariate information, including age and gender for the users, as well
+as for the movies, e.g. year of release and genre.  Suppose someone had
+done a study of this data, focusing on the effects of age and gender.  
 
 We'll use the text version of **revisit** here, both to make our
 presentation less cluttered and to illustrate an advantage to using this
@@ -434,12 +446,11 @@ console:
 3 0.0002862087 -0.076002838 0.076575255 1.00000000        
 ```
 
-The default in **coef.rv()** is to use multiple inference, but the
-resulting p-value still indicates a "significant" result.  And there is
-an X in the warning column.  The estimated age coefficient here, about
+The resulting p-value indicates a "significant" result, but there is an
+X in the warning column.  The estimated age coefficient here, about
 0.0034 is tiny; a 10-year difference in age corresponds to a difference
 in mean rating of only abou 0.034, minuscule for ratings in the range of
-1 to 5.
+1 to 5.  This "significant" result is likely of no practical interest.
 
 ### Third example
 
@@ -454,7 +465,7 @@ that for every 100 visa workers, about 262 new jobs are
 created.  This kind of finding 
 [has been
 debated](https://gspp.berkeley.edu/assets/uploads/research/pdf/w20668.pdf)
-Our concern here will not be on the economic issues, but on how
+but our concern here will not be on the economic issues, rather on how
 **revisit** might be used on this analysis.
 
 The data consist of employment figures for each of the 50 states, in
