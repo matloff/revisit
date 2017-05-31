@@ -98,7 +98,7 @@ yearTable <- function(func, df, minyear, maxyear, ind=1, minspan=1, dp=3, wid=7)
          }
       }
       for (j in (i+minspan):maxyear){
-         n <- func(zav, i, j, ind)
+         n <- func(df, i, j, ind)
          str <- paste(str, format(round(n, dp), nsmall = dp, width = wid))
       }
       print(str)
