@@ -76,7 +76,20 @@ doreg <- function(zav, startyear, endyear, id){
    }
 }
 
-yearTable <- function(func, df, minyear, maxyear, ind=1, minspan=1, dp=3, wid=7){
+yearTable <- function(
+      func,       # user function to call with next four parameters
+      df,         # dataframe containing the data
+      minyear,    # minimum year of spans in table
+      maxyear,    # maximum year of spans in table
+      ind=1,      # indicator of value user function is to return
+      minspan=1,  # minimum length of a span in the table
+      dp=3,       # number of decimal places in table values
+      wid=7,      # width of table columns (columns are separated by an additional space)
+      title="",   # title to place above table
+      divs=NULL,  # interval boundaries for html formatting
+      color=NULL, # interval color (e.g., "red", #ff0000", ""), should be one longer than divs
+      style=NULL  # interval style (e.g., "b", "i", ""), should be one longer than divs
+   ){
    dashes <- strrep("-", wid)
    dots   <- strrep(".", wid)
    dashstr <- "----"
@@ -87,10 +100,13 @@ yearTable <- function(func, df, minyear, maxyear, ind=1, minspan=1, dp=3, wid=7)
    for (i in (minyear+minspan):maxyear){
       yearstr <- paste(yearstr, format(i, width = wid))
    }
-   print(dashstr)
-   print(yearstr)
-   print(dashstr)
+   cat(title, sep = "\n")
+   cat(dashstr, sep = "\n")
+   cat(yearstr, sep = "\n")
+   cat(dashstr, sep = "\n")
    for (i in minyear:(maxyear-minspan)){
+      thiscolor <- ""
+      thisstyle <- ""
       str <- i
       if (minyear < i){
          for (j in (minyear+1):i){
@@ -98,25 +114,67 @@ yearTable <- function(func, df, minyear, maxyear, ind=1, minspan=1, dp=3, wid=7)
          }
       }
       for (j in (i+minspan):maxyear){
+         lastcolor <- thiscolor
+         laststyle <- thisstyle
          n <- func(df, i, j, ind)
-         str <- paste(str, format(round(n, dp), nsmall = dp, width = wid))
+         nrnd <- round(n, dp)
+         nstr <- format(nrnd, nsmall = dp, width = wid, scientific = FALSE)
+         idiv <- length(divs)+1
+         if (!is.null(divs)){
+            for (k in 1:length(divs)){
+               if (nrnd < divs[k]){
+                  #nstr <- paste0("<b>", nstr, "</b>")
+                  idiv <- k
+                  break;
+               }
+            }
+            thiscolor <- ""
+            thisstyle <- ""
+            if (idiv <= length(color)){
+               thiscolor <- color[idiv]
+            }
+            if (idiv <= length(style)){
+               thisstyle <- style[idiv]
+            }
+            if (thiscolor != lastcolor | thisstyle != laststyle){
+               if (thisstyle != ""){
+                  nstr <- paste0("<", thisstyle, ">", nstr)
+               }
+               if (thiscolor != ""){
+                  nstr <- paste0('<font color="', thiscolor, '">', nstr)
+               }
+               if (lastcolor != ""){
+                  nstr <- paste0("</font>", nstr)
+               }
+               if (laststyle != ""){
+                  nstr <- paste0("</", laststyle, ">", nstr)
+               }
+            }
+         }
+         str <- paste(str, nstr)
       }
-      print(str)
+      if (thisstyle != ""){
+         str <- paste0(str, "</", thisstyle, ">")
+      }
+      if (thiscolor != ""){
+         str <- paste0(str, "</font>")
+      }
+      cat(str, sep = "\n")
    }
 }
 
 data(zav) # zav.txt is .txt version of Zav. file public.dta
 zav0 <- zav
 
-print("")
-print("                                      SLOPE                                         ")
-yearTable (doreg, zav0, 2000, 2010, 1, 1, 3, 7)
-print("")
-print("                                      STDERR                                        ")
-yearTable (doreg, zav0, 2000, 2010, 2, 1, 4, 7)
-print("")
-print("                                     P-VALUE                                        ")
-yearTable (doreg, zav0, 2000, 2010, 3, 1, 3, 7)
-print("")
-print("    NEW NATIVE JOBS PER 100 FOREIGN-BORN STEM WORKERS WITH ADVANCED U.S. DEGREES    ")
-yearTable (doreg, zav0, 2000, 2010, 4, 1, 2, 7)
+cat("", sep = "\n")
+title <- "                                      SLOPE"
+yearTable (doreg, zav0, 2000, 2010, 1, 1, 4, 7, title, c(0), c("red",""), c("b",""))
+cat("", sep = "\n")
+title <- "                                      STDERR"
+yearTable (doreg, zav0, 2000, 2010, 2, 1, 4, 7, title, c(0), c("red"), c("b",""))
+cat("", sep = "\n")
+title <- "                                     P-VALUE"
+yearTable (doreg, zav0, 2000, 2010, 3, 1, 3, 7, title, c(0.01,0.05,0.1), c("red","orange","#00aa00"), c("b","b","b"))
+cat("", sep = "\n")
+title <- "    NEW NATIVE JOBS PER 100 FOREIGN-BORN STEM WORKERS WITH ADVANCED U.S. DEGREES"
+yearTable (doreg, zav0, 2000, 2010, 4, 1, 2, 7, title, c(-0.0001,0.0001), c("#ff0000","#ff9900"), c("b","b"))
