@@ -15,7 +15,16 @@ revisitAddin <- function() {
    rv$statusmsg <- ""
 
    ui <- miniPage(
-      includeCSS("R/revisit.css"),
+      #includeCSS("R/revisit.css"),
+      tags$style(type = "text/css",
+                 "label { padding: 0px; font-size: 20px }",
+                 ".btn { padding: 0px; font-size: 20px }",
+                 ".form-control { padding: 4px; font-size: 20px }",
+                 "#ace { font-weight: bold }",
+                 "#cancel { padding: 0px; font-size: 16px }",
+                 "#done { padding: 0px; font-size: 16px }",
+                 "#message { padding: 0px; font-size: 20px }"
+      ),
       #shinythemes::themeSelector(),
       theme = shinytheme("united"),
       gadgetTitleBar("Revisit"),
