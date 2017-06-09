@@ -47,7 +47,10 @@ revisitAddin <- function() {
          ),
          htmlOutput("message"),
          aceEditor("ace", value = "...",mode='r', fontSize = 20),
-         numericInput("aceFontSize", "Editor Font Size", value = 20)
+         stableColumnLayout(
+            numericInput("aceFontSize", "Editor Font Size", value = 20),
+            numericInput("pcount", "P-value Count", value = 0)
+         )
       )
    )
 
@@ -106,6 +109,10 @@ revisitAddin <- function() {
          loadBn <- input$loadBn
          doLoad(file, loadBn)
          return(list(loaded = rvenv$currcode))
+      })
+
+      output$pcount <- renderText({
+         rvenv$pcount
       })
 
       output$message <- renderText({
@@ -188,6 +195,7 @@ revisitAddin <- function() {
                }
             }
          }
+         updateNumericInput(session, "pcount", value = rvenv$pcount)
       })
 
       observeEvent(input$saveb, {

@@ -21,6 +21,7 @@ rvinit <- function(smalleffect=0.05) {
       rvenv$currcode <<- NULL
       rvenv$smalleffect <<- smalleffect
       rvenv$pc <<- NULL
+      rvenv$pcount <<- 0
 }
 
 # load original code, a .R file, and make the first branch from it
@@ -162,6 +163,7 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
       muhat1 <- tout$estimate[1]
       muhat2 <- tout$estimate[2]
       tout$p.value <- tout$p.value * bonf
+      rvenv$pcount <<- rvenv$pcount + 1
       if (tout$p.value < alpha && muhat1 != 0) {
          if (abs(muhat1 - muhat2)/ abs(muhat1) < rvenv$smalleffect)
          warning(paste('small p-value but effect size',
@@ -177,6 +179,7 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
    cfs <- coef(lmobj)
    lc <- length(cfs)
    if (usebonf) alpha <- alpha / lc
+   rvenv$pcount <<- rvenv$pcount + lc
    vc <- vcov(lmobj)
    ses <- sqrt(diag(vc))
    zcut <- qnorm(1-alpha/2)
