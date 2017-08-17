@@ -245,7 +245,7 @@ Use t.test.rv with bonf = 8
 ```
 
 Each time we save a new branch, the description comments of the source
-branch are accumulated, thus providing a change hsitory.
+branch are accumulated, thus providing a change history.
 
 We should also check whether the author did a good job of data cleaning.
 As a crude measure, we can find the range of each of the variables, say
