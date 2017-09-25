@@ -630,4 +630,198 @@ F-statistic: 18.36 on 12 and 372 DF,  p-value: < 2.2e-16
 Now adjusted R-squared is only 0.3517, quite a drop. So, state-to-state
 difference was the main driver of the high R-squared.
 
+### Fourth example
 
+Here we look at the most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff (hereafter called RR) titled ["Growth in a Time of Debt"](http://www.nber.org/papers/w15639.pdf).  That result is shown in Appendix Table 1 and is the -0.1 average real GDP growth found from 1946 to 2009 for advanced economies with central government debt of 90 percent and above.
+
+According to [this blog post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/), "that 90 percent figure has often been cited in the past few years as one big reason why countries must trim their deficits - even if their economies are still weak."  However, the blog post then describes an [April 2013 critique by Thomas Herndon, Michael Ash and Robert Pollin](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf) (hereafter called HAP) which claims that this result needs revision.  The critique points to four errors or questionable methodologies, the most reported of which was an Excel spreadsheet error.
+
+In order to understand the problems, it's useful to look at the actual data.  Page 6 of the critique states that RR reports 96 points of data in the above 90 debt/GDP category but that there were 110 data points before RR excluded 14 of them.  The following table shows those 110 data points:
+
+```
+        Aus-                                                     New 
+Year tralia* Belgium* Canada* Greece Ireland   Italy   Japan Zealand      UK      US
+---- ------- ------- ------- ------- ------- ------- ------- ------- ------- -------
+1946    -3.6^      .    -1.0^      .       .       .       .     7.7^   -2.5   -10.9
+1947     2.5^   15.2     4.4^      .       .       .       .    11.9^   -1.3    -0.9
+1948     6.4^      .     1.8^      .       .       .       .    -9.9^    2.9     4.4
+1949     6.6^      .     2.2^      .       .       .       .    10.8^    3.3    -0.5
+1950     6.9^      .     7.4^      .       .       .       .       .     3.2       .
+1951       .       .       .       .       .       .       .    -7.6     2.7       .
+1952       .       .       .       .       .       .       .       .     0.1       .
+1953       .       .       .       .       .       .       .       .     3.8       .
+1954       .       .       .       .       .       .       .       .     4.1       .
+1955       .       .       .       .       .       .       .       .     3.5       .
+1956       .       .       .       .       .       .       .       .     0.9       .
+1957       .       .       .       .       .       .       .       .     1.7       .
+1958       .       .       .       .       .       .       .       .     0.3       .
+1959       .       .       .       .       .       .       .       .     4.3       .
+1960       .       .       .       .       .       .       .       .     5.3       .
+1961       .       .       .       .       .       .       .       .     2.3       .
+1962       .       .       .       .       .       .       .       .     1.1       .
+1963       .       .       .       .       .       .       .       .     4.3       .
+1964       .       .       .       .       .       .       .       .     5.5       .
+
+-------------------------(no cases from 1965 to 1982)-------------------------------
+
+1983       .       .       .       .    -0.7       .       .       .       .       .
+1984       .     2.1       .       .     3.2       .       .       .       .       .
+1985       .     1.8       .       .     1.9       .       .       .       .       .
+1986       .     1.9       .       .     0.4       .       .       .       .       .
+1987       .     2.4       .       .     3.6       .       .       .       .       .
+1988       .     4.6       .       .     3.0       .       .       .       .       .
+1989       .     3.6       .       .     5.6       .       .       .       .       .
+1990       .     3.1       .       .       .       .       .       .       .       .
+1991       .     1.8       .     3.1       .       .       .       .       .       .
+1992       .     1.3       .     0.7       .       .       .       .       .       .
+1993       .    -0.7       .    -1.6       .    -0.9       .       .       .       .
+1994       .     3.3       .     2.0       .     2.2       .       .       .       .
+1995       .     4.3       .     2.1       .     2.8       .       .       .       .
+1996       .     0.9       .     2.4       .     1.1       .       .       .       .
+1997       .     3.7       .     3.6       .     1.9       .       .       .       .
+1998       .     1.7       .     3.4       .     1.4       .       .       .       .
+1999       .     3.4       .     3.4       .     1.5    -0.1       .       .       .
+2000       .     3.8       .     4.5       .     3.7     2.9       .       .       .
+2001       .     0.8       .     4.2       .     1.8     0.2       .       .       .
+2002       .     1.5       .     3.4       .       .     0.3       .       .       .
+2003       .     1.0       .     5.6       .       .     1.4       .       .       .
+2004       .     2.8       .     4.9       .       .     2.7       .       .       .
+2005       .     2.2       .     2.9       .       .     1.9       .       .       .
+2006       .       .       .     4.5       .       .     2.0       .       .       .
+2007       .       .       .     4.0       .       .     2.3       .       .       .
+2008       .     1.0       .     2.9       .       .    -0.7       .       .       .
+2009       .    -3.2       .    -0.8       .    -5.1    -5.4       .       .       .
+
+* column excluded by RR because of Excel error
+^ data purposely excluded by RR
+```
+As can be seen, the 14 points excluded by RR are 1946-1950 for Australia and Canada and 1946-1949 for New Zealand.  This exclusion is one of the problems listed by HAP.  Also visible is that Australia, Belgium, and Canada are excluded due to the Excel spreadsheet error.  However, Australia and Canada had already been excluded on purpose so only the Belgium exclusion matters.  In any case, this is a second problem.  A third problem is an apparent transcription error which is described in footnote 6 on page 9 the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf) as follows:
+
+> An apparent transcription error in transferring the country average from the country-specific sheets to
+> the summary sheet reduced New Zealand’s average growth in the highest public debt category from −7.6
+> to −7.9 percent per year. With only seven countries appearing in the highest public debt/GDP group, this
+> transcription error reduces the estimate of average real GDP growth by another −0.1 percentage point.
+ 
+The fourth problem is that RR weights the averages by countries.  Hence, the -7.6 percent average for New Zealand has the same weight as the 2.4 percent average for the UK even though the former derives from a single year and the latter derives from 19 consecutive years.  The HAL critique concedes that the correct weighting might not necessarily be 1 to 19 in this case, stating "within-country serially correlated relationships could support an argument that not every additional country-year contributes proportionally additional information."  Yet equal weighting would definitely not seem correct as 19 years could not reasonably represent a single "episode".
+
+Results from fixing various combinations of these four problems are shown in Table 3 of the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf).  The following shows how to load and list the R program RR90all.R which attempts to reproduce many of these results:
+
+```r
+> library(revisit)
+> rvinit()
+> setwd('inst/examples')
+> loadb('RR90all.R')
+> lcc()
+[1] "next line to execute indicated by ***"
+1 *** library(foreign) 
+2 library(plyr) 
+3  
+4 prtWeightByCountry <- function(df, label){ 
+5   Country <- c("Australia","Belgium","Canada","Greece","Ireland","Italy","Japan","New Zealand","UK","US") 
+6   country <- data.frame(Country) 
+7   cc <- ddply(df, .(Country), summarize, dRGDP=mean(dRGDP)) 
+8   tot <- mean(cc$dRGDP) 
+9   cc <- merge(country, cc, all.x = TRUE) 
+10   cat(sprintf("%6.1f %7.1f %6.1f %6.1f %7.1f %6.1f %6.1f %7.1f %6.1f %6.1f %6.2f  %s\n", 
+11               cc$dRGDP[1], cc$dRGDP[2], cc$dRGDP[3], cc$dRGDP[4], cc$dRGDP[5], 
+12               cc$dRGDP[6], cc$dRGDP[7], cc$dRGDP[8], cc$dRGDP[9], cc$dRGDP[10], tot, label)) 
+13 } 
+14  
+15 prtWeightByCountryYr <- function(df, label){ 
+16   cc <- ddply(df, .(Country), summarize, dRGDP=mean(dRGDP)) 
+17   cat(sprintf("%6.1f %7.1f %6.1f %6.1f %7.1f %6.1f %6.1f %7.1f %6.1f %6.1f %6.2f  %s\n", 
+18               cc$dRGDP[1], cc$dRGDP[2], cc$dRGDP[3], cc$dRGDP[4], cc$dRGDP[5], 
+19               cc$dRGDP[6], cc$dRGDP[7], cc$dRGDP[8], cc$dRGDP[9], cc$dRGDP[10], mean(df$dRGDP), label)) 
+20 } 
+21  
+22 # The data file "RR-processed.dta" comes from the Herndon, Ash and Pollin (HAP) zip file 
+23 # https://www.peri.umass.edu/images/WP322HAP-RR-GITD-code-2013-05-17.zip 
+24 # which is linked to at 
+25 # https://www.peri.umass.edu/publication/item/526-does-high-public-debt-consistently-stifle-economic-growth-a-critique-of-reinhart-and-rogo-ff . 
+26 # RR-processed.dta is created by the HAP program RR.R, also in the zip file. 
+27  
+28 RRp <- read.dta("RR-processed.dta") 
+29 print("number of data in RR-processed.dta") 
+30 print(dim(RRp)[1]) 
+31 RR90 <- RRp[!is.na(RRp$dRGDP) & !is.na(RRp$debtgdp) & RRp$debtgdp > 90,] 
+32 print("number of data with debtgdp > 90") 
+33 print(dim(RR90)[1]) 
+34 RR1 <- RR90[RR90$Country != "Belgium" & 
+35             RR90$Country != "Australia" & 
+36             RR90$Country != "Canada" & 
+37             (RR90$Country != "New Zealand" | RR90$Year > 1949),] 
+38 RR0 <- RR1 
+39 RR0$dRGDP[RR0$Country == "New Zealand" & RR0$Year == 1951] <- -7.9 # transcription  error 
+40 print("number of data used by RR") 
+41 print(dim(RR1)[1]) 
+42  
+43 hdr1 <- c("  Aus-","       ","      ","      ","       ", 
+44           "      ","      ","    New","\n") 
+45 hdr2 <- c("tralia","Belgium","Canada","Greece","Ireland", 
+46           " Italy"," Japan","Zealand","    UK","    US", " TOTAL  Scenario\n") 
+47 cat(hdr1) 
+48 cat(hdr2) 
+49 prtWeightByCountry(RR0, "RR (Reinhart and Rogoff)") 
+50 prtWeightByCountry(RR1, "+ fix NZ transcription") 
+51  
+52 RR2 <- RR90[RR90$Country != "Australia" & 
+53             RR90$Country != "Canada" & 
+54             (RR90$Country != "New Zealand" | RR90$Year > 1949),] 
+55 prtWeightByCountry(RR2, "+ fix Excel error") 
+56  
+57 RR3 <- RR90[RR90$Country != "Australia" & 
+58             RR90$Country != "Canada",] 
+59 prtWeightByCountry(RR3, "+ include 1946-1949 for NZ") 
+60  
+61 prtWeightByCountry(RR90, "+ include all data (1946-09)") 
+62 prtWeightByCountryYr(RR90, "+ use country-year weighting") 
+63  
+64 RR4 <- RR90[RR90$Year >= 1947,] 
+65 prtWeightByCountry(RR4, "all data for 1947-2009") 
+66  
+67 RR5 <- RR90[RR90$Year >= 1952,] 
+68 prtWeightByCountry(RR5, "all data for 1952-2009") 
+69  
+70 RR6 <- RR90[RR90$Year >= 1980,] 
+71 prtWeightByCountry(RR6, "all data for 1980-2009") 
+```
+As stated in lines 22 to 26, this program reads the file RR-processed.dta which comes from the a [Herndon, Ash and Pollin (HAP) zip file](https://www.peri.umass.edu/images/WP322HAP-RR-GITD-code-2013-05-17.zip) which is linked to [here](https://www.peri.umass.edu/publication/item/526-does-high-public-debt-consistently-stifle-economic-growth-a-critique-of-reinhart-and-rogo-ff).  The following shows the results of running RR90all.R:
+
+```
+> runb()
+[1] "number of data in RR-processed.dta"
+[1] 1275
+[1] "number of data with debtgdp > 90"
+[1] 110
+[1] "number of data used by RR"
+[1] 71
+  Aus-                                                 New 
+tralia Belgium Canada Greece Ireland  Italy  Japan Zealand     UK     US  TOTAL  Scenario
+    NA      NA     NA    2.9     2.4    1.0    0.7    -7.9    2.4   -2.0  -0.06  RR (Reinhart and Rogoff)
+    NA      NA     NA    2.9     2.4    1.0    0.7    -7.6    2.4   -2.0  -0.02  + fix NZ transcription
+    NA     2.6     NA    2.9     2.4    1.0    0.7    -7.6    2.4   -2.0   0.30  + fix Excel error
+    NA     2.6     NA    2.9     2.4    1.0    0.7     2.6    2.4   -2.0   1.58  + include 1946-1949 for NZ
+   3.8     2.6    3.0    2.9     2.4    1.0    0.7     2.6    2.4   -2.0   1.93  + include all data (1946-09)
+   3.8     2.6    3.0    2.9     2.4    1.0    0.7     2.6    2.4   -2.0   2.17  + use country-year weighting
+   5.6     2.6    4.0    2.9     2.4    1.0    0.7     1.3    2.7    1.0   2.41  all data for 1947-2009
+    NA     2.0     NA    2.9     2.4    1.0    0.7      NA    2.9     NA   1.99  all data for 1952-2009
+    NA     2.0     NA    2.9     2.4    1.0    0.7      NA     NA     NA   1.82  all data for 1980-2009
+> 
+```
+The following shows key results from Table 3 of the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf):
+
+```
+Effects of RR calculations for 90 percent and above category
+-0.1  Spreadsheet error + Selective years exclusion +
+        Country weights + Transcription error
+ 0.0  Spreadsheet error + Selective years exclusion +
+        Country weights
+ 0.3  Selective years exclusion + Country weights
+ 1.9  Country weights only
+Corrected results
+ 2.2  Country-year weighting, all data  
+```
+
+These results are identical to those shown in the output from RR90all.R (when rounded to one decimal place).  The line for "+ include 1946-1950 for New Zealand" is not in the Table 3 results and just shows that the majority of the change due to the selective years exclusion appears to be from New Zealand.  Finally, the last three lines just show the results for using all of the data points for selected spans of years and country weights.  Hence, even when using RR's method of weighting, using all of the data from these spans of years give results much closer to HAP's corrected results than RR's original result.
+
+The numbers listed under the countries for each scenario show the averages for those countries.  Note that all of the numbers in the first scenario match the numbers in the blue box on the Excel spreadsheet shown at [aforementioned blog post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/).  Averaging the 7 non-NA numbers gives -0.07 which differs slightly from -0.06 due to round-off error.  Hence, the program RR90all.R appears to successfully reproduce the key result from the RR study and the key alternate results from the HAP critique.
