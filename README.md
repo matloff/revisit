@@ -17,8 +17,7 @@ exactly what procedures the authors used.
 instance](http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970)
 in the journal *Nature*, the problem is considered by many to have
 reached crisis stage.
-
-Much of the concern is statistical in nature. As noted in the above
+Much of the concern is statistical. As noted in the 
 *Nature* report (emphasis added):
 
 > The survey asked scientists what led to problems in reproducibility.
@@ -98,7 +97,7 @@ package may:
 
 * Etc.
 
-(Only some of these are implemented yet.)
+(Only some of these are implemented so far.)
 
 More specifically, the user might go through the following thought
 processes, and take action using the facilities in the package:
