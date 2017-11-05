@@ -174,7 +174,7 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 | Diab     | Class variable (0 or 1)                                                  |
 
 As an illustration, suppose code were written by the author of the
-study, in our  package file **examples/pima.R**.  We copy that to the
+study, in our  package file **CaseStudies/Pima/pima.R**.  We copy that to the
 file **pima.R** in the directory from which we launched RStudio.  (We
 could do this by hand before launch, or via the function
 **getexample()** included in the package. In the GUI version, we'd run
@@ -366,9 +366,9 @@ presentation less cluttered and to illustrate an advantage to using this
 version.  
 
 Suppose the author of a study of this data had analyzed with the code
-**examples/movielens.R** in this package.  We'll assume that that file
-is in our current directory, which we can conveniently arrange by
-running
+**CaseStudies/MovieLens//movielens.R** in this package.  We'll assume
+that that file is in our current directory, which we can conveniently
+arrange by running
 
 ``` r
 > getexample('movielens.R')
@@ -471,7 +471,7 @@ The data consist of employment figures for each of the 50 states, in
 each of the years 2000-2010.
 
 Again, we'll use the text version of **revisit**.  Assume that we've
-copied **examples/ols262.R** to the current directory, from which we
+copied **CaseStudies/Zavodny/ols262.R** to the current directory, from which we
 will load it.
 
 ``` r
@@ -708,7 +708,7 @@ Results from fixing various combinations of these four problems are shown in Tab
 ```r
 > library(revisit)
 > rvinit()
-> setwd('inst/examples')
+> setwd('inst/CaseStudies/RR')
 > loadb('RR90all.R')
 > lcc()
 [1] "next line to execute indicated by ***"
