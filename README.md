@@ -366,12 +366,12 @@ presentation less cluttered and to illustrate an advantage to using this
 version.  
 
 Suppose the author of a study of this data had analyzed with the code
-**CaseStudies/MovieLens//movielens.R** in this package.  We'll assume
+**CaseStudies/MovieLens/movielens.R** in this package.  We'll assume
 that that file is in our current directory, which we can conveniently
 arrange by running
 
 ``` r
-> getexample('movielens.R')
+> getexample('MovieLens/movielens.R')
 ```
  
 So, let's see the code:
@@ -477,7 +477,7 @@ will load it.
 ``` r
 > library(revisit)
 > rvinit()  # required initialization
-> loadb('ols262.0.R')  # load the branch
+> loadb('ols262.R')  # load the branch
 > lcc()  # list the code
 1 # RV history start 
 2 # original code 
