@@ -132,8 +132,8 @@ edt <- function(listresult=FALSE) {
       code <- c('if (FALSE) {',code,'}')
       writeLines(code,'tmprv.R')
       tmprv <- edit(file='tmprv.R')  # tmprv just a dummy to prevent execution
-      tmp <<- readLines('tmprv.R')
-      rvenv$currcode <<- tmp[c(-1,-length(tmp))]
+      tmplines <<- readLines('tmprv.R')
+      rvenv$currcode <<- tmplines[c(-1,-length(tmplines))]
       # make sure not to return the edited code itself, as it would be executed
       if (listresult) lcc() else return(0)
 }
