@@ -153,7 +153,7 @@ Let's get started, using the GUI.  (See installation instructions
 below.)
 
 We start up RStudio (either by icon or by typing 'rstudio' into a
-terminal window), then load the **revisit** library by typing
+terminal window), then load the **revisit** package by typing
 'library(revisit)' into the RStudio R console, then (near the top of the
 screen) select Addins | Revisit.
 
@@ -479,65 +479,20 @@ will load it.
 > rvinit()  # required initialization
 > loadb('ols262.R')  # load the branch
 > lcc()  # list the code
-1 # RV history start 
-2 # original code 
-3 # RV history end 
-4 # the file public.dta and the Stata code on which this R code is based 
-5 # is courtesy of M. Zavodny 
+1 # the file public.dta and the Stata code on which this R code is based 
+2 # is courtesy of M. Zavodny 
+3  
+4 data(zav) # zav.txt is .txt version of Zav. file public.dta 
+5 zav = zav[zav$year < 2008,] # 2000-2007 (first year in zav.txt is 2000) 
 6  
-7 data(zav) # zav.txt is .txt version of Zav. file public.dta 
-8 zav = zav[zav$year < 2008,] # 2000-2007 (first year in zav.txt is 2000) 
-9  
-10 ##### traditional employment rate and immigrant share model ##### 
-11  
-12 # employment rate for natives = employed natives divided by total native 
-13 # population 
-14 zav$emprate_native   <- zav$emp_native / zav$pop_native * 100 
-15  
-16 # immigrant stem workers with advanced degrees from U.S. universities,  
-17 # share of total workers employed 
-18  
-19 zav$immshare_emp_stem_e_grad   <- zav$emp_edus_stem_grad / zav$emp_total * 100 
-28 zav$lnimmshare_emp_stem_n_grad <- log(zav$immshare_emp_stem_n_grad) 
-29  
-30 # year in sample (in this case, 2000-2007), converted to factors for 
-31 # use as an instrumental variable 
-32 zav$fyear  <- as.factor(zav$year) 
-33  
-34 # 50 states plus Washington D.C., converted to factors for use as an 
-35 # instrumental variable 
-36 zav$fstate <- as.factor(zav$statefip) 
-37  
-38 # need to normalize population weights so that each year has same weight; 
-39 # otherwise, too much weight assigned to later years 
-40 # do for total native population (age 16-64) 
-41 zav$sum_pop_native <- with(zav, ave(pop_native, year, FUN=sum)) 
-42 zav$weight_native <- zav$pop_native / zav$sum_pop_native 
-43  
-44 # remove non-positive values so that their logs are valid values (not 
-45 # NaN or infinite, plus or minus) 
-46 kk <- zav[zav$emp_edus_stem_grad > 0 & zav$emp_nedus_stem_grad > 0,] 
-47  
-48 # do regression with two independent variables, two instrumental 
-49 # variables, and weights to treat years equally 
-50  
-51 mm <- (with(kk,  
-52    lm(lnemprate_native ~  
-53       lnimmshare_emp_stem_e_grad +  
-54       lnimmshare_emp_stem_n_grad +  
-55       fyear +  
-56       fstate,  
-57       weights=weight_native))) 
-58  
-59 # extract slope and p-value from summary 
-60 slope <- mm$coefficients[2] 
-61 pvalue <- summary(mm)$coefficients[2,4] 
-62  
-63 # calculate number of native jobs associated with change in immigrant share 
-64 ols <- round(slope, 3) 
-65 jobs <- sum(zav$emp_native)/sum(zav$emp_edus_stem_grad) * ols * 100 
-66 print(paste("Slope   =", slope)) 
-67 print(paste("P-value =", pvalue)) 
+7 ##### traditional employment rate and immigrant share model ##### 
+8  
+9 # employment rate for natives = employed natives divided by total native 
+10 # population 
+11 zav$emprate_native   <- zav$emp_native / zav$pop_native * 100 
+...
+...
+...
 68 print(paste("Jobs    =", jobs)) 
 ```
 
@@ -606,13 +561,7 @@ so we try re-running the regression without them:
 +       fyear,
 +       weights=weight_native))))
 
-Call:
-lm(formula = lnemprate_native ~ lnimmshare_emp_stem_e_grad + 
-    lnimmshare_emp_stem_n_grad + fyear, weights = weight_native)
-
-Weighted Residuals:
-      Min        1Q    Median        3Q       Max 
--0.024409 -0.003716  0.001683  0.005383  0.019232 
+...
 
 Coefficients:
                              Estimate Std. Error t value
@@ -627,13 +576,31 @@ F-statistic: 18.36 on 12 and 372 DF,  p-value: < 2.2e-16
 ```
 
 Now adjusted R-squared is only 0.3517, quite a drop. So, state-to-state
-difference was the main driver of the high R-squared.
+variation was the main driver of the high R-squared value, rather than
+the H-1B share, the latter now being dubious anyway.
+
+The reader is free to try other time windows and so on, exactly the
+point of the package.
 
 ### Fourth example
 
-Here we look at the most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff (hereafter called RR) titled ["Growth in a Time of Debt"](http://www.nber.org/papers/w15639.pdf).  That result is shown in Appendix Table 1 and is the -0.1 average real GDP growth found from 1946 to 2009 for advanced economies with central government debt of 90 percent and above.
+Here we look at the most cited result from the 2010 paper by economists
+Carmen Reinhart and Kenneth Rogoff (hereafter called RR) titled ["Growth
+in a Time of Debt"](http://www.nber.org/papers/w15639.pdf).  That result
+is shown in Appendix Table 1 and is the -0.1 percent average real GDP growth
+found from 1946 to 2009 for advanced economies with central government
+debt of 90 percent and above.
 
-According to [this blog post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/), "that 90 percent figure has often been cited in the past few years as one big reason why countries must trim their deficits - even if their economies are still weak."  However, the blog post then describes an [April 2013 critique by Thomas Herndon, Michael Ash and Robert Pollin](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf) (hereafter called HAP) which claims that this result needs revision.  The critique points to four errors or questionable methodologies, the most reported of which was an Excel spreadsheet error.
+According to [this blog
+post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/),
+"that 90 percent figure has often been cited in the past few years as
+one big reason why countries must trim their deficits - even if their
+economies are still weak."  However, the blog post then describes an
+[April 2013 critique by Thomas Herndon, Michael Ash and Robert
+Pollin](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf)
+(hereafter called HAP) which claims that this result needs revision.
+The critique points to four errors or questionable methodologies, the
+most reported of which was an Excel spreadsheet error.
 
 In order to understand the problems, it's useful to look at the actual data.  Page 6 of the critique states that RR reports 96 points of data in the above 90 debt/GDP category but that there were 110 data points before RR excluded 14 of them.  The following table shows those 110 data points:
 
@@ -694,7 +661,17 @@ Year tralia* Belgium* Canada* Greece Ireland   Italy   Japan Zealand      UK    
 * column excluded by RR because of Excel error
 ^ data purposely excluded by RR
 ```
-As can be seen, the 14 points excluded by RR are 1946-1950 for Australia and Canada and 1946-1949 for New Zealand.  This exclusion is one of the problems listed by HAP.  Also visible is that Australia, Belgium, and Canada are excluded due to the Excel spreadsheet error.  However, Australia and Canada had already been excluded on purpose so only the Belgium exclusion matters.  In any case, this is a second problem.  A third problem is an apparent transcription error which is described in footnote 6 on page 9 the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf) as follows:
+
+As can be seen, the 14 points excluded by RR are 1946-1950 for Australia
+and Canada and 1946-1949 for New Zealand.  This exclusion is one of the
+problems listed by HAP.  Also visible is that Australia, Belgium, and
+Canada are excluded due to the Excel spreadsheet error.  However,
+Australia and Canada had already been excluded deliberately, so only the
+Belgium exclusion matters.  In any case, this is a second problem.  A
+third problem is an apparent transcription error which is described in
+footnote 6 on page 9 the [HAL
+critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf)
+as follows:
 
 > An apparent transcription error in transferring the country average from the country-specific sheets to
 > the summary sheet reduced New Zealand’s average growth in the highest public debt category from −7.6
@@ -703,7 +680,7 @@ As can be seen, the 14 points excluded by RR are 1946-1950 for Australia and Can
  
 The fourth problem is that RR weights the averages by countries.  Hence, the -7.6 percent average for New Zealand has the same weight as the 2.4 percent average for the UK even though the former derives from a single year and the latter derives from 19 consecutive years.  The HAL critique concedes that the correct weighting might not necessarily be 1 to 19 in this case, stating "within-country serially correlated relationships could support an argument that not every additional country-year contributes proportionally additional information."  Yet equal weighting would definitely not seem correct as 19 years could not reasonably represent a single "episode".
 
-Results from fixing various combinations of these four problems are shown in Table 3 of the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf).  The following shows how to load and list the R program RR90all.R which attempts to reproduce many of these results:
+Results from fixing various combinations of these four problems are shown in Table 3 of the [HAL critique](http://www.peri.umass.edu/fileadmin/pdf/working_papers/working_papers_301-350/WP322.pdf).  The following shows how to load and list the R program **RR90all.R** which attempts to reproduce many of these results:
 
 ```r
 > library(revisit)
@@ -821,6 +798,23 @@ Corrected results
  2.2  Country-year weighting, all data  
 ```
 
-These results are identical to those shown in the output from RR90all.R (when rounded to one decimal place).  The line for "+ include 1946-1950 for New Zealand" is not in the Table 3 results and just shows that the majority of the change due to the selective years exclusion appears to be from New Zealand.  Finally, the last three lines just show the results for using all of the data points for selected spans of years and country weights.  Hence, even when using RR's method of weighting, using all of the data from these spans of years give results much closer to HAP's corrected results than RR's original result.
+These results are identical to those shown in the output from
+**RR90all.R** (when rounded to one decimal place).  The line for "+
+include 1946-1950 for New Zealand" is not in the Table 3 results and
+just shows that the majority of the change due to the selective years
+exclusion appears to be from New Zealand.  Finally, the last three lines
+just show the results for using all of the data points for selected
+spans of years and country weights.  Hence, even when using RR's method
+of weighting, using all of the data from these spans of years give
+results much closer to HAP's corrected results than RR's original
+result.
 
-The numbers listed under the countries for each scenario show the averages for those countries.  Note that all of the numbers in the first scenario match the numbers in the blue box on the Excel spreadsheet shown at [aforementioned blog post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/).  Averaging the 7 non-NA numbers gives -0.07 which differs slightly from -0.06 due to round-off error.  Hence, the program RR90all.R appears to successfully reproduce the key result from the RR study and the key alternate results from the HAP critique.
+The numbers listed under the countries for each scenario show the
+averages for those countries.  Note that all of the numbers in the first
+scenario match the numbers in the blue box on the Excel spreadsheet
+shown at [aforementioned blog
+post](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/).
+Averaging the 7 non-NA numbers gives -0.07 which differs slightly from
+-0.06 due to round-off error.  Hence, the program RR90all.R appears to
+successfully reproduce the key result from the RR study and the key
+alternate results from the HAP critique.

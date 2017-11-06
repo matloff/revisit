@@ -13,9 +13,9 @@
 # initialize rvisit; the R environment rvenv will contain the relevant
 # information about the currently-in-use branch
 
-rvenv <<- new.env()
 
 rvinit <- function(smalleffect=0.05) {
+      rvenv <<- new.env()
       rvenv$currb <<- NULL
       rvenv$currbasenm <<- NULL
       rvenv$desc <<- NULL
