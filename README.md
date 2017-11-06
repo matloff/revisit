@@ -368,16 +368,17 @@ version.
 Suppose the author of a study of this data had analyzed with the code
 **CaseStudies/MovieLens/movielens.R** in this package.  We'll assume
 that that file is in our current directory, which we can conveniently
-arrange by running
-
-``` r
-> getexample('MovieLens/movielens.R')
+arrange by running {\bf getexample}.
 ```
  
-So, let's see the code:
+So, let's load the code and take a look:
 
 ``` r
-> lcc()
+> library(revisit)
+> rvinit()
+> getexample('CaseStudies/MovieLens/movielens.R')
+> loadb('movielens.R')
+> lcc()  # list the code
 [1] "next line to execute indicated by ***"
 1 *** # RV history start 
 2 # original code 
@@ -685,7 +686,7 @@ Results from fixing various combinations of these four problems are shown in Tab
 ```r
 > library(revisit)
 > rvinit()
-> setwd('inst/CaseStudies/RR')
+> getexample('CaseStudies/RR/RR90all.R')
 > loadb('RR90all.R')
 > lcc()
 [1] "next line to execute indicated by ***"
