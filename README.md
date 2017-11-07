@@ -153,9 +153,8 @@ Let's get started, using the GUI.  (See installation instructions
 below.)
 
 We start up RStudio (either by icon or by typing 'RStudio' with the
-proper search path into a terminal window), then load the **revisit**
-package by typing 'library(revisit)' into the RStudio R console, then
-(near the top of the screen) select Addins | Revisit.
+proper search path into a terminal window), then (near the top of the
+screen) selecting **Addins | Revisit**.
 
 This example uses the famous Pima diabetes study at the UCI data repository.
 The following table shows the 9 variables in **pima.txt**, followed by their
@@ -187,17 +186,17 @@ The screen now looks like this:
 RStudio is running in the background window, and the foreground window
 shows the **revisit** add-in.  The original author's code is shown in
 the editor portion in the bottom half of that window.  One can edit the
-code, re-run in full or in part (Run/Continue and Next buttons),
-save/load branches (Save Code and Load Code buttons) and so on.  All
+code, re-run in full or in part (**Run/Continue** and **Next** buttons),
+save/load branches (**Save Code** and **Load Code** buttons) and so on.  All
 output will be displayed in the R console portion of the background
 window.
 
-By the way, if Load Branch # is 0 and the branch 0 file cannot be found,
+By the way, if **Load Branch #** is 0 and the branch 0 file cannot be found,
 **revisit** will attempt to load the original author code.  If that file is
 found, **revisit** will automatically create the branch 0 file, identical
 to the original author code, but with an identifying comment line.
 
-To replay the author's code without modfication, we click Run/Continue .
+To replay the author's code without modfication, we click **Run/Continue**.
 The new screen is:
 
 ![alt text](Screen1.png)
@@ -211,23 +210,23 @@ inference procedure here."  So we change line 12 to use **revisit**'s own
 function, employing the Bonferroni method with number of comparisons
 equal to 8.
 
-We then re-run.  If we fail to reset the Run Start Line and Run Through Line
-first, however, we will get the error shown in red in the console below.
-This is because **revisit** had already run through the end of the code.
-*There is no need to start from the beginning*, so we change the Run Start
-Line box to 11, reset the Run Through Line box to the last line (if necessary)
-and click Run/Continue, yielding:
+We then re-run.  If we fail to reset the **Run Start Line** and **Run
+Through Line** first, however, we will get the error shown in red in the
+console below.  This is because **revisit** had already run through the
+end of the code.  *There is no need to start from the beginning*, so we
+change the **Run Start Line** box to 11, reset the **Run Through Line**
+box to the last line (if necessary) and click **Run/Continue**, yielding:
 
 ![alt text](Screen2.png)
 
 Ah, the confidence intervals did indeed get wider, as expected, in
-line with statistical fairness.  (Note that the Run Start Line box has
+line with statistical fairness.  (Note that the **Run Start** Line box has
 again moved one past the last line of code.)
 
-Say we believe this branch is worth saving.  The Save Branch # box tells
+Say we believe this branch is worth saving.  The **Save Branch #** box tells
 us the next branch will be named branch 1 (we could change that).  Before
-saving, we are required to type in a Description of the change.  If we now
-click Save Code, the new branch will be reloaded with the description now
+saving, we are required to type in a description of the change.  If we now
+click **Save Code**, the new branch will be reloaded with the description now
 visible in the last line of the revisit history at the top of the file
 as shown below:
 
@@ -257,7 +256,7 @@ We could simply run this code directly if we were in the text-based
 version of **revisit**, since there we would have direct control of the
 R console. This is not the case in the GUI version. So instead, we add
 the code temporarily at the end of code editor, as line 16. We change
-the Run Start Line box to 16, and hit Run/Continue:
+the **Run Start Line** box to 16, and hit **Run/Continue**:
 
 ![alt text](Screen4.png)
 
@@ -279,8 +278,8 @@ pima <- pima[ccs,]
 
 The last two statements will drop all cases that contain one or more
 suspicious 0s.  Suppose we add all seven statements to the code
-immediately after pima is loaded, reset Run Start Line and Run Through
-Line to run all of the code, and click Run/Continue.  Following is the
+immediately after pima is loaded, reset **Run Start Line** and **Run Through
+Line** to run all of the code, and click **Run/Continue**.  Following is the
 result:
 
 ![alt text](Screen5.png)
@@ -290,14 +289,14 @@ variable that contains 0s, the one variable for which they make sense.
 We can also see that the confidence intervals have changed.  They
 should be more accurate now that cases that contain 0s which are
 actually missing values have been removed.  We can then delete the
-last line which prints the ranges (print(apply(pima[,1:8],2,range)))
+last line which prints the ranges (**print(apply(pima[,1:8],2,range))**)
 as this was intended just for temporary use.
 
-Say we then believe this branch is worth saving.  The Save Branch #
+Say we then believe this branch is worth saving.  The **Save Branch #**
 box tells us the next branch will be named branch 2 (as before, we
 could change that).  Before saving, we are again required to type
-in a Description of the change.  If we do that and then click Save
-Code, the new branch will be reloaded with the description now
+in a description of the change.  If we do that and then click **Save
+Code**, the new branch will be reloaded with the description now
 visible in the last line of the revisit history at the top of the
 file as shown below:
 
