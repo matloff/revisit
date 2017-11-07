@@ -152,10 +152,10 @@ flexiblity, while the GUI provides convenience.
 Let's get started, using the GUI.  (See installation instructions
 below.)
 
-We start up RStudio (either by icon or by typing 'rstudio' into a
-terminal window), then load the **revisit** package by typing
-'library(revisit)' into the RStudio R console, then (near the top of the
-screen) select Addins | Revisit.
+We start up RStudio (either by icon or by typing 'RStudio' with the
+proper search path into a terminal window), then load the **revisit**
+package by typing 'library(revisit)' into the RStudio R console, then
+(near the top of the screen) select Addins | Revisit.
 
 This example uses the famous Pima diabetes study at the UCI data repository.
 The following table shows the 9 variables in **pima.txt**, followed by their
@@ -173,13 +173,12 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 | Age      | Age (years)                                                              |
 | Diab     | Class variable (0 or 1)                                                  |
 
-As an illustration, suppose code were written by the author of the
-study, in our  package file **CaseStudies/Pima/pima.R**.  We copy that to the
-file **pima.R** in the directory from which we launched RStudio.  (We
-could do this by hand before launch, or via the function
-**getexample()** included in the package. In the GUI version, we'd run
-the latter command before starting the add-in.) We then type 'pima' into
-the Filename box, and click Load Code.
+As an illustration, we have code <strong>pima.R</strong> included in the
+package, which will be in the file **revisit/CaseStudies/Pima/pima.R**
+within our directory of installed R packages, which was **~/R** in the
+example run here.  In the GUI version, we simply type the file
+name/location into the **Filename** box, with full path, e.g.
+**~/R/revisit/CaseStudies/Pima/pima/pima**, then click **Load Code**.
 
 The screen now looks like this:
 
