@@ -35,6 +35,9 @@ If the code is changed and then saved with the command \code{saveb(1, "save bran
 # RV history start
 # original code
 # save branch 1
+# Time: YYYY-MM-DD Hour:Minute:Second
+# Revisited by:
+# UserID - Description
 # RV history end
 }
 
@@ -44,6 +47,9 @@ If no "# RV history end" line is found in the code being saved (because it was m
 # RV history start
 # WARNING: RV history missing and recreated
 # save branch 1
+# Time: YYYY-MM-DD Hour:Minute:Second
+# Revisited by:
+# UserID - Description
 # RV history end
 }
 
