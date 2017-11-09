@@ -37,7 +37,10 @@ revisitAddin <- function() {
          stableColumnLayout(
             numericInput("loadBn", "Load Branch #", value = 0),
             numericInput("runthru", "Run Through Line", value = -1),
-            textInput("desc", "Description")
+            textInput("username", "Username", value =  "e.g. LastName, FirstName") # username here and force a userID
+         ),
+         stableColumnLayout(
+         	textInput("desc", "Description")
          ),
          miniButtonBlock(
             actionButton("loadb", "Load Code"),
@@ -50,7 +53,7 @@ revisitAddin <- function() {
          stableColumnLayout(
             numericInput("aceFontSize", "Editor Font Size", value = 20),
             numericInput("pcount", "P-value Count", value = 0)
-         )
+      	 )
       )
    )
 
@@ -201,6 +204,7 @@ revisitAddin <- function() {
       observeEvent(input$saveb, {
          file <- input$file
          saveBn <- input$saveBn
+         username <- input$username   					   ########################## HI I MADE A CHANGE HERE
          if (is.null(loadBn_succ)){
             showModal(modalDialog(
                title = "SAVE ERROR",
@@ -223,6 +227,14 @@ revisitAddin <- function() {
             ))
             return()
          }
+         username <- gsub("^\\s+|\\s+$", "", input$username)
+         if (username == ""){
+            showModal(modalDialog(
+               title = "SAVE ERROR",
+               "Username must be set."
+            ))
+            return()
+         }
          filename <- paste0(file, ".", as.character(saveBn), ".R")
          if (file.exists(filename)){
             question <- paste("WARNING: ", filename, "exists. Overwrite it?")
@@ -230,7 +242,7 @@ revisitAddin <- function() {
             return()
          }
          rvenv$currcode <- unlist(strsplit(input$ace, "\n")) # update currcode
-         saveb(input$saveBn, input$desc)
+         saveb(input$saveBn, paste(input$username, "-", input$desc))
          print(paste("SAVE", input$saveBn, "|", input$desc))
          updateNumericInput(session, "loadBn",  value = input$saveBn)
       })
