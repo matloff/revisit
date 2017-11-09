@@ -1,4 +1,3 @@
-
 # overview:
 
 # original code is in file named origcodenm; makebranch0() converts that
@@ -13,103 +12,110 @@
 # initialize rvisit; the R environment rvenv will contain the relevant
 # information about the currently-in-use branch
 
-
 rvinit <- function(smalleffect=0.05) {
-      rvenv <<- new.env()
-      rvenv$currb <<- NULL
-      rvenv$currbasenm <<- NULL
-      rvenv$desc <<- NULL
-      rvenv$currcode <<- NULL
-      rvenv$smalleffect <<- smalleffect
-      rvenv$pc <<- NULL
-      rvenv$pcount <<- 0
+   rvenv <<- new.env()
+   rvenv$currb <<- NULL
+   rvenv$currbasenm <<- NULL
+   rvenv$username <- NULL
+   rvenv$currcode <<- NULL
+   rvenv$smalleffect <<- smalleffect
+   rvenv$pc <<- NULL
+   rvenv$pcount <<- 0
 }
+
 
 # load original code, a .R file, and make the first branch from it
 makebranch0 <- function(origcodenm) {
-      code <- readLines(con = origcodenm)
-      desclines <-
+   code <- readLines(con = origcodenm)
+   desclines <-
       c('# RV history start','# original code','# RV history end')
-      code <- c(desclines,code)
-      rvenv$currbasenm <<- tools::file_path_sans_ext(origcodenm)
-      br0filenm <- paste(rvenv$currbasenm,'.0.R',sep='')
-      writeLines(code,br0filenm)
+   code <- c(desclines,code)
+   rvenv$currbasenm <<- tools::file_path_sans_ext(origcodenm)
+   br0filenm <- paste(rvenv$currbasenm,'.0.R',sep='')
+   writeLines(code,br0filenm)
 }
 
 # create new branch, with "midfix" ("middle suffix") midfix, in a file
 # whose name is the concatenization of our original prefix
 # rvenv$currbasenm; the midfix; and '.R'; the note desc describes
 # the branch
-saveb <- function(midfix,desc) {
-      code <- rvenv$currcode
-      # add lines at top of file with the description of the branch,
-      # consisting of the change history
-      #
-      # find end of description
-      g <- grep('# RV history end',code)
-      if (length(g) > 0){
-         endline <- g[1]
-         toplines <- code[1:(endline-1)]
-         toplines <- c(toplines,paste('#',desc))
-         code <- c(toplines,code[endline:length(code)])
-      } else {
-         toplines <-
-            c('# RV history start',
-              '# WARNING: RV history missing and recreated',
-              paste('#',desc),'# RV history end')
-         code <- c(toplines,code)
-      }
-      branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
-      # should add code asking user if OK to overwrite
-      writeLines(code,branchname)
+saveb <- function(midfix, desc, username) {
+   username <- NULL
+   code <- rvenv$currcode
+   # add lines at top of file with the description of the branch,
+   # consisting of the change history
+   #
+   # find end of description
+   g <- grep('# RV history end',code)
+   if (length(g) > 0){
+      endline <- g[1]
+      toplines <- code[1:(endline-1)]
+      toplines <- c(toplines,paste('# Time:',Sys.time(), '\n# Revisited by: ', '\n#',desc))
+      code <- c(toplines,code[endline:length(code)])
+   } else {
+      toplines <-
+         c('# RV history start',
+           '# WARNING: RV history missing and recreated',
+           paste('# Time:',Sys.time(),'\n# Revisited by: ','\n#',desc),'# RV history end')
+      code <- c(toplines,code)
+   }
+   branchname <- paste(rvenv$currbasenm,'.',midfix,'.R',sep='')
+   # should add code asking user if OK to overwrite
+   writeLines(code,branchname)
 }
+
 
 # set current branch to br, a filename
 loadb <- function(br) {
-      rvenv$currb <<- br
-      tmp <- tools::file_path_sans_ext(br)  # remove '.R'
-      tmp <- tools::file_path_sans_ext(tmp)  # remove branch number
-      rvenv$currbasenm <<- tmp
-      rvenv$currcode <<- readLines(br)
-      rvenv$pc <<- 1
-      rvenv$desc <<- ""
-      g <- grep('# RV history end',rvenv$currcode)
-      if (length(g) > 0 & g[1] > 1){
-         rvenv$desc <<- rvenv$currcode[g[1]-1]
-      }
-      # rvenv$firstrunafteredit <<- FALSE
+   rvenv$currb <<- br
+   tmp <- tools::file_path_sans_ext(br)  # remove '.R'
+   tmp <- tools::file_path_sans_ext(tmp)  # remove branch number
+   rvenv$currbasenm <<- tmp
+   rvenv$currcode <<- readLines(br)
+   rvenv$pc <<- 1
+   rvenv$desc <<- ""
+   g <- grep('# RV history end',rvenv$currcode)
+   if (length(g) > 0 & g[1] > 1){
+      rvenv$desc <<- rvenv$currcode[g[1]-1]
+   }
+   # rvenv$firstrunafteredit <<- FALSE
 }
+
 
 # run the code from lines startline through throughline; neither of
 # those can be inside a function call or function definition, including
 # loops, if(); startline is 1 by default, use 'f' to finish the run from
 # the present line, or use 'n' to step just one line
 
+
 runb <- function(
-      startline = 1,
-      throughline=length(rvenv$currcode))  {
-      if (startline == 'f' || startline == 'n') {
-         if (startline == 'n') throughline <- rvenv$pc
-         startline <- rvenv$pc
-      }
-      lcode <- length(rvenv$currcode)
-      if (startline < 1 || startline > lcode ||
-            throughline > lcode)
-         stop('line number out of range')
-            execrange <- startline:throughline
-            writeLines(rvenv$currcode[execrange],'tmprv.R')
-            source('tmprv.R')
-            rvenv$pc <- throughline + 1
-            # rvenv$firstrunafteredit <<- FALSE
+   startline = 1,
+   throughline=length(rvenv$currcode))  {
+   if (startline == 'f' || startline == 'n') {
+      if (startline == 'n') throughline <- rvenv$pc
+      startline <- rvenv$pc
+   }
+   lcode <- length(rvenv$currcode)
+   if (startline < 1 || startline > lcode ||
+       throughline > lcode)
+      stop('line number out of range')
+   execrange <- startline:throughline
+   writeLines(rvenv$currcode[execrange],'tmprv.R')
+   source('tmprv.R')
+   rvenv$pc <- throughline + 1
+   # rvenv$firstrunafteredit <<- FALSE
 }
+
 
 # single-step, as with debuggers
 nxt <- function() runb('n')
+
 
 # resume execution from the current line; execution will finish the
 # remaining lines, unless throughline is specified
 go <- function(throughline=length(rvenv$currcode))
    runb(startline=rvenv$pc,throughline)
+
 
 # list current code
 lcc <- function() {
@@ -117,9 +123,10 @@ lcc <- function() {
    print('next line to execute indicated by ***')
    for (i in 1:length(code)) {
       if (i == rvenv$pc) code[i] <- paste('***',code[i])
-         catn(i,code[i])
+      catn(i,code[i])
    }
 }
+
 
 # edit current code; edits the current code file, not an R object; if
 # 'listresult', then new code will be printed to the scree
@@ -127,30 +134,35 @@ lcc <- function() {
 # current implementation rather kludgy, repeatedly going back and forthe
 # to disk
 
+
 edt <- function(listresult=FALSE) {
-      # rvenv$firstrunafteredit <<- TRUE
-      code <- rvenv$currcode
-      code <- c('if (FALSE) {',code,'}')
-      writeLines(code,'tmprv.R')
-      tmprv <- edit(file='tmprv.R')  # tmprv just a dummy to prevent execution
-      tmplines <<- readLines('tmprv.R')
-      rvenv$currcode <<- tmplines[c(-1,-length(tmplines))]
-      # make sure not to return the edited code itself, as it would be executed
-      if (listresult) lcc() else return(0)
+   # rvenv$firstrunafteredit <<- TRUE
+   code <- rvenv$currcode
+   code <- c('if (FALSE) {',code,'}')
+   writeLines(code,'tmprv.R')
+   tmprv <- edit(file='tmprv.R')  # tmprv just a dummy to prevent execution
+   tmp <<- readLines('tmprv.R')
+   rvenv$currcode <<- tmp[c(-1,-length(tmp))]
+   # make sure not to return the edited code itself, as it would be executed
+   if (listresult) lcc() else return(0)
 }
+
 
 # do one line of code from a branch
 docmd <- function(toexec)
    eval(parse(text=toexec),envir=.GlobalEnv)
+
 
 # to be inserted after each app line that does a plot
 pause <- function() {
    readline('hit Enter ')
 }
 
+
 catn <- function(...) {
    cat(...,'\n')
 }
+
 
 # replace t.test() to check for misleadingly low p-value, and also
 # adjust for for multiple comparisons; 2-sample only; bonf
@@ -158,20 +170,22 @@ catn <- function(...) {
 # inference is desired (many other possibilities for that, e.g.
 # p.adjust() in base R)
 
+
 t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
-      alpha <- alpha / bonf
-      tout <- t.test(x,y,conf.level=1-alpha)
-      muhat1 <- tout$estimate[1]
-      muhat2 <- tout$estimate[2]
-      tout$p.value <- tout$p.value * bonf
-      rvenv$pcount <<- rvenv$pcount + 1
-      if (tout$p.value < alpha && muhat1 != 0) {
-         if (abs(muhat1 - muhat2)/ abs(muhat1) < rvenv$smalleffect)
+   alpha <- alpha / bonf
+   tout <- t.test(x,y,conf.level=1-alpha)
+   muhat1 <- tout$estimate[1]
+   muhat2 <- tout$estimate[2]
+   tout$p.value <- tout$p.value * bonf
+   rvenv$pcount <<- rvenv$pcount + 1
+   if (tout$p.value < alpha && muhat1 != 0) {
+      if (abs(muhat1 - muhat2)/ abs(muhat1) < rvenv$smalleffect)
          warning(paste('small p-value but effect size',
                        'could be of little practical interest'))
    }
    tout
 }
+
 
 # finds CIs and p-values, and warns of misleadingly small p-values;
 # optionally applies a Bonferroni adjustment; lmobj is an object of
@@ -199,7 +213,7 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
       warn <- ''
       if (i > 1 && pval < alpha &&
           cfi * sd(lmobj$model[[i]]) < sdyhat)
-             warn <- 'X'
+         warn <- 'X'
       output[i,1:4] <- c(cfi,ci1,ci2,pval)
       output[i,5] <- warn
    }
@@ -207,10 +221,11 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
    output
 }
 
+
 # copies the given file from the examples/ directory to the current
 # directory
 getexample <- function(exname) {
-   fullexname <- paste('CaseStudies/',exname,sep='')
+   fullexname <- paste('examples/',exname,sep='')
    loc <- system.file(fullexname,package='revisit')
    file.copy(loc,'.')
 }
