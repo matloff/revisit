@@ -17,22 +17,26 @@ exactly what procedures the authors used.
 instance](http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970)
 in the journal *Nature*, the problem is considered by many to have
 reached crisis stage.
-Much of the concern is statistical. As noted in the 
+**Much of the concern is statistical**. As noted in the 
 *Nature* report (emphasis added):
 
 > The survey asked scientists what led to problems in reproducibility.
 > More than 60% of respondents said that each of two factors — pressure to
-> publish and selective reporting — always or often contributed. More than
+> publish and **selective reporting** — always or often contributed. More than
 > half pointed to insufficient replication in the lab, poor oversight or
-> low statistical power.
+> *l*ow statistical power*.*
 > 
 > Respondents were asked to rate 11 different approaches to improving
 > reproducibility in science, and all got ringing endorsements. Nearly 90%
-> — more than 1,000 people — ticked "More robust experimental design"
-> "better statistics"...
+> — more than 1,000 people — ticked "**More robust experimental design"
+> "better statistics"...**
 
-The package is, made available as open source, is **aimed to help remedy
-such problems with data handling and statistics.**
+The package is, made available as open source, has two aims:
+
+* Helping to remedy such problems with data handling and statistics.
+
+* Use as a teaching tool, with many case studies showing alternative
+  statistical analyses.
 
 ### The **revisit** package 
 
@@ -152,9 +156,9 @@ flexiblity, while the GUI provides convenience.
 Let's get started, using the GUI.  (See installation instructions
 below.)
 
-We start up RStudio (either by icon or by typing 'RStudio' with the
-proper search path into a terminal window), then (near the top of the
-screen) selecting **Addins | Revisit**.
+We start up RStudio (either by icon or by typing 'RStudio' (or possibly
+'rstudio') with the proper search path into a terminal window), then
+(near the top of the screen) selecting **Addins | Revisit**.
 
 This example uses the famous Pima diabetes study at the UCI data repository.
 The following table shows the 9 variables in **pima.txt**, followed by their
@@ -374,7 +378,7 @@ So, let's load the code and take a look:
 ``` r
 > library(revisit)
 > rvinit()
-> getexample('CaseStudies/MovieLens/movielens.R')
+> getexample('MovieLens/movielens.R')
 > loadb('movielens.R')
 > lcc()  # list the code
 [1] "next line to execute indicated by ***"
