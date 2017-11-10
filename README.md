@@ -370,7 +370,7 @@ version.
 Suppose the author of a study of this data had analyzed with the code
 **CaseStudies/MovieLens/movielens.R** in this package.  We'll assume
 that that file is in our current directory, which we can conveniently
-arrange by running {\bf getexample}.
+arrange by running **getexample**.
 ```
  
 So, let's load the code and take a look:
