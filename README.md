@@ -1,5 +1,5 @@
 
-# revisit: a "Statistical Audit" for Statistical Reproducibility and Alternate Analysis
+# revisit: a Tool for Statistical Reproducibility and for Teaching 
 
 ### The reproducibility crisis
 
