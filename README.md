@@ -33,9 +33,9 @@ reached crisis stage.
 
 The package is, made available as open source, has two aims:
 
-* Helping to remedy such problems with data handling and statistics.
+* **Help remedy reproducibility problems** with data handling and statistics.
 
-* Use as a teaching tool, with many case studies showing alternative
+* **Use as a teaching tool**, with many case studies showing alternative
   statistical analyses.
 
 ### The **revisit** package 
