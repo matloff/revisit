@@ -33,10 +33,10 @@ revisitAddin <- function() {
          fluidRow(
             div(class = "col-xs-4 col-md-4",
                 selectInput("cases", "Case Studies",
-                            choices = c("Pima diabetes study",
-                                        "MovieLens ratings",
-                                        "Zavodny immigration study",
-                                        "Reinhart & Rogoff debt study"),
+                            choices = c("MovieLens ratings",
+                                        "Pima diabetes study",
+                                        "Reinhart & Rogoff debt study",
+                                        "Zavodny immigration study"),
                             selected = "Pima diabetes study")
             ),
             div(class = "col-xs-8 col-md-8",
@@ -146,22 +146,29 @@ revisitAddin <- function() {
 
       observeEvent(input$cases, {
          cases <- input$cases
-         if (cases == "Pima diabetes study"){
-            updateTextInput(session, "desc", value = "famous Pima diabetes study at the UCI data repository.")
-            doLoad("inst/CaseStudies/Pima/pima", 0)
+         if (cases == "MovieLens ratings"){
+            file <- "inst/CaseStudies/MovieLens/movielens"
+            desc <- "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users."
          }
-         else if (cases == "MovieLens ratings"){
-            updateTextInput(session, "desc", value = "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users.")
-            doLoad("inst/CaseStudies/MovieLens/movielens", 0)
-         }
-         else if (cases == "Zavodny immigration study"){
-            updateTextInput(session, "desc", value = "most cited result of study of whether the foreign born take jobs from the native born or instead create more jobs, on balance.")
-            doLoad("inst/CaseStudies/ReinhartRogoff/RR90all", 0)
+         else if (cases == "Pima diabetes study"){
+            file <- "inst/CaseStudies/Pima/pima"
+            desc <- "famous Pima diabetes study at the UCI data repository."
          }
          else if (cases == "Reinhart & Rogoff debt study"){
-            updateTextInput(session, "desc", value = "most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff titled \"Growth in a Time of Debt\".")
-            doLoad("inst/CaseStudies/Zavodny/ols262", 0)
+            file <- "inst/CaseStudies/ReinhartRogoff/RR90all"
+            desc <- "most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff titled \"Growth in a Time of Debt\"."
          }
+         else if (cases == "Zavodny immigration study"){
+            file <- "inst/CaseStudies/Zavodny/ols262"
+            desc <- "most cited result of study of whether the foreign born take jobs from the native born or instead create more jobs, on balance."
+         }
+         else{ # should never occur if select list matches
+            file <- "inst/CaseStudies/Pima/pima"
+            desc <- "famous Pima diabetes study at the UCI data repository."
+         }
+         updateTextInput(session, "desc", value = desc)
+         updateTextInput(session, "file", value = file)
+         doLoad(file, 0) # should be done by prior line
       })
 
       observeEvent(input$loadb, {
