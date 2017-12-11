@@ -148,15 +148,19 @@ revisitAddin <- function() {
          cases <- input$cases
          if (cases == "Pima diabetes study"){
             updateTextInput(session, "desc", value = "famous Pima diabetes study at the UCI data repository.")
+            doLoad("inst/CaseStudies/Pima/pima", 0)
          }
          else if (cases == "MovieLens ratings"){
             updateTextInput(session, "desc", value = "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users.")
+            doLoad("inst/CaseStudies/MovieLens/movielens", 0)
          }
          else if (cases == "Zavodny immigration study"){
             updateTextInput(session, "desc", value = "most cited result of study of whether the foreign born take jobs from the native born or instead create more jobs, on balance.")
+            doLoad("inst/CaseStudies/ReinhartRogoff/RR90all", 0)
          }
          else if (cases == "Reinhart & Rogoff debt study"){
             updateTextInput(session, "desc", value = "most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff titled \"Growth in a Time of Debt\".")
+            doLoad("inst/CaseStudies/Zavodny/ols262", 0)
          }
       })
 
