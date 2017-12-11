@@ -20,6 +20,7 @@ revisitAddin <- function() {
                  "label { padding: 0px; font-size: 20px }",
                  ".btn { padding: 0px; font-size: 20px }",
                  ".form-control { padding: 4px; font-size: 20px }",
+                 ".form-group { padding: 0px; font-size: 20px }",
                  "#ace { font-weight: bold }",
                  "#cancel { padding: 0px; font-size: 16px }",
                  "#done { padding: 0px; font-size: 16px }",
@@ -29,8 +30,21 @@ revisitAddin <- function() {
       theme = shinytheme("united"),
       gadgetTitleBar("Revisit"),
       miniContentPanel(
+         fluidRow(
+            div(class = "col-xs-4 col-md-4",
+                selectInput("cases", "Case Studies",
+                            choices = c("Pima diabetes study",
+                                        "MovieLens ratings",
+                                        "Zavodny immigration study",
+                                        "Reinhart & Rogoff debt study"),
+                            selected = "Pima diabetes study")
+            ),
+            div(class = "col-xs-8 col-md-8",
+               textInput("desc", "Description", width = "760px")
+            )
+         ),
          stableColumnLayout(
-            textInput("file", "Filename (w/o Branch# or .R)", value = "inst/examples/pima"),
+            textInput("file", "Filename (w/o Branch# or .R)", value = "inst/CaseStudies/Pima/pima"),
             numericInput("runstart", "Run Start Line", value = 1),
             numericInput("saveBn", "Save Branch #", value = 1)
          ),
@@ -38,9 +52,6 @@ revisitAddin <- function() {
             numericInput("loadBn", "Load Branch #", value = 0),
             numericInput("runthru", "Run Through Line", value = -1),
             textInput("username", "Username", value =  "e.g. LastName, FirstName") # username here and force a userID
-         ),
-         stableColumnLayout(
-         	textInput("desc", "Description")
          ),
          miniButtonBlock(
             actionButton("loadb", "Load Code"),
@@ -131,6 +142,22 @@ revisitAddin <- function() {
          spec <- reactiveLoad()
          highlightCode(session, "ace")
          paste(spec$loaded, collapse = "\n")
+      })
+
+      observeEvent(input$cases, {
+         cases <- input$cases
+         if (cases == "Pima diabetes study"){
+            updateTextInput(session, "desc", value = "famous Pima diabetes study at the UCI data repository.")
+         }
+         else if (cases == "MovieLens ratings"){
+            updateTextInput(session, "desc", value = "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users.")
+         }
+         else if (cases == "Zavodny immigration study"){
+            updateTextInput(session, "desc", value = "most cited result of study of whether the foreign born take jobs from the native born or instead create more jobs, on balance.")
+         }
+         else if (cases == "Reinhart & Rogoff debt study"){
+            updateTextInput(session, "desc", value = "most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff titled \"Growth in a Time of Debt\".")
+         }
       })
 
       observeEvent(input$loadb, {
