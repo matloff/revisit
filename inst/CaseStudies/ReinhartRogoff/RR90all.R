@@ -25,7 +25,7 @@ prtWeightByCountryYr <- function(df, label){
 # https://www.peri.umass.edu/publication/item/526-does-high-public-debt-consistently-stifle-economic-growth-a-critique-of-reinhart-and-rogo-ff .
 # RR-processed.dta is created by the HAP program RR.R, also in the zip file.
 
-RRp <- read.dta("RR-processed.dta")
+RRp <- read.dta("inst/CaseStudies/ReinhartRogoff/RR-processed.dta")
 print("number of data in RR-processed.dta")
 print(dim(RRp)[1])
 RR90 <- RRp[!is.na(RRp$dRGDP) & !is.na(RRp$debtgdp) & RRp$debtgdp > 90,]
