@@ -1,0 +1,6 @@
+
+This is a well-known dataset in the recommender systems community,
+maintained by the GroupLens project.  It consists of user ratings of
+movies, for various raters and various films, along with covariate data
+on both.
+
