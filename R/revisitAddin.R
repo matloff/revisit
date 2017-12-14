@@ -33,10 +33,7 @@ revisitAddin <- function() {
          fluidRow(
             div(class = "col-xs-4 col-md-4",
                 selectInput("cases", "Case Studies",
-                            choices = c("MovieLens ratings",
-                                        "Pima diabetes study",
-                                        "Reinhart & Rogoff debt study",
-                                        "Zavodny immigration study"),
+                            choices = "Pima diabetes study",
                             selected = "Pima diabetes study")
             ),
             div(class = "col-xs-8 col-md-8",
@@ -72,29 +69,41 @@ revisitAddin <- function() {
 
       startOfSession <- TRUE
       loadBn_succ <- NULL
-
-      doLoad <- function(file, loadBn){
-         path <- system.file("CaseStudies", package="revisit")
-         if (path == ""){
-            status <- paste("***** ERROR: system.file(\"CaseStudies\", package=\"revisit\") returned an empty string")
+      caselist <- NULL
+      casepath <- system.file("CaseStudies", package="revisit")
+      if (casepath == ""){
+         status <- paste("***** ERROR: system.file(\"CaseStudies\", package=\"revisit\") returned an empty string")
+         rv$statusmsg <<- status
+         print(status)
+      }
+      else{
+         casefile <- paste0(casepath, "/CaseStudyList.txt")
+         if (file.exists(casefile)){
+            caselist <- read.csv(casefile, strip.white = TRUE, sep = ",")
+            updateSelectInput(session, "cases", choices = caselist$label, selected = caselist$label[caselist$n == 1])
+         }
+         else{
+            status <- paste("***** ERROR:", casefile, "not found")
             rv$statusmsg <<- status
             print(status)
-            return(status)
          }
+      }
+
+      doLoad <- function(file, loadBn){
          if (loadBn < 0){
             filename <- paste0(file, ".R")
          } else if (loadBn == 0){
             filename <- paste0(file, ".0.R")
             # always recreate the .0.R file
             filename0 <- paste0(file, ".R")
-            pathfilename0 <- paste0(path,"/",filename0)
+            pathfilename0 <- paste0(casepath,"/",filename0)
             if (file.exists(pathfilename0)){
                makebranch0(pathfilename0)
             }
          } else {
             filename <- paste0(file, ".", as.character(loadBn), ".R")
          }
-         pathfilename <- paste0(path,"/",filename)
+         pathfilename <- paste0(casepath,"/",filename)
          if (file.exists(pathfilename)){
             loadb(pathfilename)
             loadBn_succ <<- loadBn
@@ -105,11 +114,11 @@ revisitAddin <- function() {
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
             nextBn <- loadBn + 1
             filename <- paste0(file, ".", as.character(nextBn), ".R")
-            pathfilename <- paste0(path,"/",filename)
+            pathfilename <- paste0(casepath,"/",filename)
             while (file.exists(pathfilename)){
                nextBn <- nextBn + 1
                filename <- paste0(file, ".", as.character(nextBn), ".R")
-               pathfilename <- paste0(path,"/",filename)
+               pathfilename <- paste0(casepath,"/",filename)
             }
             updateNumericInput(session, "saveBn",  value = nextBn)
          } else {
@@ -121,7 +130,7 @@ revisitAddin <- function() {
                }
             } else {
                startOfSession <<- FALSE
-               status <- ""
+               #status <- "" # don't overwrite startup error
             }
          }
          rv$statusmsg <<- status
@@ -142,10 +151,11 @@ revisitAddin <- function() {
       output$message <- renderText({
          spec <- reactiveLoad()
          if (substring(rv$statusmsg, 1, 1) == "*"){
-            paste0("<b><font color=\"red\">", rv$statusmsg, "</font></b>")
+            msg <- paste0("<b><font color=\"red\">", rv$statusmsg, "</font></b>")
          } else {
-            paste0("<b>", rv$statusmsg, "</b>")
+            msg <- paste0("<b>", rv$statusmsg, "</b>")
          }
+         msg
       })
 
       output$ace <- renderCode({
@@ -156,26 +166,8 @@ revisitAddin <- function() {
 
       observeEvent(input$cases, {
          cases <- input$cases
-         if (cases == "MovieLens ratings"){
-            file <- "MovieLens/movielens"
-            desc <- "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users."
-         }
-         else if (cases == "Pima diabetes study"){
-            file <- "Pima/pima"
-            desc <- "famous Pima diabetes study at the UCI data repository."
-         }
-         else if (cases == "Reinhart & Rogoff debt study"){
-            file <- "ReinhartRogoff/RR90all"
-            desc <- "most cited result of 2010 paper by economists Reinhart and Rogoff titled \"Growth in a Time of Debt\"."
-         }
-         else if (cases == "Zavodny immigration study"){
-            file <- "Zavodny/ols262"
-            desc <- "most cited result of study of whether foreign born take jobs from native born or instead create more jobs, on balance."
-         }
-         else{ # should never occur if select list matches
-            file <- "Pima/pima"
-            desc <- "famous Pima diabetes study at the UCI data repository."
-         }
+         file <- caselist$file[caselist$label == cases]
+         desc <- caselist$desc[caselist$label == cases]
          updateTextInput(session, "desc", value = desc)
          updateTextInput(session, "file", value = file)
          doLoad(file, 0)
