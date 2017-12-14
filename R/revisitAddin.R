@@ -44,7 +44,7 @@ revisitAddin <- function() {
             )
          ),
          stableColumnLayout(
-            textInput("file", "Filename (w/o Branch# or .R)", value = "inst/CaseStudies/Pima/pima"),
+            textInput("file", "Filename (w/o Branch# or .R)", value = "Pima/pima"),
             numericInput("runstart", "Run Start Line", value = 1),
             numericInput("saveBn", "Save Branch #", value = 1)
          ),
@@ -74,21 +74,29 @@ revisitAddin <- function() {
       loadBn_succ <- NULL
 
       doLoad <- function(file, loadBn){
+         path <- system.file("CaseStudies", package="revisit")
+         if (path == ""){
+            status <- paste("***** ERROR: system.file(\"CaseStudies\", package=\"revisit\") returned an empty string")
+            rv$statusmsg <<- status
+            print(status)
+            return(status)
+         }
          if (loadBn < 0){
             filename <- paste0(file, ".R")
          } else if (loadBn == 0){
             filename <- paste0(file, ".0.R")
-            if (!file.exists(filename)){
-               filename0 <- paste0(file, ".R")
-               if (file.exists(filename0)){
-                  makebranch0(filename0)
-               }
+            # always recreate the .0.R file
+            filename0 <- paste0(file, ".R")
+            pathfilename0 <- paste0(path,"/",filename0)
+            if (file.exists(pathfilename0)){
+               makebranch0(pathfilename0)
             }
          } else {
             filename <- paste0(file, ".", as.character(loadBn), ".R")
          }
-         if (file.exists(filename)){
-            loadb(filename)
+         pathfilename <- paste0(path,"/",filename)
+         if (file.exists(pathfilename)){
+            loadb(pathfilename)
             loadBn_succ <<- loadBn
             status <- paste(filename, "loaded")
             currcode <- paste(rvenv$currcode, collapse = '\n')
@@ -97,17 +105,19 @@ revisitAddin <- function() {
             updateNumericInput(session, "runthru",  value = length(rvenv$currcode))
             nextBn <- loadBn + 1
             filename <- paste0(file, ".", as.character(nextBn), ".R")
-            while (file.exists(filename)){
+            pathfilename <- paste0(path,"/",filename)
+            while (file.exists(pathfilename)){
                nextBn <- nextBn + 1
                filename <- paste0(file, ".", as.character(nextBn), ".R")
+               pathfilename <- paste0(path,"/",filename)
             }
             updateNumericInput(session, "saveBn",  value = nextBn)
          } else {
             if (!startOfSession){
                if (loadBn == 0){
-                  status <- paste("***** ERROR:", filename, "and", filename0, "not found")
+                  status <- paste("***** ERROR:", pathfilename, "and", filename0, "not found")
                } else {
-                  status <- paste("***** ERROR:", filename, "not found")
+                  status <- paste("***** ERROR:", pathfilename, "not found")
                }
             } else {
                startOfSession <<- FALSE
@@ -147,28 +157,28 @@ revisitAddin <- function() {
       observeEvent(input$cases, {
          cases <- input$cases
          if (cases == "MovieLens ratings"){
-            file <- "inst/CaseStudies/MovieLens/movielens"
+            file <- "MovieLens/movielens"
             desc <- "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users."
          }
          else if (cases == "Pima diabetes study"){
-            file <- "inst/CaseStudies/Pima/pima"
+            file <- "Pima/pima"
             desc <- "famous Pima diabetes study at the UCI data repository."
          }
          else if (cases == "Reinhart & Rogoff debt study"){
-            file <- "inst/CaseStudies/ReinhartRogoff/RR90all"
-            desc <- "most cited result from the 2010 paper by economists Carmen Reinhart and Kenneth Rogoff titled \"Growth in a Time of Debt\"."
+            file <- "ReinhartRogoff/RR90all"
+            desc <- "most cited result of 2010 paper by economists Reinhart and Rogoff titled \"Growth in a Time of Debt\"."
          }
          else if (cases == "Zavodny immigration study"){
-            file <- "inst/CaseStudies/Zavodny/ols262"
-            desc <- "most cited result of study of whether the foreign born take jobs from the native born or instead create more jobs, on balance."
+            file <- "Zavodny/ols262"
+            desc <- "most cited result of study of whether foreign born take jobs from native born or instead create more jobs, on balance."
          }
          else{ # should never occur if select list matches
-            file <- "inst/CaseStudies/Pima/pima"
+            file <- "Pima/pima"
             desc <- "famous Pima diabetes study at the UCI data repository."
          }
          updateTextInput(session, "desc", value = desc)
          updateTextInput(session, "file", value = file)
-         doLoad(file, 0) # should be done by prior line
+         doLoad(file, 0)
       })
 
       observeEvent(input$loadb, {
