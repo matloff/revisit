@@ -1,0 +1,6 @@
+
+This is famous data on remote sensing.  It consists of data, e.g.
+Hillside Shade at Noon,  on 500,000 locations of known forest cover
+type; there are 7 types.  The goal is to predict cover type from the
+other variables.
+
