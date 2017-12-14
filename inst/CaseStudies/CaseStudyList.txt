@@ -2,4 +2,4 @@ n, label,                           file,                      desc
 0, "MovieLens ratings",             "MovieLens/movielens",     "100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users."
 1, "Pima diabetes study",           "Pima/pima",               "famous Pima diabetes study at the UCI data repository."
 0, "Reinhart & Rogoff debt study",  "ReinhartRogoff/RR90all",  "most cited result of 2010 paper by economists Reinhart and Rogoff titled \"Growth in a Time of Debt\"."
-0, "Zavodny guest worker study",    "Zavodny/ols262",          "most cited result of study of whether foreign born take jobs from native born or instead create more jobs, on balance."
+0, "Zavodny guest worker study",    "Zavodny/ols262",          "most cited result of study of whether foreign guest workers take jobs from Americans or create more jobs for them, on balance."
