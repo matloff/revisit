@@ -1,0 +1,43 @@
+
+Below is the README file for the data,
+
+http://qed.econ.queensu.ca/jae/1995-v10.3/fong-ouliaris/
+
+*********************************************************************
+
+Wai Mun Fong and Sam Ouliaris, "Spectral Tests of the Martingale 
+Hypothesis for Exchange Rates", Journal of Applied Econometrics, Vol. 10, 
+No. 3, 1995, pp. 255-271.
+
+Paper:  `Spectral Tests of the Martingale Hypothesis for Exchange Rates'
+Authors: Wai Mun Fong and Sam Ouliaris, National University of Singapore
+e-mail: fbafwm@nus.sg ; fbaso@nus.sg (respectively)
+Date: September 6, 1994
+
+Both files are found in the zip file fong-oul.zip.
+
+The file EXC.ASC contains 5 columns, and 762 rows.  The data are 
+weekly exchange rates for 5 countries against the US dollar, namely:
+
+	Column 1: Canadian $
+	Column 2: German Dm
+	Column 3: French Fr
+	Column 4: U.K. pound
+	Column 5: Japanese Yen
+
+over the period 7 August 1974 to 29 March 1989.
+
+The data were taken from the IMF's International Financial Statistics 
+published by the International Monetary Fund.
+
+Note that we used Wednesday rates for each currency.  [If a Wednesday 
+observation was missing, the exchange rate for the following day was 
+used instead].
+
+EWM.PRG is the GAUSS code used to obtain (a subset) of the results.  Please 
+note that it requires parts of COINT 2.0 (a cointegration package by 
+Sam Ouliaris and Peter C. B. Phillips), namely the files: BASE.SRC and 
+KERNELS.SRC.  You will need access to these files in order to run the 
+program.
+
+
