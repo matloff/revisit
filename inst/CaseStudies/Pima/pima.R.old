@@ -1,4 +1,3 @@
-# original code
 data(pima)
 # divide into diabetic, non-diabetics
 d <- which(pima$Diab == 1)

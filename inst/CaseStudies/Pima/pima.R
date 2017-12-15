@@ -1,4 +1,7 @@
-data(pima)
+# original code
+### data(pima)
+datapath <- system.file("data", package="revisit")                              
+pima <- read.table(paste0(datapath, "/pima.txt"), header = TRUE)                
 # divide into diabetic, non-diabetics
 d <- which(pima$Diab == 1)
 diab <- pima[d,]
