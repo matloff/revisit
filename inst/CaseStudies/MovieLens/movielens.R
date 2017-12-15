@@ -2,18 +2,22 @@
 # analysis of MovieLens data, 
 # https://grouplens.org/datasets/movielens/100k/
 
-if (!file.exists("./data/u.data")){
+datapath <- system.file("data", package="revisit")
+filepath <- paste0(datapath, "/u.data")
+if (!file.exists(filepath)){
    download.file("http://files.grouplens.org/datasets/movielens/ml-100k/u.data", "u.data")
-   file.rename("u.data", "./data/u.data")
-}
-if (!file.exists("./data/u.user")){
-   download.file("http://files.grouplens.org/datasets/movielens/ml-100k/u.user", "u.user")
-   file.rename("u.user", "./data/u.user")
+   file.rename("u.data", filepath)
 }
 # read ratings data (userID, movieID, rating, timestamp)
-ud <- read.table('./data/u.data',header=F,sep='\t')
+ud <- read.table(filepath,header=F,sep='\t')
+
+filepath <- paste0(datapath, "/u.user")
+if (!file.exists(filepath)){
+   download.file("http://files.grouplens.org/datasets/movielens/ml-100k/u.user", "u.user")
+   file.rename("u.user", filepath)
+}
 # read user covariate data (user, age, gender, ...(
-uu <- read.table('./data/u.user',header=F,sep='|')
+uu <- read.table(filepath,header=F,sep='|')
 
 ud <- ud[,-4]   # remove timestamp, leaving user, item, rating
 uu <- uu[,1:3]  
