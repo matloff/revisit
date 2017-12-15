@@ -163,7 +163,9 @@ yearTable <- function(
    }
 }
 
-data(zav) # zav.txt is .txt version of Zav. file public.dta
+### data(zav) # zav.txt is .txt version of Zav. file public.dta
+datapath <- system.file("data", package="revisit")                              
+zav <- read.table(paste0(datapath, "/zav.txt"), header = TRUE)                
 zav0 <- zav
 
 cat("", sep = "\n")

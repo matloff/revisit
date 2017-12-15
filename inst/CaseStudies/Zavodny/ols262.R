@@ -1,7 +1,9 @@
 # the file public.dta and the Stata code on which this R code is based
 # is courtesy of M. Zavodny
 
-data(zav) # zav.txt is .txt version of Zav. file public.dta
+### data(zav) # zav.txt is .txt version of Zav. file public.dta
+datapath <- system.file("data", package="revisit")                              
+zav <- read.table(paste0(datapath, "/zav.txt"), header = TRUE)                
 zav = zav[zav$year < 2008,] # 2000-2007 (first year in zav.txt is 2000)
 
 ##### traditional employment rate and immigrant share model #####
