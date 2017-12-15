@@ -9,7 +9,7 @@ Maintainer: Norm Matloff <normmatloff@gmail.com>
 Title: "Statistical Audit": Verify and Revisit Statistical Analysis
 Description: Tool to aid reproducibility, checking validity of
    statistical analysis in scientific research.
-Depends: stats,utils,methods
+Depends: stats,utils,methods,lattice,regtools
 Suggests: rstudio, shiny, rmarkdown
 VignetteBuilder: knitr
 ByteCompile: yes
