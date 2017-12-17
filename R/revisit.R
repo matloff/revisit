@@ -192,6 +192,8 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
 # If it is, we print a warning as well, referring them to logit instead.
 lm.rv <- function(formula, user.data){
    lmout <- lm(formula, data = user.data) # call lm for lm.rv
+   rqout <- rq(formula,data=user.data) 
+   # check for binary Y
    lmout$binaryYval <- TRUE
    yval <- lmout$model[[1]]               # extract y-vals from lmout's model
    len.yval <- length(lmout$model[[1]])   # get the full length of the y-val
