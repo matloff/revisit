@@ -193,6 +193,10 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
 lm.rv <- function(formula, user.data){
    lmout <- lm(formula, data = user.data) # call lm for lm.rv
    rqout <- rq(formula,data=user.data) 
+   lmc <- coef(lmout)
+   rqc <- coef(rqout)
+   cat('max. prop. difference, linear median regression:',
+      max(abs((rqc-lmc)/lmc)),'\n')
    # check for binary Y
    lmout$binaryYval <- TRUE
    yval <- lmout$model[[1]]               # extract y-vals from lmout's model
