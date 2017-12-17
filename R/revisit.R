@@ -193,27 +193,33 @@ t.test.rv <- function(x,y,alpha=0.05,bonf=1) {
 lm.rv <- function(formula, user.data){
    lmout <- lm(formula, data = user.data) # call lm for lm.rv
    lmout$binaryYval <- TRUE
-   yval <- lmout$model[[1]]               # pick out the y-vals from lmout's model
+   yval <- lmout$model[[1]]               # extract y-vals from lmout's model
    len.yval <- length(lmout$model[[1]])   # get the full length of the y-val
-   y_list = c(yval[1])                    # make a short list for distinguishable yvalues, include 1st one
-   for (i in 1:len.yval) {                # for every yvalue, check if there's a second distinguishable yvalue
+   y_list = c(yval[1])                    # make a short list for 
+                                          # distinguishable yvalues, include 
+                                          # 1st one
+   for (i in 1:len.yval) {                # for every yvalue, check if 
+                                          # there's 2n distinguishable yvalue
       if (yval[i] != y_list[1]) {         # if there is, add it to y_list
          y_list[2] = yval[i]
          break
       }
    }
-   for (i in 1:len.yval) {    # for every y-value, check if it is equal to 1st or 2nd value in y_list
+   # for every y-value, check if it is equal to 1st or 2nd value in y_list
+   for (i in 1:len.yval) {    
       if ((yval[i] != y_list[1]) && (yval[i] != y_list[2])) {
          y_list[3] = yval[i]
          class(lmout) <- c("lm.rv", "lm")
          lmout$binaryYval <- FALSE
          break
       }
-   }                            # if there is a 3rd distinguished value, binary == F and just return lmout
-   if (lmout$binaryYval == TRUE) {   # if there are only 2 dist. val's in y_list, print lmout & warning
+   }                            
+   # if there is a 3rd distinguished value, binary == F and just return lmout
+   if (lmout$binaryYval == TRUE) {   
+   # if there are only 2 dist. val's in y_list, print lmout & warning
       class(lmout) <- c("lm.rv", "lm")
       print(lmout)
-      print("WARNING: You have 2 distinguished values within your response variable. Consider using the logistic model.")
+      warning('only 2 distinct Y values; consider a logistic model')
    }
    else {
       print(lmout)
