@@ -10,6 +10,7 @@ revisitAddin <- function() {
    library(miniUI)
    library(shinyAce)
    library(shinythemes)
+   library(revisit)
    rvinit()
    rv <- reactiveValues()
    rv$statusmsg <- ""
@@ -30,38 +31,50 @@ revisitAddin <- function() {
       theme = shinytheme("united"),
       gadgetTitleBar("Revisit"),
       miniContentPanel(
-         fluidRow(
-            div(class = "col-xs-4 col-md-4",
-                selectInput("cases", "Case Studies",
-                            choices = "Pima diabetes study",
-                            selected = "Pima diabetes study")
+         tabsetPanel(
+            tabPanel(
+               "Main",
+               fluidRow(
+                  div(class = "col-xs-4 col-md-4",
+                      selectInput("cases", "Case Studies",
+                                  choices = "Pima diabetes study",
+                                  selected = "Pima diabetes study")
+                  ),
+                  div(class = "col-xs-8 col-md-8",
+                      textInput("desc", "Description", width = "760px")
+                  )
+               ),
+               stableColumnLayout(
+                  textInput("file", "Filename (w/o Branch# or .R)", value = "Pima/pima"),
+                  numericInput("runstart", "Run Start Line", value = 1),
+                  numericInput("saveBn", "Save Branch #", value = 1)
+               ),
+               stableColumnLayout(
+                  numericInput("loadBn", "Load Branch #", value = 0),
+                  numericInput("runthru", "Run Through Line", value = -1),
+                  textInput("username", "Username", value =  "e.g. LastName, FirstName") # username here and force a userID
+               ),
+               miniButtonBlock(
+                  actionButton("loadb", "Load Code"),
+                  actionButton("nxt",   "Next"),
+                  actionButton("runb",  "Run/Continue"),
+                  actionButton("saveb", "Save Code")
+               ),
+               htmlOutput("message"),
+               aceEditor("ace", value = "...",mode='r', fontSize = 20),
+               stableColumnLayout(
+                  numericInput("aceFontSize", "Editor Font Size", value = 20),
+                  numericInput("pcount", "P-value Count", value = 0)
+               )
             ),
-            div(class = "col-xs-8 col-md-8",
-               textInput("desc", "Description", width = "760px")
+            tabPanel(
+               "Console",
+               h4("Run R Command"),
+               textInput("rcmd", NULL, value = ""),
+               actionButton("cmdsubmit", "Submit Command", icon("refresh")),
+               verbatimTextOutput("cmdoutput")
             )
-         ),
-         stableColumnLayout(
-            textInput("file", "Filename (w/o Branch# or .R)", value = "Pima/pima"),
-            numericInput("runstart", "Run Start Line", value = 1),
-            numericInput("saveBn", "Save Branch #", value = 1)
-         ),
-         stableColumnLayout(
-            numericInput("loadBn", "Load Branch #", value = 0),
-            numericInput("runthru", "Run Through Line", value = -1),
-            textInput("username", "Username", value =  "e.g. LastName, FirstName") # username here and force a userID
-         ),
-         miniButtonBlock(
-            actionButton("loadb", "Load Code"),
-            actionButton("nxt",   "Next"),
-            actionButton("runb",  "Run/Continue"),
-            actionButton("saveb", "Save Code")
-         ),
-         htmlOutput("message"),
-         aceEditor("ace", value = "...",mode='r', fontSize = 20),
-         stableColumnLayout(
-            numericInput("aceFontSize", "Editor Font Size", value = 20),
-            numericInput("pcount", "P-value Count", value = 0)
-      	 )
+         )
       )
    )
 
@@ -162,6 +175,16 @@ revisitAddin <- function() {
          spec <- reactiveLoad()
          highlightCode(session, "ace")
          paste(spec$loaded, collapse = "\n")
+      })
+
+      output$cmdoutput <- renderPrint({
+         input$cmdsubmit
+         rcmd <- isolate(input$rcmd)
+         if (rcmd != ""){
+            print(rcmd)
+            #print(shell(syscmd, intern=TRUE)) # to run shell command on Windows
+            print(eval(parse(text=rcmd)))
+         }
       })
 
       observeEvent(input$cases, {
