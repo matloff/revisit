@@ -1,0 +1,6 @@
+
+Data on programmer and engineer salaries in Silicon Valley, from the
+2000 Census.  One avenue of exploration here might concern the gender
+effect, adjusting for education, occupation and so on, and for the age
+discrimination issue, which might call for a quadratic term for age.
+
