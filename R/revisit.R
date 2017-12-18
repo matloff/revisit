@@ -195,6 +195,7 @@ lm.rv <- function(formula, user.data){
    rqout <- rq(formula,data=user.data) 
    lmc <- coef(lmout)
    rqc <- coef(rqout)
+   lmout@rqc <- rqc
    cat('max. prop. difference, linear median regression:',
       max(abs((rqc-lmc)/lmc)),'\n')
    # check for binary Y
