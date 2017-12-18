@@ -230,6 +230,7 @@ lm.rv <- function(formula, user.data){
    else {
       print(lmout)
    }
+   lmout
 }
 
 
