@@ -103,6 +103,7 @@ revisitAddin <- function() {
       }
 
       doLoad <- function(file, loadBn){
+         status <- ""
          if (loadBn < 0){
             filename <- paste0(file, ".R")
          } else if (loadBn == 0){
