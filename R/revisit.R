@@ -198,38 +198,22 @@ lm.rv <- function(formula, user.data){
    lmout$rqc <- rqc
    cat('max. prop. difference, linear median regression:',
       max(abs((rqc-lmc)/lmc)),'\n')
-   print('larger values, may indicate outlier or model fit issues')
+   cat('larger values, may indicate outlier or model fit issues\n')
    # check for binary Y
-   lmout$binaryYval <- TRUE
    yval <- lmout$model[[1]]               # extract y-vals from lmout's model
-   len.yval <- length(lmout$model[[1]])   # get the full length of the y-val
-   y_list = c(yval[1])                    # make a short list for 
-                                          # distinguishable yvalues, include 
-                                          # 1st one
-   for (i in 1:len.yval) {                # for every yvalue, check if 
-                                          # there's 2n distinguishable yvalue
-      if (yval[i] != y_list[1]) {         # if there is, add it to y_list
-         y_list[2] = yval[i]
-         break
-      }
+   uyval <- unique(yval)
+   class(lmout) <- c("lm.rv", "lm")
+   if (length(uyval) <= 1){
+      lmout$binaryYval <- TRUE
+      print(lmout)
    }
-   # for every y-value, check if it is equal to 1st or 2nd value in y_list
-   for (i in 1:len.yval) {    
-      if ((yval[i] != y_list[1]) && (yval[i] != y_list[2])) {
-         y_list[3] = yval[i]
-         class(lmout) <- c("lm.rv", "lm")
-         lmout$binaryYval <- FALSE
-         break
-      }
-   }                            
-   # if there is a 3rd distinguished value, binary == F and just return lmout
-   if (lmout$binaryYval == TRUE) {   
-   # if there are only 2 dist. val's in y_list, print lmout & warning
-      class(lmout) <- c("lm.rv", "lm")
+   else if (length(uyval) == 2){
+      lmout$binaryYval <- TRUE
       print(lmout)
       warning('only 2 distinct Y values; consider a logistic model')
    }
-   else {
+   else{
+      lmout$binaryYval <- FALSE
       print(lmout)
    }
    lmout
