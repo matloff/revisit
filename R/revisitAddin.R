@@ -64,7 +64,7 @@ revisitAddin <- function() {
                aceEditor("ace", value = "...",mode='r', fontSize = 20),
                stableColumnLayout(
                   numericInput("aceFontSize", "Editor Font Size", value = 20),
-                  numericInput("pcount", "P-value Count", value = 0)
+                  numericInput("pcount", "P-value/CI Count", value = 0)
                )
             ),
             tabPanel(
