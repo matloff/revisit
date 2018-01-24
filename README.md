@@ -149,7 +149,7 @@ analysis in R.
 
 Both text-based and graphical (GUI) interfaces are available.
 The GUI uses RStudio *add-ins*.  The text-based version provides more
-flexiblity, while the GUI provides convenience.
+flexibility, while the GUI provides convenience.
 
 ### First example
 
@@ -178,10 +178,10 @@ descriptions from [this link](https://archive.ics.uci.edu/ml/datasets/pima+india
 
 As an illustration, we have code <strong>pima.R</strong> included in the
 package, which will be in the file **revisit/CaseStudies/Pima/pima.R**
-within our directory of installed R packages, which was **~/R** in the
-example run here.  In the GUI version, we simply type the file
-name/location into the **Filename** box, with full path, e.g.
-**~/R/revisit/CaseStudies/Pima/pima/pima**, then click **Load Code**.
+within our directory of installed R packages.  In the GUI version, the
+Pima example will be loaded by default.  If another example is currently
+loaded, the Pima example can be loaded by selecting "Pima diabetes study"
+in the Case Studies select list.
 
 The screen now looks like this:
 
@@ -200,7 +200,7 @@ By the way, if **Load Branch #** is 0 and the branch 0 file cannot be found,
 found, **revisit** will automatically create the branch 0 file, identical
 to the original author code, but with an identifying comment line.
 
-To replay the author's code without modfication, we click **Run/Continue**.
+To replay the author's code without modification, we click **Run/Continue**.
 The new screen is:
 
 ![alt text](Screen1.png)
@@ -210,7 +210,7 @@ console.  (There are 8 variables other than Diab, so the intervals
 concern differences between diabetics and nondiabetics.)
 
 We as the user may now think, "Hmm, one really should use a multiple
-inference procedure here."  So we change line 12 to use **revisit**'s own
+inference procedure here."  So we change line 15 to use **revisit**'s own
 function, employing the Bonferroni method with number of comparisons
 equal to 8.
 
@@ -218,7 +218,7 @@ We then re-run.  If we fail to reset the **Run Start Line** and **Run
 Through Line** first, however, we will get the error shown in red in the
 console below.  This is because **revisit** had already run through the
 end of the code.  *There is no need to start from the beginning*, so we
-change the **Run Start Line** box to 11, reset the **Run Through Line**
+change the **Run Start Line** box to 14, reset the **Run Through Line**
 box to the last line (if necessary) and click **Run/Continue**, yielding:
 
 ![alt text](Screen2.png)
@@ -229,10 +229,10 @@ again moved one past the last line of code.)
 
 Say we believe this branch is worth saving.  The **Save Branch #** box tells
 us the next branch will be named branch 1 (we could change that).  Before
-saving, we are required to type in a description of the change.  If we now
-click **Save Code**, the new branch will be reloaded with the description now
-visible in the last line of the revisit history at the top of the file
-as shown below:
+saving, we should type in a new Description of the change and ensure that
+the Username field is set.  If we now click **Save Code**, the new branch
+will be reloaded with the username and description now visible in the last
+line of the revisit history at the top of the file as shown below:
 
 ![alt text](Screen3.png)
 
@@ -240,13 +240,15 @@ By the way, look at the comments at the top of the code,
 
 ``` r
 # RV history start
-original code
-Use t.test.rv with bonf = 8
+# original code
+# Time: 2018-01-24 00:30:55 
+# Revisited by:  
+# R. Davis - Use t.test.rv with bonf=8
 # RV history end
 ```
 
 Each time we save a new branch, the description comments of the source
-branch are accumulated, thus providing a change hsitory.
+branch are accumulated, thus providing a change history.
 
 We should also check whether the author did a good job of data cleaning.
 As a crude measure, we can find the range of each of the variables, say
@@ -255,12 +257,9 @@ by running the code
 ``` r
 print(apply(pima[,1:8],2,range))
 ```
-
-We could simply run this code directly if we were in the text-based
-version of **revisit**, since there we would have direct control of the
-R console. This is not the case in the GUI version. So instead, we add
-the code temporarily at the end of code editor, as line 16. We change
-the **Run Start Line** box to 16, and hit **Run/Continue**:
+We can run this code by switching to the Console tab and entering the
+above code in the box under "Run R Command" and pressing the "Submit
+Command" button.  That gives the output at shown below:
 
 ![alt text](Screen4.png)
 
@@ -292,13 +291,11 @@ As can be seen from the output of the ranges, NPreg is now the only
 variable that contains 0s, the one variable for which they make sense.
 We can also see that the confidence intervals have changed.  They
 should be more accurate now that cases that contain 0s which are
-actually missing values have been removed.  We can then delete the
-last line which prints the ranges (**print(apply(pima[,1:8],2,range))**)
-as this was intended just for temporary use.
+actually missing values have been removed.
 
 Say we then believe this branch is worth saving.  The **Save Branch #**
 box tells us the next branch will be named branch 2 (as before, we
-could change that).  Before saving, we are again required to type
+could change that).  Before saving, we should again type
 in a description of the change.  If we do that and then click **Save
 Code**, the new branch will be reloaded with the description now
 visible in the last line of the revisit history at the top of the
@@ -451,7 +448,7 @@ console:
 The resulting p-value indicates a "significant" result, but there is an
 X in the warning column.  The estimated age coefficient here, about
 0.0034 is tiny; a 10-year difference in age corresponds to a difference
-in mean rating of only abou 0.034, minuscule for ratings in the range of
+in mean rating of only about 0.034, minuscule for ratings in the range of
 1 to 5.  This "significant" result is likely of no practical interest.
 
 ### Third example
