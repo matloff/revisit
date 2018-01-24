@@ -1,4 +1,4 @@
-# original code
+# start of pima.R
 ### data(pima)
 datapath <- system.file("data", package="revisit")                              
 pima <- read.table(paste0(datapath, "/pima.txt"), header = TRUE)                
