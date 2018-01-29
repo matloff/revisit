@@ -255,10 +255,10 @@ coef.rv <- function(lmobj,alpha=0.05,usebonf=TRUE) {
 }
 
 
-# copies the given file from the examples/ directory to the current
+# copies the given file from the CaseStudies/ directory to the current
 # directory
 getexample <- function(exname) {
-   fullexname <- paste('examples/',exname,sep='')
+   fullexname <- paste('CaseStudies/',exname,sep='')
    loc <- system.file(fullexname,package='revisit')
    file.copy(loc,'.')
 }
