@@ -25,6 +25,7 @@ gg <- ggplot(gdpm, aes(x=year, y=GDP, group=variable)) +
    geom_vline(xintercept = 2009) +
    geom_vline(xintercept = 2017) +
    scale_x_continuous(breaks = seq(2008,2017,2)) +
+   scale_y_continuous(breaks = seq(-8,6,2)) +
    ggtitle("Real U.S. GDP Growth") +
    labs(x = "Year", y = "Percent Annualized")
 print(gg)
