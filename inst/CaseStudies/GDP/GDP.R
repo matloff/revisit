@@ -18,7 +18,7 @@ gdp <- data.frame(qq$year, qq$change1y, qq$change, qq$change4q)
 colnames(gdp) <- c("year", "year_1", "qtrs_1", "qtrs_4")
 print(gdp)
 print(tail(gdp,40))
-#X11()
+X11() # comment out if using png and readPNG
 gdpm <- melt(gdp, id="year")
 gdpm <- gdpm[gdpm$year >= 2008,]
 gg <- ggplot(gdpm, aes(x=year, y=value, group=variable)) +
