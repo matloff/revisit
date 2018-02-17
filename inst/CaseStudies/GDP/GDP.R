@@ -1,3 +1,5 @@
+library(reshape2)
+library(ggplot2)
 aa <- getGDP(span="year", overwrite="TRUE")
 qq <- getGDP(span="quarter")
 print(head(aa))
@@ -16,10 +18,10 @@ gdp <- data.frame(qq$year, qq$change1y, qq$change, qq$change4q)
 colnames(gdp) <- c("year", "year_1", "qtrs_1", "qtrs_4")
 print(gdp)
 print(tail(gdp,40))
-X11()
-gdpm <- melt(gdp, id="year", value.name="GDP")
+#X11()
+gdpm <- melt(gdp, id="year")
 gdpm <- gdpm[gdpm$year >= 2008,]
-gg <- ggplot(gdpm, aes(x=year, y=GDP, group=variable)) +
+gg <- ggplot(gdpm, aes(x=year, y=value, group=variable)) +
    geom_line(aes(color = variable), size = 1, alpha = 0.7) +
    geom_hline(yintercept = 3) +
    geom_vline(xintercept = 2009) +
