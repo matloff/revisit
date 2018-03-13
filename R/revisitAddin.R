@@ -210,7 +210,7 @@ revisitAddin <- function() {
             nxt()
          )
          if (class(rc) == 'try-error'){
-            rv$statusmsg <- "***** RUN ERROR: see error message in console"
+            rv$statusmsg <- paste("*****", rc)
          } else {
             rv$statusmsg <- paste("RUN", input$runstart)
             if (input$runstart < length(rvenv$currcode)){
@@ -238,7 +238,7 @@ revisitAddin <- function() {
                runb(startline = runstart)
             )
             if (class(rc) == 'try-error'){
-               rv$statusmsg <- "***** RUN ERROR: see error message in console"
+               rv$statusmsg <- paste("*****", rc)
             } else {
                rv$statusmsg <- paste("RUN FROM", runstart)
             }
@@ -250,7 +250,7 @@ revisitAddin <- function() {
                runb(startline = runstart, throughline = runthru)
             )
             if (class(rc) == 'try-error'){
-               rv$statusmsg <- "***** RUN ERROR: see error message in console"
+               rv$statusmsg <- paste("*****", rc)
             } else {
                rv$statusmsg <- paste("RUN FROM", runstart, "THROUGH", runthru)
                if (runthru < length(rvenv$currcode)){

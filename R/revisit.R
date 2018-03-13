@@ -274,11 +274,9 @@ getexample <- function(exname) {
 #  change4q=real growth of last 4 quarters; iyear, qtr, & year - calculated from quarter
 
 getGDP <- function(span="year",overwrite=FALSE) {
-   datapath <- system.file("data", package="revisit")
-   filepath <- paste0(datapath, "/gdplev.xlsx")
+   filepath <- "gdplev.xlsx"
    if (!file.exists(filepath) | overwrite == TRUE) {
       download.file("https://www.bea.gov/national/xls/gdplev.xlsx", "gdplev.xlsx", mode = "wb")
-      file.rename("gdplev.xlsx", filepath)
    }
    xx <- read_excel(filepath, col_names = FALSE, skip = 8)
    if (span == "year") {
