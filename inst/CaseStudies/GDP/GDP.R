@@ -2,10 +2,6 @@ library(reshape2)
 library(ggplot2)
 aa <- getGDP(span="year", overwrite="TRUE")
 qq <- getGDP(span="quarter")
-print(head(aa))
-print(tail(aa))
-print(head(qq))
-print(tail(qq))
 
 qq$change1y <- NA
 for (i in min(aa$year):max(aa$year)){
@@ -16,8 +12,6 @@ for (i in min(aa$year):max(aa$year)){
 }
 gdp <- data.frame(qq$year, qq$change1y, qq$change, qq$change4q)
 colnames(gdp) <- c("year", "year_1", "qtrs_1", "qtrs_4")
-print(gdp)
-print(tail(gdp,40))
 X11() # comment out if using png and readPNG
 gdpm <- melt(gdp, id="year")
 gdpm <- gdpm[gdpm$year >= 2008,]
@@ -31,3 +25,11 @@ gg <- ggplot(gdpm, aes(x=year, y=value, group=variable)) +
    ggtitle("Real U.S. GDP Growth") +
    labs(x = "Year", y = "Percent Annualized")
 print(gg)
+gdp2 <- data.frame(qq$quarter, qq$year, qq$change1y, qq$change, qq$change4q)
+colnames(gdp2) <- c("quarter", "year", "year_1", "qtrs_1", "qtrs_4")
+gdp2$year   <- format(round(gdp2$year,   2), nsmall = 2)
+gdp2$year_1 <- format(round(gdp2$year_1, 2), nsmall = 2, big.mark = ",")
+gdp2$qtrs_1 <- format(round(gdp2$qtrs_1, 2), nsmall = 2, big.mark = ",")
+gdp2$qtrs_4 <- format(round(gdp2$qtrs_4, 2), nsmall = 2, big.mark = ",")
+print(gdp2)
+print(tail(gdp2,40))
