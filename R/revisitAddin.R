@@ -299,7 +299,7 @@ revisitAddin <- function() {
             ))
             return()
          }
-         filename <- paste0(file, ".", as.character(saveBn), ".R")
+         filename <- paste0(casepath, "/", file, ".", as.character(saveBn), ".R") # prepend casepath
          if (file.exists(filename)){
             question <- paste("WARNING: ", filename, "exists. Overwrite it?")
             showModal(yesNoModal(msg = question, yesAction="ok", yesLabel="Yes", noLabel="No"))
