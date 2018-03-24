@@ -73,6 +73,11 @@ revisitAddin <- function() {
                textInput("rcmd", NULL, value = ""),
                actionButton("cmdsubmit", "Submit Command", icon("refresh")),
                verbatimTextOutput("cmdoutput")
+            ),
+            tabPanel(
+               "README",
+               h4("README for Example"),
+               htmlOutput("readme")
             )
          )
       )
@@ -185,6 +190,15 @@ revisitAddin <- function() {
             print(rcmd)
             #print(shell(syscmd, intern=TRUE)) # to run shell command on Windows
             print(eval(parse(text=rcmd)))
+         }
+      })
+
+      output$readme <- renderText({
+         iend <- regexpr("/[^/]*$", input$file)
+         filedir <- substr(input$file, 1, iend)
+         filename <- paste0(casepath,"/",filedir,"/README")
+         if (file.exists(filename)){
+            includeMarkdown(filename)
          }
       })
 

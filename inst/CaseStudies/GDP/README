@@ -1,0 +1,59 @@
+As recounted in <A HREF="http://thehill.com/homenews/administration/348600-trump-touts-3-percent-economic-growth-takes-shot-at-obama">The Hill</A>, President Trump stated the following on August 30, 2017 in a speech on tax reform in Springfield, Missouri:
+<p>
+"We just announced that we hit 3 percent in [gross domestic product]. It just came out. And on a yearly basis, as you know, the last administration during an eight-year period never hit 3 percent, so we're really on our way".
+<p>
+The Hill article goes on to explain that, under Obama, the economy hit or surpassed 3 percent growth during numerous quarters, but never sustained that level of growth for a full year.  Hence, the immediate motivation for this example was to look at Trump's claim and to see to what extent it appears to be accurate and/or misleading.  A secondary motivation was to create a program that could be used to look at the latest GDP data for future analyses.
+<p>
+Following are the most recent numbers output by the example program:
+<pre>
+                    calendar    last  last 4
+                        year quarter quarter
+     quarter   year   change  change^ change
+ --- ------- ------- ------- ------- -------    
+ 245  2008Q1 2008.00   -0.29   -2.70    1.11
+ 246  2008Q2 2008.25   -0.29    2.00    0.84
+ 247  2008Q3 2008.50   -0.29   -1.91   -0.31
+ 248  2008Q4 2008.75   -0.29   -8.19   -2.77
+(Obama)                              
+ 249  2009Q1 2009.00   -2.78   -5.43   -3.46
+ 250  2009Q2 2009.25   -2.78   -0.54   -4.06
+ 251  2009Q3 2009.50   -2.78    1.31   -3.28
+ 252  2009Q4 2009.75   -2.78    3.93*  -0.24
+ 253  2010Q1 2010.00    2.53    1.74    1.60
+ 254  2010Q2 2010.25    2.53    3.92*   2.72
+ 255  2010Q3 2010.50    2.53    2.73    3.08*
+ 256  2010Q4 2010.75    2.53    2.54    2.73
+ 257  2011Q1 2011.00    1.60   -1.54    1.89
+ 258  2011Q2 2011.25    1.60    2.94    1.65
+ 259  2011Q3 2011.50    1.60    0.84    1.18
+ 260  2011Q4 2011.75    1.60    4.58*   1.68
+ 261  2012Q1 2012.00    2.22    2.68    2.75
+ 262  2012Q2 2012.25    2.22    1.88    2.49
+ 263  2012Q3 2012.50    2.22    0.48    2.39
+ 264  2012Q4 2012.75    2.22    0.09    1.28
+ 265  2013Q1 2013.00    1.68    2.83    1.31
+ 266  2013Q2 2013.25    1.68    0.77    1.04
+ 267  2013Q3 2013.50    1.68    3.12*   1.69
+ 268  2013Q4 2013.75    1.68    3.96*   2.66
+ 269  2014Q1 2014.00    2.57   -0.92    1.72
+ 270  2014Q2 2014.25    2.57    4.60*   2.67
+ 271  2014Q3 2014.50    2.57    5.21*   3.19*
+ 272  2014Q4 2014.75    2.57    2.02    2.70
+ 273  2015Q1 2015.00    2.86    3.24*   3.76*
+ 274  2015Q2 2015.25    2.86    2.74    3.30*
+ 275  2015Q3 2015.50    2.86    1.63    2.40
+ 276  2015Q4 2015.75    2.86    0.48    2.02
+ 277  2016Q1 2016.00    1.49    0.58    1.36
+ 278  2016Q2 2016.25    1.49    2.24    1.23
+ 279  2016Q3 2016.50    1.49    2.78    1.52
+ 280  2016Q4 2016.75    1.49    1.76    1.84
+ (Trump)                             
+ 281  2017Q1 2017.00    2.25    1.24    2.00
+ 282  2017Q2 2017.25    2.25    3.06*   2.21
+ 283  2017Q3 2017.50    2.25    3.16*   2.30
+ 284  2017Q4 2017.75    2.25    2.54    2.49
+ 
+ ^ annualized
+ * exceeding 3 percent
+ </pre>
+ As can be seen above, the closest that GDP came to 3 percent during a calendar year (January 1st through December 31st) during Obama's eight years was 2015 when it hit 2.86 percent.  However, it did surpass 3 percent during four consecutive quarters 4 times, in the four-quarter periods ending in 2010 quarter 3, 2014 quarter 3, 2015 quarter 1, and 2015 quarter 2.  Trump has only one four-quarter period during which GDP increased 2.25 percent.  It did surpass 3 percent in the 2nd and 3rd quarters of 2017 but then GDP surpassed 3 percent in 8 quarters under Obama as well.  Hence, saying that "the last administration during an eight-year period never hit 3 percent" and that "we hit 3 percent" is comparing annual calendar figures with quarterly figures.  It is essentially comparing apples and oranges, so to speak.
